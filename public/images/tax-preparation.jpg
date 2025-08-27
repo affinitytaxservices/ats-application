@@ -1,0 +1,40 @@
+<svg width="400" height="200" viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="400" height="200" fill="#0F172A"/>
+  
+  <!-- Decorative Elements -->
+  <circle cx="50" cy="50" r="80" fill="url(#prep-gradient1)" opacity="0.1"/>
+  <circle cx="350" cy="150" r="100" fill="url(#prep-gradient2)" opacity="0.1"/>
+  
+  <!-- Tax Form -->
+  <rect x="100" y="40" width="200" height="120" rx="5" fill="#1E293B" stroke="#334155" stroke-width="2"/>
+  
+  <!-- Form Header -->
+  <rect x="120" y="50" width="160" height="20" rx="2" fill="#10B981" opacity="0.8"/>
+  
+  <!-- Form Lines -->
+  <rect x="120" y="80" width="160" height="2" fill="#334155"/>
+  <rect x="120" y="100" width="160" height="2" fill="#334155"/>
+  <rect x="120" y="120" width="160" height="2" fill="#334155"/>
+  <rect x="120" y="140" width="160" height="2" fill="#334155"/>
+  
+  <!-- Pen -->
+  <rect x="270" y="90" width="3" height="40" rx="1.5" transform="rotate(45, 270, 90)" fill="#1E3A8A"/>
+  <path d="M290 70 L295 75 L285 85 L280 80 Z" fill="#10B981"/>
+  
+  <!-- Checkmark -->
+  <circle cx="140" cy="130" r="10" fill="#10B981" opacity="0.8"/>
+  <path d="M135 130 L140 135 L145 125" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Gradients -->
+  <defs>
+    <linearGradient id="prep-gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A" />
+      <stop offset="100%" stop-color="#10B981" />
+    </linearGradient>
+    <linearGradient id="prep-gradient2" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A" />
+      <stop offset="100%" stop-color="#10B981" />
+    </linearGradient>
+  </defs>
+</svg>
