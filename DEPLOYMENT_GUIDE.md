@@ -23,7 +23,7 @@ Before starting the deployment process, ensure you have:
 
 ```bash
 # Connect to your VPS
-ssh root@your_server_ip
+ssh root@195.250.21.159
 
 # Update system packages
 # For Ubuntu/Debian:
@@ -200,7 +200,7 @@ DB_PORT=3306
 # Application Configuration
 NODE_ENV=production
 PORT=3000
-REACT_APP_API_URL=https://yourdomain.com/api
+REACT_APP_API_URL=https://www.affinitytaxservices.com/api
 
 # Security
 JWT_SECRET=your_jwt_secret_key_here
@@ -287,7 +287,7 @@ Add the following configuration:
 ```nginx
 server {
     listen 80;
-    server_name yourdomain.com www.yourdomain.com;
+    server_name www.affinitytaxservices.com;
     
     # Redirect HTTP to HTTPS
     return 301 https://$server_name$request_uri;
@@ -295,7 +295,7 @@ server {
 
 server {
     listen 443 ssl http2;
-    server_name yourdomain.com www.yourdomain.com;
+    server_name www.affinitytaxservices.com;
     
     # SSL Configuration (will be added by Certbot)
     
@@ -390,7 +390,7 @@ sudo yum install -y certbot python3-certbot-nginx
 
 ```bash
 # Get SSL certificate
-sudo certbot --nginx -d yourdomain.com -d www.yourdomain.com
+sudo certbot --nginx -d www.affinitytaxservices.com
 
 # Test automatic renewal
 sudo certbot renew --dry-run
@@ -519,4 +519,4 @@ For deployment issues or questions, please:
 
 ---
 
-**Note**: Replace `yourdomain.com`, `your_server_ip`, and other placeholder values with your actual configuration details.
+**Note**: This deployment guide has been configured for domain `www.affinitytaxservices.com` and server IP `195.250.21.159`. Update database passwords and other security credentials as needed for your production environment.
