@@ -323,16 +323,27 @@ function Navbar() {
                   onClick={handleResourcesMenu}
                   sx={{
                     ...commonButtonStyle,
+                    background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(16, 185, 129, 0.1))',
+                    border: '1px solid rgba(59, 130, 246, 0.2)',
+                    borderRadius: '12px',
+                    color: '#1E40AF',
+                    fontWeight: 600,
+                    fontSize: '0.95rem',
+                    px: 3,
+                    py: 1.2,
                     borderBottom: Boolean(resourcesAnchorEl) || isActive('/tax-information') || isActive('/individual-tax') || isActive('/business-tax')
-                      ? '2px solid #10B981'
-                      : '2px solid transparent',
+                      ? '3px solid #3B82F6'
+                      : '3px solid transparent',
                     '&:hover': {
-                      ...commonButtonStyle['&:hover'],
-                      borderBottom: '2px solid #10B981'
+                      background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(16, 185, 129, 0.15))',
+                      borderColor: 'rgba(59, 130, 246, 0.4)',
+                      transform: 'translateY(-2px)',
+                      boxShadow: '0 8px 25px rgba(59, 130, 246, 0.2)',
+                      borderBottom: '3px solid #3B82F6'
                     }
                   }}
                 >
-                  Tax Resources
+                  📊 Tax Hub
                 </Button>
                 {/* Contact Us, Privacy Policy, and Terms links removed from header */}
                 <Menu
@@ -341,68 +352,99 @@ function Navbar() {
                   onClose={handleResourcesClose}
                   TransitionComponent={Fade}
                   PaperProps={{
-                    elevation: 3,
+                    elevation: 8,
                     sx: {
                       mt: 1.5,
                       overflow: 'visible',
-                      filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.15))',
-                      borderRadius: 2,
-                      minWidth: 180,
+                      filter: 'drop-shadow(0px 8px 32px rgba(59, 130, 246, 0.15))',
+                      borderRadius: 3,
+                      minWidth: 220,
+                      border: '1px solid rgba(59, 130, 246, 0.1)',
                       '&:before': {
                         content: '""',
                         display: 'block',
                         position: 'absolute',
                         top: 0,
-                        left: 14,
-                        width: 10,
-                        height: 10,
+                        left: 20,
+                        width: 12,
+                        height: 12,
                         bgcolor: 'background.paper',
                         transform: 'translateY(-50%) rotate(45deg)',
                         zIndex: 0,
+                        border: '1px solid rgba(59, 130, 246, 0.1)',
+                        borderBottom: 'none',
+                        borderRight: 'none',
                       },
-                      background: 'rgba(255, 255, 255, 0.95)',
-                      backdropFilter: 'blur(10px)',
+                      background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.95))',
+                      backdropFilter: 'blur(20px)',
                     },
                   }}
                 >
                   <MenuItem 
                     onClick={() => handleNavigation('/tax-information')} 
                     sx={{ 
-                      py: 1.5, 
-                      borderLeft: isActive('/tax-information') ? '3px solid #10B981' : '3px solid transparent',
-                      '&:hover': { backgroundColor: 'rgba(16, 185, 129, 0.1)' }
+                      py: 2, 
+                      px: 2.5,
+                      borderRadius: 2,
+                      mx: 1,
+                      my: 0.5,
+                      borderLeft: isActive('/tax-information') ? '4px solid #3B82F6' : '4px solid transparent',
+                      background: isActive('/tax-information') ? 'linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(16, 185, 129, 0.05))' : 'transparent',
+                      '&:hover': { 
+                        backgroundColor: 'rgba(59, 130, 246, 0.08)',
+                        transform: 'translateX(4px)',
+                        transition: 'all 0.2s ease'
+                      }
                     }}
                   >
                     <ListItemIcon>
-                      <InfoIcon fontSize="small" sx={{ color: '#1E3A8A' }} />
+                      <InfoIcon fontSize="medium" sx={{ color: '#3B82F6', mr: 1 }} />
                     </ListItemIcon>
-                    Tax Information
+                    📋 Tax Information
                   </MenuItem>
                   <MenuItem 
                     onClick={() => handleNavigation('/individual-tax')} 
                     sx={{ 
-                      py: 1.5, 
-                      borderLeft: isActive('/individual-tax') ? '3px solid #10B981' : '3px solid transparent',
-                      '&:hover': { backgroundColor: 'rgba(16, 185, 129, 0.1)' }
+                      py: 2, 
+                      px: 2.5,
+                      borderRadius: 2,
+                      mx: 1,
+                      my: 0.5,
+                      borderLeft: isActive('/individual-tax') ? '4px solid #3B82F6' : '4px solid transparent',
+                      background: isActive('/individual-tax') ? 'linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(16, 185, 129, 0.05))' : 'transparent',
+                      '&:hover': { 
+                        backgroundColor: 'rgba(59, 130, 246, 0.08)',
+                        transform: 'translateX(4px)',
+                        transition: 'all 0.2s ease'
+                      }
                     }}
                   >
                     <ListItemIcon>
-                      <PersonAddIcon fontSize="small" sx={{ color: '#1E3A8A' }} />
+                      <PersonAddIcon fontSize="medium" sx={{ color: '#10B981', mr: 1 }} />
                     </ListItemIcon>
-                    Individual Tax
+                    👤 Individual Tax
                   </MenuItem>
                   <MenuItem 
                     onClick={() => handleNavigation('/business-tax')} 
                     sx={{ 
-                      py: 1.5, 
-                      borderLeft: isActive('/business-tax') ? '3px solid #10B981' : '3px solid transparent',
-                      '&:hover': { backgroundColor: 'rgba(16, 185, 129, 0.1)' }
+                      py: 2, 
+                      px: 2.5,
+                      borderRadius: 2,
+                      mx: 1,
+                      my: 0.5,
+                      borderLeft: isActive('/business-tax') ? '4px solid #3B82F6' : '4px solid transparent',
+                      background: isActive('/business-tax') ? 'linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(16, 185, 129, 0.05))' : 'transparent',
+                      '&:hover': { 
+                        backgroundColor: 'rgba(59, 130, 246, 0.08)',
+                        transform: 'translateX(4px)',
+                        transition: 'all 0.2s ease'
+                      }
                     }}
                   >
                     <ListItemIcon>
-                      <DashboardIcon fontSize="small" sx={{ color: '#1E3A8A' }} />
+                      <DashboardIcon fontSize="medium" sx={{ color: '#8B5CF6', mr: 1 }} />
                     </ListItemIcon>
-                    Business Tax
+                    🏢 Business Tax
                   </MenuItem>
                 </Menu>
               </Box>

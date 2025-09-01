@@ -64,7 +64,7 @@ const stateRefundLinks = {
 const RefundStatus = () => {
   return (
     <Box sx={{
-      background: 'rgba(16, 185, 129, 0.05)', // Light green background with transparency
+      background: 'rgba(248, 250, 252, 1)', // Light background
       minHeight: '100vh',
       paddingTop: 2,
       paddingBottom: 4

@@ -26,14 +26,14 @@ import { Link as RouterLink } from 'react-router-dom';
 // Styled components
 const StyledCard = styled(Card)(({ theme }) => ({
   height: '100%',
-  background: 'rgba(16, 185, 129, 0.1)',
+  background: 'rgba(248, 250, 252, 0.95)', // Light gray background
   backdropFilter: 'blur(10px)',
-  border: '1px solid rgba(16, 185, 129, 0.2)',
+  border: '1px solid rgba(226, 232, 240, 0.8)', // Light border
   transition: 'all 0.3s ease',
   '&:hover': {
     transform: 'translateY(-5px)',
-    boxShadow: '0 8px 25px rgba(0, 0, 0, 0.2)',
-    background: 'rgba(16, 185, 129, 0.15)',
+    boxShadow: '0 8px 25px rgba(59, 130, 246, 0.15)', // Blue shadow on hover
+    background: 'rgba(241, 245, 249, 0.98)', // Slightly darker light background on hover
   }
 }));
 

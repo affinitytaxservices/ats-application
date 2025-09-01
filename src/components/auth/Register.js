@@ -2,36 +2,48 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import {
-  Avatar,
+  Box,
   Button,
   TextField,
-  Link,
-  Grid,
-  Box,
   Typography,
-  Container,
   Alert,
-  Paper,
-  Stepper,
-  Step,
-  StepLabel,
   InputAdornment,
   IconButton,
   CircularProgress,
+  Container,
+  Paper,
+  Fade,
+  Slide,
+  Zoom,
+  Stack,
+  Chip,
+  Stepper,
+  Step,
+  StepLabel,
   LinearProgress,
+  Divider,
 } from '@mui/material';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import EmailIcon from '@mui/icons-material/Email';
-import PersonIcon from '@mui/icons-material/Person';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { fadeIn, slideUp, scaleUp } from '../../styles/animations';
+import {
+  Visibility,
+  VisibilityOff,
+  Email,
+  Lock,
+  Person,
+  Phone,
+  LocationOn,
+  PersonAdd,
+  Google,
+  Fingerprint,
+  CheckCircle,
+  ArrowBack,
+  ArrowForward,
+} from '@mui/icons-material';
+import { fadeIn, slideUp, scaleUp, pulse } from '../../styles/animations';
 
 function Register() {
   const navigate = useNavigate();
   const { register, isAuthenticated } = useAuth();
+  const [activeStep, setActiveStep] = useState(0);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -41,89 +53,128 @@ function Register() {
     phoneNumber: '',
     address: '',
   });
-  
   const [errors, setErrors] = useState({});
   const [generalError, setGeneralError] = useState('');
-  const [activeStep, setActiveStep] = useState(0);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [animationStage, setAnimationStage] = useState(0);
   const [passwordStrength, setPasswordStrength] = useState(0);
-  const [animationComplete, setAnimationComplete] = useState(false);
-  
-  const steps = ['Personal Information', 'Account Security', 'Additional Details'];
-  
-  // Redirect if already authenticated
+
+  const steps = [
+    'Personal Information',
+    'Account Security',
+    'Contact Details'
+  ];
+
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/dashboard');
-    }
-  }, [isAuthenticated, navigate]);
-  
-  // Handle animation completion on component mount
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setAnimationComplete(true);
-    }, 800);
-    
-    return () => clearTimeout(timer);
-  }, []); // Empty dependency array - runs only once on mount
-  
-  // Calculate password strength
-  useEffect(() => {
-    if (!formData.password) {
-      setPasswordStrength(0);
+      const userRole = localStorage.getItem('userRole');
+      if (userRole === 'admin') {
+        navigate('/admin');
+      } else {
+        navigate('/client-dashboard');
+      }
       return;
     }
-    
+
+    // Staggered animation sequence
+    const timers = [
+      setTimeout(() => setAnimationStage(1), 200),
+      setTimeout(() => setAnimationStage(2), 600),
+      setTimeout(() => setAnimationStage(3), 1000),
+    ];
+
+    return () => timers.forEach(clearTimeout);
+  }, [isAuthenticated, navigate]);
+
+  const calculatePasswordStrength = (password) => {
     let strength = 0;
-    
-    // Length check
-    if (formData.password.length >= 8) strength += 25;
-    
-    // Contains uppercase
-    if (/[A-Z]/.test(formData.password)) strength += 25;
-    
-    // Contains number
-    if (/[0-9]/.test(formData.password)) strength += 25;
-    
-    // Contains special character
-    if (/[^A-Za-z0-9]/.test(formData.password)) strength += 25;
-    
-    setPasswordStrength(strength);
-  }, [formData.password]);
+    if (password.length >= 8) strength += 25;
+    if (/[a-z]/.test(password)) strength += 25;
+    if (/[A-Z]/.test(password)) strength += 25;
+    if (/[0-9]/.test(password)) strength += 25;
+    return strength;
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
-    
-    // Clear specific field error when user types
+
+    if (name === 'password') {
+      setPasswordStrength(calculatePasswordStrength(value));
+    }
+
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
         [name]: ''
       }));
     }
-    
-    // Clear general error
+
     if (generalError) {
       setGeneralError('');
     }
   };
-  
+
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-  
+
   const toggleConfirmPasswordVisibility = () => {
     setShowConfirmPassword(!showConfirmPassword);
   };
-  
+
+  const validateStep = (step) => {
+    const newErrors = {};
+
+    switch (step) {
+      case 0: // Personal Information
+        if (!formData.firstName.trim()) {
+          newErrors.firstName = 'First name is required';
+        }
+        if (!formData.lastName.trim()) {
+          newErrors.lastName = 'Last name is required';
+        }
+        break;
+      case 1: // Account Security
+        if (!formData.email.trim()) {
+          newErrors.email = 'Email is required';
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+          newErrors.email = 'Please enter a valid email address';
+        }
+        if (!formData.password) {
+          newErrors.password = 'Password is required';
+        } else if (formData.password.length < 8) {
+          newErrors.password = 'Password must be at least 8 characters long';
+        }
+        if (!formData.confirmPassword) {
+          newErrors.confirmPassword = 'Please confirm your password';
+        } else if (formData.password !== formData.confirmPassword) {
+          newErrors.confirmPassword = 'Passwords do not match';
+        }
+        break;
+      case 2: // Contact Details
+        if (!formData.phoneNumber.trim()) {
+          newErrors.phoneNumber = 'Phone number is required';
+        }
+        if (!formData.address.trim()) {
+          newErrors.address = 'Address is required';
+        }
+        break;
+      default:
+        break;
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleNext = () => {
-    if (validateCurrentStep()) {
+    if (validateStep(activeStep)) {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
   };
@@ -131,64 +182,19 @@ function Register() {
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
-  
-  const validateCurrentStep = () => {
-    const newErrors = {};
-    
-    if (activeStep === 0) {
-      // Validate personal information
-      if (!formData.firstName.trim()) {
-        newErrors.firstName = 'First name is required';
-      }
-      
-      if (!formData.lastName.trim()) {
-        newErrors.lastName = 'Last name is required';
-      }
-    } else if (activeStep === 1) {
-      // Validate account security
-      if (!formData.email.trim()) {
-        newErrors.email = 'Email is required';
-      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-        newErrors.email = 'Please enter a valid email address';
-      }
-      
-      if (!formData.password) {
-        newErrors.password = 'Password is required';
-      } else if (formData.password.length < 8) {
-        newErrors.password = 'Password must be at least 8 characters long';
-      }
-      
-      if (!formData.confirmPassword) {
-        newErrors.confirmPassword = 'Please confirm your password';
-      } else if (formData.password !== formData.confirmPassword) {
-        newErrors.confirmPassword = 'Passwords do not match';
-      }
-    }
-    
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (validateCurrentStep()) {
+    setGeneralError('');
+
+    if (validateStep(activeStep)) {
       setIsSubmitting(true);
-      setGeneralError('');
-      
+
       try {
-        const result = await register({
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          email: formData.email,
-          password: formData.password,
-          phoneNumber: formData.phoneNumber,
-          address: formData.address
-        });
-        
+        const result = await register(formData);
+
         if (result.success) {
-          // Navigate to login after successful registration
-          navigate('/login');
+          navigate('/client-dashboard');
         } else {
           setGeneralError(result.error || 'Registration failed. Please try again.');
         }
@@ -199,606 +205,660 @@ function Register() {
       }
     }
   };
-  
-  const getPasswordStrengthColor = () => {
-    if (passwordStrength < 25) return 'error.main';
-    if (passwordStrength < 50) return 'warning.main';
-    if (passwordStrength < 75) return 'info.main';
-    return 'success.main';
-  };
-  
-  const getPasswordStrengthLabel = () => {
-    if (passwordStrength < 25) return 'Weak';
-    if (passwordStrength < 50) return 'Fair';
-    if (passwordStrength < 75) return 'Good';
-    return 'Strong';
-  };
 
-  // Render different form content based on active step
   const getStepContent = (step) => {
     switch (step) {
       case 0:
         return (
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                fullWidth
-                label="First Name"
-                name="firstName"
-                value={formData.firstName}
-                onChange={handleChange}
-                error={!!errors.firstName}
-                helperText={errors.firstName}
-                autoComplete="given-name"
-                autoFocus
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <PersonIcon color="action" />
-                    </InputAdornment>
-                  ),
-                }}
-                sx={{
-                  mb: 1,
-                  '& .MuiOutlinedInput-root': {
-                    borderRadius: '10px',
-                    transition: 'all 0.3s ease',
-                    '&:hover fieldset': {
-                      borderColor: 'primary.main',
-                    },
-                    '&.Mui-focused': {
-                      boxShadow: '0 0 12px rgba(56, 178, 172, 0.25)'
-                    }
-                  },
-                  '& .MuiInputLabel-root': {
-                    fontWeight: 500
-                  },
-                  '& .MuiInputBase-input': {
-                    padding: '14px 14px 14px 0'
-                  }
-                }}
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                fullWidth
-                label="Last Name"
-                name="lastName"
-                value={formData.lastName}
-                onChange={handleChange}
-                error={!!errors.lastName}
-                helperText={errors.lastName}
-                autoComplete="family-name"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <PersonIcon color="action" />
-                    </InputAdornment>
-                  ),
-                }}
-                sx={{
-                  mb: 1,
-                  '& .MuiOutlinedInput-root': {
-                    borderRadius: '10px',
-                    transition: 'all 0.3s ease',
-                    '&:hover fieldset': {
-                      borderColor: 'primary.main',
-                    },
-                    '&.Mui-focused': {
-                      boxShadow: '0 0 12px rgba(56, 178, 172, 0.25)'
-                    }
-                  },
-                  '& .MuiInputLabel-root': {
-                    fontWeight: 500
-                  },
-                  '& .MuiInputBase-input': {
-                    padding: '14px 14px 14px 0'
-                  }
-                }}
-              />
-            </Grid>
-          </Grid>
+          <Stack spacing={3}>
+            <TextField
+              fullWidth
+              label="First Name"
+              name="firstName"
+              value={formData.firstName}
+              onChange={handleChange}
+              error={!!errors.firstName}
+              helperText={errors.firstName}
+              autoComplete="given-name"
+              autoFocus
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Person sx={{ color: 'rgba(255, 255, 255, 0.7)' }} />
+                  </InputAdornment>
+                ),
+              }}
+              sx={textFieldStyles}
+            />
+            <TextField
+              fullWidth
+              label="Last Name"
+              name="lastName"
+              value={formData.lastName}
+              onChange={handleChange}
+              error={!!errors.lastName}
+              helperText={errors.lastName}
+              autoComplete="family-name"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Person sx={{ color: 'rgba(255, 255, 255, 0.7)' }} />
+                  </InputAdornment>
+                ),
+              }}
+              sx={textFieldStyles}
+            />
+          </Stack>
         );
       case 1:
         return (
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                label="Email Address"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                error={!!errors.email}
-                helperText={errors.email}
-                autoComplete="email"
-                type="email"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <EmailIcon color="action" />
-                    </InputAdornment>
-                  ),
-                }}
-                sx={{
-                  mb: 1,
-                  '& .MuiOutlinedInput-root': {
-                    borderRadius: '10px',
-                    transition: 'all 0.3s ease',
-                    '&:hover fieldset': {
-                      borderColor: 'primary.main',
-                    },
-                    '&.Mui-focused': {
-                      boxShadow: '0 0 12px rgba(56, 178, 172, 0.25)'
-                    }
-                  },
-                  '& .MuiInputLabel-root': {
-                    fontWeight: 500
-                  },
-                  '& .MuiInputBase-input': {
-                    padding: '14px 14px 14px 0'
-                  }
-                }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                label="Password"
-                name="password"
-                type={showPassword ? 'text' : 'password'}
-                value={formData.password}
-                onChange={handleChange}
-                error={!!errors.password}
-                helperText={errors.password}
-                autoComplete="new-password"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <LockOutlinedIcon color="action" />
-                    </InputAdornment>
-                  ),
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={togglePasswordVisibility}
-                        edge="end"
-                      >
-                        {showPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-                sx={{
-                  mb: 1,
-                  '& .MuiOutlinedInput-root': {
-                    borderRadius: '10px',
-                    transition: 'all 0.3s ease',
-                    '&:hover fieldset': {
-                      borderColor: 'primary.main',
-                    },
-                    '&.Mui-focused': {
-                      boxShadow: '0 0 12px rgba(56, 178, 172, 0.25)'
-                    }
-                  },
-                  '& .MuiInputLabel-root': {
-                    fontWeight: 500
-                  },
-                  '& .MuiInputBase-input': {
-                    padding: '14px 14px 14px 0'
-                  }
-                }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Box sx={{ width: '100%', mb: 1 }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 0.5 }}>
-                  <Typography variant="caption" color="text.secondary">
-                    Password Strength:
-                  </Typography>
-                  <Typography variant="caption" color={getPasswordStrengthColor()}>
-                    {getPasswordStrengthLabel()}
-                  </Typography>
-                </Box>
-                <LinearProgress 
-                  variant="determinate" 
-                  value={passwordStrength} 
-                  sx={{ 
-                    height: 8, 
-                    borderRadius: 5,
-                    bgcolor: 'grey.200',
+          <Stack spacing={3}>
+            <TextField
+              fullWidth
+              label="Email Address"
+              name="email"
+              type="email"
+              value={formData.email}
+              onChange={handleChange}
+              error={!!errors.email}
+              helperText={errors.email}
+              autoComplete="email"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Email sx={{ color: 'rgba(0, 0, 0, 0.6)' }} />
+                  </InputAdornment>
+                ),
+              }}
+              sx={textFieldStyles}
+            />
+            <TextField
+              fullWidth
+              label="Password"
+              name="password"
+              type={showPassword ? 'text' : 'password'}
+              value={formData.password}
+              onChange={handleChange}
+              error={!!errors.password}
+              helperText={errors.password}
+              autoComplete="new-password"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Lock sx={{ color: 'rgba(0, 0, 0, 0.6)' }} />
+                  </InputAdornment>
+                ),
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={togglePasswordVisibility}
+                      edge="end"
+                      sx={{ color: 'rgba(0, 0, 0, 0.6)' }}
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+              sx={textFieldStyles}
+            />
+            {formData.password && (
+              <Box>
+                <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)', mb: 1 }}>
+                  Password Strength
+                </Typography>
+                <LinearProgress
+                  variant="determinate"
+                  value={passwordStrength}
+                  sx={{
+                    height: 8,
+                    borderRadius: 4,
+                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
                     '& .MuiLinearProgress-bar': {
-                      bgcolor: getPasswordStrengthColor(),
-                    }
-                  }} 
+                      backgroundColor: passwordStrength < 50 ? '#ff6b6b' : passwordStrength < 75 ? '#ffd93d' : '#6bcf7f',
+                      borderRadius: 4,
+                    },
+                  }}
                 />
               </Box>
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                label="Confirm Password"
-                name="confirmPassword"
-                type={showConfirmPassword ? 'text' : 'password'}
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                error={!!errors.confirmPassword}
-                helperText={errors.confirmPassword}
-                autoComplete="new-password"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <LockOutlinedIcon color="action" />
-                    </InputAdornment>
-                  ),
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle confirm password visibility"
-                        onClick={toggleConfirmPasswordVisibility}
-                        edge="end"
-                      >
-                        {showConfirmPassword ? <VisibilityOffIcon /> : <VisibilityIcon />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-                sx={{
-                  mb: 1,
-                  '& .MuiOutlinedInput-root': {
-                    borderRadius: '10px',
-                    transition: 'all 0.3s ease',
-                    '&:hover fieldset': {
-                      borderColor: 'primary.main',
-                    },
-                    '&.Mui-focused': {
-                      boxShadow: '0 0 12px rgba(56, 178, 172, 0.25)'
-                    }
-                  },
-                  '& .MuiInputLabel-root': {
-                    fontWeight: 500
-                  },
-                  '& .MuiInputBase-input': {
-                    padding: '14px 14px 14px 0'
-                  }
-                }}
-              />
-            </Grid>
-          </Grid>
+            )}
+            <TextField
+              fullWidth
+              label="Confirm Password"
+              name="confirmPassword"
+              type={showConfirmPassword ? 'text' : 'password'}
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              error={!!errors.confirmPassword}
+              helperText={errors.confirmPassword}
+              autoComplete="new-password"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Lock sx={{ color: 'rgba(0, 0, 0, 0.6)' }} />
+                  </InputAdornment>
+                ),
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={toggleConfirmPasswordVisibility}
+                      edge="end"
+                      sx={{ color: 'rgba(0, 0, 0, 0.6)' }}
+                    >
+                      {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+              sx={textFieldStyles}
+            />
+          </Stack>
         );
       case 2:
         return (
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Phone Number (Optional)"
-                name="phoneNumber"
-                value={formData.phoneNumber}
-                onChange={handleChange}
-                sx={{
-                  mb: 1,
-                  '& .MuiOutlinedInput-root': {
-                    borderRadius: '10px',
-                    transition: 'all 0.3s ease',
-                    '&:hover fieldset': {
-                      borderColor: 'primary.main',
-                    },
-                    '&.Mui-focused': {
-                      boxShadow: '0 0 12px rgba(56, 178, 172, 0.25)'
-                    }
-                  },
-                  '& .MuiInputLabel-root': {
-                    fontWeight: 500
-                  },
-                  '& .MuiInputBase-input': {
-                    padding: '14px 14px 14px 0'
-                  }
-                }}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Address (Optional)"
-                name="address"
-                value={formData.address}
-                onChange={handleChange}
-                multiline
-                rows={3}
-                sx={{
-                  mb: 1,
-                  '& .MuiOutlinedInput-root': {
-                    borderRadius: '10px',
-                    transition: 'all 0.3s ease',
-                    '&:hover fieldset': {
-                      borderColor: 'primary.main',
-                    },
-                    '&.Mui-focused': {
-                      boxShadow: '0 0 12px rgba(56, 178, 172, 0.25)'
-                    }
-                  },
-                  '& .MuiInputLabel-root': {
-                    fontWeight: 500
-                  },
-                  '& .MuiInputBase-input': {
-                    padding: '14px 14px 14px 0'
-                  }
-                }}
-              />
-            </Grid>
-          </Grid>
+          <Stack spacing={3}>
+            <TextField
+              fullWidth
+              label="Phone Number"
+              name="phoneNumber"
+              type="tel"
+              value={formData.phoneNumber}
+              onChange={handleChange}
+              error={!!errors.phoneNumber}
+              helperText={errors.phoneNumber}
+              autoComplete="tel"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Phone sx={{ color: 'rgba(0, 0, 0, 0.6)' }} />
+                  </InputAdornment>
+                ),
+              }}
+              sx={textFieldStyles}
+            />
+            <TextField
+              fullWidth
+              label="Address"
+              name="address"
+              multiline
+              rows={3}
+              value={formData.address}
+              onChange={handleChange}
+              error={!!errors.address}
+              helperText={errors.address}
+              autoComplete="street-address"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start" sx={{ alignSelf: 'flex-start', mt: 2 }}>
+                    <LocationOn sx={{ color: 'rgba(0, 0, 0, 0.6)' }} />
+                  </InputAdornment>
+                ),
+              }}
+              sx={textFieldStyles}
+            />
+          </Stack>
         );
       default:
         return 'Unknown step';
     }
   };
 
+  const textFieldStyles = {
+    '& .MuiOutlinedInput-root': {
+      background: 'rgba(255, 255, 255, 0.8)',
+      backdropFilter: 'blur(10px)',
+      borderRadius: '16px',
+      border: '1px solid rgba(0, 0, 0, 0.2)',
+      color: '#1e293b',
+      transition: 'all 0.3s ease',
+      '& fieldset': {
+        border: 'none',
+      },
+      '&:hover': {
+        background: 'rgba(255, 255, 255, 0.9)',
+        transform: 'translateY(-2px)',
+        boxShadow: '0 8px 25px rgba(0, 0, 0, 0.1)',
+      },
+      '&.Mui-focused': {
+        background: 'rgba(255, 255, 255, 1)',
+        boxShadow: '0 0 20px rgba(102, 126, 234, 0.3)',
+      },
+    },
+    '& .MuiInputLabel-root': {
+      color: 'rgba(0, 0, 0, 0.6)',
+      '&.Mui-focused': {
+        color: '#667eea',
+      },
+    },
+    '& .MuiFormHelperText-root': {
+      color: '#ff6b6b',
+      fontWeight: 500,
+    },
+  };
+
   return (
-    <Container component="main" maxWidth="sm" sx={{ 
-      animation: `${fadeIn} 0.8s ease-out`,
-      minHeight: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      py: 4,
-      background: 'linear-gradient(135deg, rgba(46, 80, 119, 0.05) 0%, rgba(56, 178, 172, 0.05) 100%)',
-      '& .MuiPaper-root': {
-        background: 'rgba(255, 255, 255, 0.95)',
-        backdropFilter: 'blur(10px)',
-        border: '1px solid rgba(255, 255, 255, 0.2)',
-      }
-    }}>
-      <Paper
-        elevation={3}
+    <Box
+      sx={{
+        minHeight: '100vh',
+        background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
+        position: 'relative',
+        overflow: 'hidden',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'url("data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23000000" fill-opacity="0.05"%3E%3Ccircle cx="30" cy="30" r="2"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")',
+          animation: `${pulse} 20s infinite ease-in-out`,
+        },
+        '&::after': {
+          content: '""',
+          position: 'absolute',
+          top: '-50%',
+          left: '-50%',
+          width: '200%',
+          height: '200%',
+          background: 'radial-gradient(circle, rgba(0,0,0,0.1) 0%, transparent 70%)',
+          animation: `${pulse} 15s infinite ease-in-out alternate`,
+        }
+      }}
+    >
+      {/* Floating Elements */}
+      <Box
         sx={{
-          width: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          p: { xs: 3, sm: 4 },
-          borderRadius: 4,
-          boxShadow: '0 8px 32px rgba(0,0,0,0.12)',
-          background: 'rgba(255, 255, 255, 0.98)',
+          position: 'absolute',
+          top: '15%',
+          right: '10%',
+          width: '120px',
+          height: '120px',
+          borderRadius: '50%',
+          background: 'rgba(0,0,0,0.1)',
           backdropFilter: 'blur(10px)',
-          animation: animationComplete ? `${scaleUp} 0.5s ease-out` : 'none',
-          overflow: 'hidden',
-          position: 'relative',
-          '&::before': {
-            content: '""',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '5px',
-            background: 'linear-gradient(90deg, #2E5077 0%, #38B2AC 100%)',
-          },
-          '&::after': {
-            content: '""',
-            position: 'absolute',
-            bottom: 0,
-            left: 0,
-            width: '100%',
-            height: '5px',
-            background: 'linear-gradient(90deg, #38B2AC 0%, #2E5077 100%)',
-          }
+          animation: `${pulse} 10s infinite ease-in-out`,
+          zIndex: 1,
         }}
-      >
-        <Avatar sx={{ 
-          m: 1, 
-          bgcolor: 'secondary.main',
-          transform: 'scale(1.2)',
-          boxShadow: '0 4px 20px rgba(56, 178, 172, 0.3)',
-          animation: `${scaleUp} 0.5s ease-out`,
-          '&:hover': {
-            transform: 'scale(1.3) rotate(360deg)',
-            transition: 'transform 0.5s ease-in-out'
-          }
-        }}>
-          <LockOutlinedIcon />
-        </Avatar>
-        
-        <Typography
-          component="h1" 
-          variant="h5" 
-          gutterBottom
-          sx={{ 
-            fontWeight: 600,
-            letterSpacing: '0.5px',
-            mb: 3,
-            animation: `${slideUp} 0.6s ease-out`,
-            position: 'relative',
-            color: '#2E5077',
-            '&::after': {
-              content: '""',
-              position: 'absolute',
-              bottom: '-8px',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              width: '60px',
-              height: '3px',
-              background: 'linear-gradient(90deg, #2E5077 0%, #38B2AC 100%)',
-              borderRadius: '2px',
-              animation: `${scaleUp} 0.8s ease-out`
-            }
-          }}
-        >
-          Create Your Account
-        </Typography>
-        
-        <Stepper 
-          activeStep={activeStep} 
-          sx={{ 
-            width: '100%', 
-            mb: 4, 
-            animation: `${slideUp} 0.7s ease-out`,
-            '& .MuiStepLabel-root .Mui-active': {
-              color: '#38B2AC',
-            },
-            '& .MuiStepLabel-root .Mui-completed': {
-              color: '#2E5077',
-            },
-            '& .MuiStepConnector-line': {
-              borderColor: 'rgba(46, 80, 119, 0.2)',
-            }
-          }}
-        >
-          {steps.map((label) => (
-            <Step key={label}>
-              <StepLabel>{label}</StepLabel>
-            </Step>
-          ))}
-        </Stepper>
-        
-        <Box
-          component="form" 
-          sx={{ 
-            mt: 1, 
-            width: '100%',
-            animation: `${slideUp} 0.8s ease-out`,
-            opacity: animationComplete ? 1 : 0,
-            transition: 'opacity 0.3s ease-in-out'
-          }}
-        >
-          {generalError && (
-            <Alert 
-              severity="error" 
-              sx={{ 
-                mb: 2,
-                borderRadius: '8px',
-                boxShadow: '0 2px 10px rgba(0,0,0,0.08)',
-                animation: `${fadeIn} 0.3s ease-out`,
-                '& .MuiAlert-icon': {
-                  fontSize: '1.5rem'
-                }
-              }}
-            >
-              {generalError}
-            </Alert>
-          )}
-          
-          {getStepContent(activeStep)}
-          
-          <Box sx={{ 
-            display: 'flex', 
-            justifyContent: 'space-between', 
-            mt: 3,
-            gap: 2
-          }}>
-            <Button
-              disabled={activeStep === 0}
-              onClick={handleBack}
-              startIcon={<ArrowBackIcon />}
-              sx={{ 
-                borderRadius: '8px',
-                transition: 'all 0.3s ease',
-                px: 3,
-                py: 1,
-                '&:hover': {
-                  transform: 'translateX(-5px)',
-                  backgroundColor: 'rgba(46, 80, 119, 0.08)'
-                }
-              }}
-            >
-              Back
-            </Button>
-            
-            {activeStep === steps.length - 1 ? (
-              <Button
-                type="button"
-                variant="contained"
-                onClick={handleSubmit}
-                disabled={isSubmitting}
-                sx={{ 
-                  py: 1.5,
-                  px: 4,
-                  fontSize: '1.1rem',
-                  borderRadius: '8px',
-                  boxShadow: '0 4px 15px rgba(56, 178, 172, 0.3)',
-                  transition: 'all 0.3s ease',
-                  background: 'linear-gradient(90deg, #2E5077 0%, #38B2AC 100%)',
-                  '&:hover': {
-                    transform: 'translateY(-2px)',
-                    boxShadow: '0 6px 20px rgba(56, 178, 172, 0.4)',
-                    background: 'linear-gradient(90deg, #38B2AC 0%, #2E5077 100%)',
-                  },
-                  '&:disabled': {
-                    background: 'linear-gradient(90deg, #2E5077 0%, #38B2AC 100%)',
-                    opacity: 0.7
-                  }
-                }}
-              >
-                {isSubmitting ? (
-                  <CircularProgress size={24} color="inherit" />
-                ) : (
-                  'Complete Registration'
+      />
+      <Box
+        sx={{
+          position: 'absolute',
+          bottom: '20%',
+          left: '8%',
+          width: '80px',
+          height: '80px',
+          borderRadius: '30%',
+          background: 'rgba(0,0,0,0.08)',
+          backdropFilter: 'blur(15px)',
+          animation: `${pulse} 14s infinite ease-in-out reverse`,
+          zIndex: 1,
+        }}
+      />
+
+      <Container maxWidth="md" sx={{ position: 'relative', zIndex: 2 }}>
+        <Fade in={animationStage >= 1} timeout={800}>
+          <Paper
+            elevation={0}
+            sx={{
+              background: 'rgba(255, 255, 255, 0.9)',
+              backdropFilter: 'blur(20px)',
+              borderRadius: '24px',
+              border: '1px solid rgba(0, 0, 0, 0.1)',
+              boxShadow: '0 25px 50px rgba(0, 0, 0, 0.1)',
+              p: { xs: 3, sm: 5 },
+              position: 'relative',
+              overflow: 'hidden',
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                height: '2px',
+                background: 'linear-gradient(90deg, #667eea 0%, #764ba2 50%, #667eea 100%)',
+              }
+            }}
+          >
+            {/* Header Section */}
+            <Slide direction="down" in={animationStage >= 2} timeout={600}>
+              <Box sx={{ textAlign: 'center', mb: 4 }}>
+                <Zoom in={animationStage >= 2} timeout={800}>
+                  <Box
+                    sx={{
+                      width: 80,
+                      height: 80,
+                      borderRadius: '50%',
+                      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      margin: '0 auto 24px',
+                      boxShadow: '0 10px 30px rgba(102, 126, 234, 0.3)',
+                      animation: `${scaleUp} 0.8s ease-out`,
+                    }}
+                  >
+                    <PersonAdd sx={{ fontSize: 40, color: 'white' }} />
+                  </Box>
+                </Zoom>
+                
+                <Typography
+                  variant="h3"
+                  sx={{
+                    fontWeight: 700,
+                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    backgroundClip: 'text',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    mb: 1,
+                    animation: `${slideUp} 0.8s ease-out`,
+                  }}
+                >
+                  Create Account
+                </Typography>
+                
+                <Typography
+                  variant="body1"
+                  sx={{
+                    color: 'rgba(0, 0, 0, 0.7)',
+                    fontWeight: 500,
+                    animation: `${fadeIn} 1s ease-out`,
+                  }}
+                >
+                  Join us and start your journey today
+                </Typography>
+              </Box>
+            </Slide>
+
+            {/* Stepper */}
+            <Slide direction="up" in={animationStage >= 3} timeout={800}>
+              <Box sx={{ mb: 4 }}>
+                <Stepper
+                  activeStep={activeStep}
+                  sx={{
+                    '& .MuiStepLabel-root .Mui-completed': {
+                      color: '#6bcf7f',
+                    },
+                    '& .MuiStepLabel-root .Mui-active': {
+                      color: '#667eea',
+                    },
+                    '& .MuiStepLabel-root': {
+                      color: 'rgba(255, 255, 255, 0.5)',
+                    },
+                    '& .MuiStepLabel-label': {
+                      color: 'rgba(255, 255, 255, 0.8)',
+                      fontWeight: 500,
+                      '&.Mui-active': {
+                        color: 'white',
+                        fontWeight: 600,
+                      },
+                      '&.Mui-completed': {
+                        color: 'rgba(255, 255, 255, 0.9)',
+                      },
+                    },
+                    '& .MuiStepConnector-line': {
+                      borderColor: 'rgba(255, 255, 255, 0.3)',
+                    },
+                  }}
+                >
+                  {steps.map((label, index) => (
+                    <Step key={label}>
+                      <StepLabel
+                        StepIconComponent={({ active, completed }) => (
+                          <Box
+                            sx={{
+                              width: 32,
+                              height: 32,
+                              borderRadius: '50%',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              background: completed
+                                ? 'linear-gradient(135deg, #6bcf7f 0%, #4caf50 100%)'
+                                : active
+                                ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+                                : 'rgba(255, 255, 255, 0.2)',
+                              color: 'white',
+                              fontWeight: 600,
+                              fontSize: '0.9rem',
+                              transition: 'all 0.3s ease',
+                            }}
+                          >
+                            {completed ? <CheckCircle sx={{ fontSize: 20 }} /> : index + 1}
+                          </Box>
+                        )}
+                      >
+                        {label}
+                      </StepLabel>
+                    </Step>
+                  ))}
+                </Stepper>
+              </Box>
+            </Slide>
+
+            {/* Form Section */}
+            <Slide direction="up" in={animationStage >= 3} timeout={1000}>
+              <Box component="form" onSubmit={activeStep === steps.length - 1 ? handleSubmit : undefined}>
+                {generalError && (
+                  <Fade in timeout={300}>
+                    <Alert
+                      severity="error"
+                      sx={{
+                        mb: 3,
+                        borderRadius: '12px',
+                        background: 'rgba(244, 67, 54, 0.1)',
+                        backdropFilter: 'blur(10px)',
+                        border: '1px solid rgba(244, 67, 54, 0.2)',
+                        color: 'white',
+                        '& .MuiAlert-icon': {
+                          color: '#ff6b6b',
+                        }
+                      }}
+                    >
+                      {generalError}
+                    </Alert>
+                  </Fade>
                 )}
-              </Button>
-            ) : (
-              <Button
-                variant="contained"
-                onClick={handleNext}
-                endIcon={<ArrowForwardIcon />}
-                sx={{ 
-                  py: 1.5,
-                  px: 4,
-                  borderRadius: '8px',
-                  boxShadow: '0 4px 15px rgba(56, 178, 172, 0.3)',
-                  transition: 'all 0.3s ease',
-                  background: 'linear-gradient(90deg, #2E5077 0%, #38B2AC 100%)',
-                  '&:hover': {
-                    transform: 'translateY(-2px)',
-                    boxShadow: '0 6px 20px rgba(56, 178, 172, 0.4)',
-                    background: 'linear-gradient(90deg, #38B2AC 0%, #2E5077 100%)',
-                  }
-                }}
-              >
-                Next
-              </Button>
-            )}
-          </Box>
-          
-          <Grid container justifyContent="center" sx={{ mt: 4 }}>
-            <Grid item>
-              <Link 
-                component={RouterLink} 
-                to="/login" 
-                variant="body2" 
-                sx={{
-                  color: 'secondary.main',
-                  textDecoration: 'none',
-                  display: 'inline-block',
-                  fontSize: '1rem',
-                  fontWeight: 600,
-                  padding: '8px 16px',
-                  borderRadius: '6px',
-                  transition: 'all 0.3s ease',
-                  border: '1px solid rgba(16, 185, 129, 0.3)',
-                  background: 'rgba(16, 185, 129, 0.05)',
-                  boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
-                  '&:hover': { 
-                    backgroundColor: 'rgba(16, 185, 129, 0.12)',
-                    textDecoration: 'none',
-                    transform: 'translateY(-2px)',
-                    boxShadow: '0 4px 12px rgba(16, 185, 129, 0.15)',
-                    border: '1px solid rgba(16, 185, 129, 0.5)',
-                    color: 'secondary.dark'
-                  }
-                }}
-              >
-                Already have an account? <strong>Sign in</strong>
-              </Link>
-            </Grid>
-          </Grid>
-        </Box>
-      </Paper>
-    </Container>
+
+                <Box sx={{ minHeight: '300px', mb: 4 }}>
+                  {getStepContent(activeStep)}
+                </Box>
+
+                {/* Navigation Buttons */}
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <Button
+                    disabled={activeStep === 0}
+                    onClick={handleBack}
+                    startIcon={<ArrowBack />}
+                    sx={{
+                      color: 'rgba(255, 255, 255, 0.8)',
+                      borderRadius: '12px',
+                      px: 3,
+                      py: 1.5,
+                      textTransform: 'none',
+                      fontWeight: 500,
+                      '&:hover': {
+                        background: 'rgba(255, 255, 255, 0.1)',
+                      },
+                      '&.Mui-disabled': {
+                        color: 'rgba(255, 255, 255, 0.3)',
+                      },
+                    }}
+                  >
+                    Back
+                  </Button>
+
+                  {activeStep === steps.length - 1 ? (
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      disabled={isSubmitting}
+                      startIcon={!isSubmitting && <PersonAdd />}
+                      sx={{
+                        py: 2,
+                        px: 4,
+                        borderRadius: '16px',
+                        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                        boxShadow: '0 8px 25px rgba(102, 126, 234, 0.3)',
+                        fontSize: '1.1rem',
+                        fontWeight: 600,
+                        textTransform: 'none',
+                        transition: 'all 0.3s ease',
+                        '&:hover': {
+                          transform: 'translateY(-3px)',
+                          boxShadow: '0 12px 35px rgba(102, 126, 234, 0.4)',
+                          background: 'linear-gradient(135deg, #764ba2 0%, #667eea 100%)',
+                        },
+                        '&:active': {
+                          transform: 'translateY(-1px)',
+                        },
+                        '&.Mui-disabled': {
+                          background: 'rgba(255, 255, 255, 0.2)',
+                          color: 'rgba(255, 255, 255, 0.5)',
+                        },
+                      }}
+                    >
+                      {isSubmitting ? (
+                        <CircularProgress size={24} sx={{ color: 'white' }} />
+                      ) : (
+                        'Create Account'
+                      )}
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="contained"
+                      onClick={handleNext}
+                      endIcon={<ArrowForward />}
+                      sx={{
+                        py: 2,
+                        px: 4,
+                        borderRadius: '16px',
+                        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                        boxShadow: '0 8px 25px rgba(102, 126, 234, 0.3)',
+                        fontSize: '1.1rem',
+                        fontWeight: 600,
+                        textTransform: 'none',
+                        transition: 'all 0.3s ease',
+                        '&:hover': {
+                          transform: 'translateY(-3px)',
+                          boxShadow: '0 12px 35px rgba(102, 126, 234, 0.4)',
+                          background: 'linear-gradient(135deg, #764ba2 0%, #667eea 100%)',
+                        },
+                        '&:active': {
+                          transform: 'translateY(-1px)',
+                        },
+                      }}
+                    >
+                      Next
+                    </Button>
+                  )}
+                </Box>
+
+                {activeStep === 0 && (
+                  <>
+                    <Divider sx={{ my: 4 }}>
+                      <Chip
+                        label="OR"
+                        sx={{
+                          background: 'rgba(255, 255, 255, 0.1)',
+                          color: 'rgba(255, 255, 255, 0.8)',
+                          border: '1px solid rgba(255, 255, 255, 0.2)',
+                          fontWeight: 500,
+                        }}
+                      />
+                    </Divider>
+
+                    {/* Social Registration Buttons */}
+                    <Stack direction="row" spacing={2} sx={{ mb: 3 }}>
+                      <Button
+                        fullWidth
+                        variant="outlined"
+                        startIcon={<Google />}
+                        sx={{
+                          py: 1.5,
+                          borderRadius: '12px',
+                          border: '1px solid rgba(255, 255, 255, 0.2)',
+                          color: 'rgba(255, 255, 255, 0.8)',
+                          background: 'rgba(255, 255, 255, 0.05)',
+                          backdropFilter: 'blur(10px)',
+                          textTransform: 'none',
+                          '&:hover': {
+                            background: 'rgba(255, 255, 255, 0.1)',
+                            border: '1px solid rgba(255, 255, 255, 0.3)',
+                            transform: 'translateY(-2px)',
+                          },
+                        }}
+                      >
+                        Google
+                      </Button>
+                      
+                      <Button
+                        fullWidth
+                        variant="outlined"
+                        startIcon={<Fingerprint />}
+                        sx={{
+                          py: 1.5,
+                          borderRadius: '12px',
+                          border: '1px solid rgba(255, 255, 255, 0.2)',
+                          color: 'rgba(255, 255, 255, 0.8)',
+                          background: 'rgba(255, 255, 255, 0.05)',
+                          backdropFilter: 'blur(10px)',
+                          textTransform: 'none',
+                          '&:hover': {
+                            background: 'rgba(255, 255, 255, 0.1)',
+                            border: '1px solid rgba(255, 255, 255, 0.3)',
+                            transform: 'translateY(-2px)',
+                          },
+                        }}
+                      >
+                        Biometric
+                      </Button>
+                    </Stack>
+                  </>
+                )}
+
+                <Box sx={{ textAlign: 'center', mt: 3 }}>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: 'rgba(255, 255, 255, 0.7)', mb: 2 }}
+                  >
+                    Already have an account?
+                  </Typography>
+                  
+                  <Button
+                    component={RouterLink}
+                    to="/login"
+                    variant="outlined"
+                    sx={{
+                      borderRadius: '12px',
+                      border: '2px solid rgba(255, 255, 255, 0.3)',
+                      color: 'white',
+                      background: 'rgba(255, 255, 255, 0.1)',
+                      backdropFilter: 'blur(10px)',
+                      px: 4,
+                      py: 1.5,
+                      fontWeight: 600,
+                      textTransform: 'none',
+                      transition: 'all 0.3s ease',
+                      '&:hover': {
+                        background: 'rgba(255, 255, 255, 0.2)',
+                        border: '2px solid rgba(255, 255, 255, 0.5)',
+                        transform: 'translateY(-3px)',
+                        boxShadow: '0 8px 25px rgba(0, 0, 0, 0.15)',
+                      },
+                    }}
+                  >
+                    Sign In Instead
+                  </Button>
+                </Box>
+              </Box>
+            </Slide>
+          </Paper>
+        </Fade>
+      </Container>
+    </Box>
   );
 }
 

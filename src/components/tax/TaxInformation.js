@@ -32,27 +32,27 @@ import { styled } from '@mui/material/styles';
 // Styled components
 const StyledCard = styled(Card)(({ theme }) => ({
   height: '100%',
-  background: 'rgba(16, 185, 129, 0.1)', // Updated to use secondary color with transparency
+  background: 'rgba(248, 250, 252, 0.95)', // Light gray background
   backdropFilter: 'blur(10px)',
-  border: '1px solid rgba(16, 185, 129, 0.2)', // Updated border color
+  border: '1px solid rgba(226, 232, 240, 0.8)', // Light border
   transition: 'all 0.3s ease',
   '&:hover': {
     transform: 'translateY(-5px)',
-    boxShadow: '0 8px 25px rgba(16, 185, 129, 0.2)', // Updated shadow color
-    background: 'rgba(16, 185, 129, 0.15)', // Slightly darker on hover
+    boxShadow: '0 8px 25px rgba(59, 130, 246, 0.15)', // Blue shadow on hover
+    background: 'rgba(241, 245, 249, 0.98)', // Slightly darker light background on hover
   }
 }));
 
 const StyledAccordion = styled(Accordion)(({ theme }) => ({
-  background: 'rgba(16, 185, 129, 0.1)', // Updated to use secondary color with transparency
+  background: 'rgba(248, 250, 252, 0.95)', // Light gray background
   backdropFilter: 'blur(10px)',
-  border: '1px solid rgba(16, 185, 129, 0.2)', // Updated border color
+  border: '1px solid rgba(226, 232, 240, 0.8)', // Light border
   marginBottom: theme.spacing(2),
   '&:before': {
     display: 'none',
   },
   '&:hover': {
-    background: 'rgba(16, 185, 129, 0.15)', // Slightly darker on hover
+    background: 'rgba(241, 245, 249, 0.98)', // Slightly darker light background on hover
   }
 }));
 
