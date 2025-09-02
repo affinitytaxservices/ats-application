@@ -168,7 +168,7 @@ mysql -u ats_user -p affinitytaxservi_demo < /path/to/setup_database.sql
 cd /var/www
 
 # Clone your repository
-sudo git clone https://github.com/your-username/ats-application.git ats
+sudo git clone https://github.com/affinitytaxservices/ats-application.git ats
 cd ats
 
 # Change ownership
