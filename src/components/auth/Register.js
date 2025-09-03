@@ -224,7 +224,7 @@ function Register() {
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <Person sx={{ color: 'rgba(255, 255, 255, 0.7)' }} />
+                    <Person sx={{ color: '#10B981' }} />
                   </InputAdornment>
                 ),
               }}
@@ -242,7 +242,7 @@ function Register() {
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <Person sx={{ color: 'rgba(255, 255, 255, 0.7)' }} />
+                    <Person sx={{ color: '#10B981' }} />
                   </InputAdornment>
                 ),
               }}
@@ -266,7 +266,7 @@ function Register() {
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <Email sx={{ color: 'rgba(0, 0, 0, 0.6)' }} />
+                    <Email sx={{ color: '#10B981' }} />
                   </InputAdornment>
                 ),
               }}
@@ -285,7 +285,7 @@ function Register() {
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <Lock sx={{ color: 'rgba(0, 0, 0, 0.6)' }} />
+                    <Lock sx={{ color: '#10B981' }} />
                   </InputAdornment>
                 ),
                 endAdornment: (
@@ -293,7 +293,7 @@ function Register() {
                     <IconButton
                       onClick={togglePasswordVisibility}
                       edge="end"
-                      sx={{ color: 'rgba(0, 0, 0, 0.6)' }}
+                      sx={{ color: '#10B981' }}
                     >
                       {showPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
@@ -335,7 +335,7 @@ function Register() {
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <Lock sx={{ color: 'rgba(0, 0, 0, 0.6)' }} />
+                    <Lock sx={{ color: '#10B981' }} />
                   </InputAdornment>
                 ),
                 endAdornment: (
@@ -343,7 +343,7 @@ function Register() {
                     <IconButton
                       onClick={toggleConfirmPasswordVisibility}
                       edge="end"
-                      sx={{ color: 'rgba(0, 0, 0, 0.6)' }}
+                      sx={{ color: '#10B981' }}
                     >
                       {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
@@ -370,7 +370,7 @@ function Register() {
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <Phone sx={{ color: 'rgba(0, 0, 0, 0.6)' }} />
+                    <Phone sx={{ color: '#10B981' }} />
                   </InputAdornment>
                 ),
               }}
@@ -390,7 +390,7 @@ function Register() {
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start" sx={{ alignSelf: 'flex-start', mt: 2 }}>
-                    <LocationOn sx={{ color: 'rgba(0, 0, 0, 0.6)' }} />
+                    <LocationOn sx={{ color: '#10B981' }} />
                   </InputAdornment>
                 ),
               }}
@@ -404,43 +404,49 @@ function Register() {
   };
 
   const textFieldStyles = {
-    '& .MuiOutlinedInput-root': {
-      background: 'rgba(255, 255, 255, 0.8)',
-      backdropFilter: 'blur(10px)',
-      borderRadius: '16px',
-      border: '1px solid rgba(0, 0, 0, 0.2)',
-      color: '#1e293b',
-      transition: 'all 0.3s ease',
-      '& fieldset': {
-        border: 'none',
-      },
-      '&:hover': {
-        background: 'rgba(255, 255, 255, 0.9)',
-        transform: 'translateY(-2px)',
-        boxShadow: '0 8px 25px rgba(0, 0, 0, 0.1)',
-      },
-      '&.Mui-focused': {
-        background: 'rgba(255, 255, 255, 1)',
-        boxShadow: '0 0 20px rgba(102, 126, 234, 0.3)',
-      },
+  '& .MuiOutlinedInput-root': {
+    background: 'rgba(240, 253, 244, 0.95)',
+    backdropFilter: 'blur(15px)',
+    borderRadius: '16px',
+    border: '2px solid rgba(16, 185, 129, 0.2)',
+    color: '#064e3b',
+    transition: 'all 0.3s ease',
+    '& fieldset': {
+      border: 'none',
     },
-    '& .MuiInputLabel-root': {
-      color: 'rgba(0, 0, 0, 0.6)',
-      '&.Mui-focused': {
-        color: '#667eea',
-      },
+    '&:hover': {
+      background: 'rgba(236, 253, 245, 1)',
+      transform: 'translateY(-2px)',
+      boxShadow: '0 8px 25px rgba(16, 185, 129, 0.15)',
+      border: '2px solid rgba(16, 185, 129, 0.4)',
     },
-    '& .MuiFormHelperText-root': {
-      color: '#ff6b6b',
-      fontWeight: 500,
+    '&.Mui-focused': {
+      background: 'rgba(255, 255, 255, 1)',
+      boxShadow: '0 0 25px rgba(16, 185, 129, 0.4), 0 0 0 3px rgba(52, 211, 153, 0.1)',
+      border: '2px solid #10B981',
     },
-  };
+  },
+  '& .MuiInputLabel-root': {
+    color: '#065f46',
+    fontWeight: 500,
+    '&.Mui-focused': {
+      color: '#10B981',
+    },
+  },
+  '& .MuiFormHelperText-root': {
+    color: '#dc2626',
+    fontWeight: 500,
+    backgroundColor: 'rgba(254, 242, 242, 0.8)',
+    padding: '4px 8px',
+    borderRadius: '8px',
+    marginTop: '8px',
+  },
+};
 
   return (
     <Box
       sx={{
         minHeight: '100vh',
-        background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
         position: 'relative',
         overflow: 'hidden',
         display: 'flex',
@@ -453,72 +459,144 @@ function Register() {
           left: 0,
           right: 0,
           bottom: 0,
-          background: 'url("data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23000000" fill-opacity="0.05"%3E%3Ccircle cx="30" cy="30" r="2"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")',
-          animation: `${pulse} 20s infinite ease-in-out`,
+          backgroundImage: 'url("/src/assets/animated-register-bg.svg")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          zIndex: 0,
         },
         '&::after': {
           content: '""',
           position: 'absolute',
-          top: '-50%',
-          left: '-50%',
-          width: '200%',
-          height: '200%',
-          background: 'radial-gradient(circle, rgba(0,0,0,0.1) 0%, transparent 70%)',
-          animation: `${pulse} 15s infinite ease-in-out alternate`,
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0, 0, 0, 0.08)',
+          backdropFilter: 'blur(1px)',
+          zIndex: 1,
         }
       }}
     >
-      {/* Floating Elements */}
+      {/* Enhanced Floating Elements */}
       <Box
         sx={{
           position: 'absolute',
-          top: '15%',
-          right: '10%',
-          width: '120px',
-          height: '120px',
+          top: '8%',
+          right: '3%',
+          width: '140px',
+          height: '140px',
           borderRadius: '50%',
-          background: 'rgba(0,0,0,0.1)',
-          backdropFilter: 'blur(10px)',
-          animation: `${pulse} 10s infinite ease-in-out`,
+          background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(52, 211, 153, 0.25))',
+          backdropFilter: 'blur(25px)',
+          border: '2px solid rgba(255, 255, 255, 0.2)',
+          animation: `${pulse} 9s infinite ease-in-out, ${scaleUp} 15s infinite ease-in-out alternate`,
+          zIndex: 1,
+          boxShadow: '0 25px 50px rgba(16, 185, 129, 0.15)',
+        }}
+      />
+      <Box
+        sx={{
+          position: 'absolute',
+          bottom: '12%',
+          left: '4%',
+          width: '110px',
+          height: '110px',
+          borderRadius: '25%',
+          background: 'linear-gradient(45deg, rgba(102, 126, 234, 0.3), rgba(118, 75, 162, 0.3))',
+          backdropFilter: 'blur(30px)',
+          border: '1px solid rgba(255, 255, 255, 0.18)',
+          animation: `${pulse} 12s infinite ease-in-out reverse, ${fadeIn} 10s infinite ease-in-out alternate`,
+          zIndex: 1,
+          boxShadow: '0 20px 40px rgba(102, 126, 234, 0.2)',
+          transform: 'rotate(15deg)',
+        }}
+      />
+      <Box
+        sx={{
+          position: 'absolute',
+          top: '40%',
+          left: '1%',
+          width: '70px',
+          height: '70px',
+          borderRadius: '50%',
+          background: 'linear-gradient(90deg, rgba(110, 231, 183, 0.4), rgba(167, 243, 208, 0.4))',
+          backdropFilter: 'blur(20px)',
+          animation: `${slideUp} 18s infinite ease-in-out, ${pulse} 7s infinite ease-in-out`,
           zIndex: 1,
         }}
       />
       <Box
         sx={{
           position: 'absolute',
-          bottom: '20%',
-          left: '8%',
-          width: '80px',
-          height: '80px',
+          top: '20%',
+          right: '20%',
+          width: '90px',
+          height: '90px',
           borderRadius: '30%',
-          background: 'rgba(0,0,0,0.08)',
-          backdropFilter: 'blur(15px)',
-          animation: `${pulse} 14s infinite ease-in-out reverse`,
+          background: 'linear-gradient(180deg, rgba(240, 147, 251, 0.35), rgba(245, 87, 108, 0.35))',
+          backdropFilter: 'blur(22px)',
+          animation: `${scaleUp} 22s infinite ease-in-out, ${fadeIn} 16s infinite ease-in-out alternate`,
+          zIndex: 1,
+          transform: 'rotate(-20deg)',
+        }}
+      />
+      <Box
+        sx={{
+          position: 'absolute',
+          bottom: '25%',
+          right: '8%',
+          width: '65px',
+          height: '65px',
+          borderRadius: '40%',
+          background: 'linear-gradient(45deg, rgba(209, 250, 229, 0.5), rgba(16, 185, 129, 0.3))',
+          backdropFilter: 'blur(18px)',
+          animation: `${pulse} 14s infinite ease-in-out, ${slideUp} 20s infinite ease-in-out alternate`,
           zIndex: 1,
         }}
       />
 
-      <Container maxWidth="md" sx={{ position: 'relative', zIndex: 2 }}>
+      <Container maxWidth="md" sx={{ position: 'relative', zIndex: 3 }}>
         <Fade in={animationStage >= 1} timeout={800}>
           <Paper
             elevation={0}
             sx={{
-              background: 'rgba(255, 255, 255, 0.9)',
-              backdropFilter: 'blur(20px)',
-              borderRadius: '24px',
-              border: '1px solid rgba(0, 0, 0, 0.1)',
-              boxShadow: '0 25px 50px rgba(0, 0, 0, 0.1)',
-              p: { xs: 3, sm: 5 },
+              background: 'rgba(255, 255, 255, 0.96)',
+              backdropFilter: 'blur(35px)',
+              borderRadius: '32px',
+              border: '1px solid rgba(255, 255, 255, 0.35)',
+              boxShadow: '0 35px 70px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(255, 255, 255, 0.15) inset',
+              p: { xs: 4, sm: 6 },
               position: 'relative',
               overflow: 'hidden',
+              transition: 'all 0.4s ease',
+              '&:hover': {
+                transform: 'translateY(-3px)',
+                boxShadow: '0 45px 90px rgba(0, 0, 0, 0.18), 0 0 0 2px rgba(255, 255, 255, 0.25) inset',
+              },
               '&::before': {
                 content: '""',
                 position: 'absolute',
                 top: 0,
                 left: 0,
                 right: 0,
-                height: '2px',
-                background: 'linear-gradient(90deg, #667eea 0%, #764ba2 50%, #667eea 100%)',
+                height: '4px',
+                background: 'linear-gradient(90deg, #10B981 0%, #34D399 20%, #667eea 40%, #764ba2 60%, #f093fb 80%, #10B981 100%)',
+                backgroundSize: '300% 100%',
+                animation: `${slideUp} 4s infinite linear`,
+              },
+              '&::after': {
+                content: '""',
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                width: '250px',
+                height: '250px',
+                background: 'radial-gradient(circle, rgba(16, 185, 129, 0.08) 0%, transparent 70%)',
+                borderRadius: '50%',
+                transform: 'translate(-50%, -50%)',
+                animation: `${pulse} 5s infinite ease-in-out`,
+                zIndex: -1,
               }
             }}
           >
@@ -528,19 +606,33 @@ function Register() {
                 <Zoom in={animationStage >= 2} timeout={800}>
                   <Box
                     sx={{
-                      width: 80,
-                      height: 80,
+                      width: 95,
+                      height: 95,
                       borderRadius: '50%',
-                      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                      background: 'linear-gradient(135deg, #10B981 0%, #34D399 30%, #667eea 70%, #764ba2 100%)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       margin: '0 auto 24px',
-                      boxShadow: '0 10px 30px rgba(102, 126, 234, 0.3)',
-                      animation: `${scaleUp} 0.8s ease-out`,
+                      boxShadow: '0 18px 45px rgba(16, 185, 129, 0.4), 0 0 0 4px rgba(255, 255, 255, 0.3)',
+                      animation: `${scaleUp} 0.8s ease-out, ${pulse} 4s infinite ease-in-out`,
+                      position: 'relative',
+                      '&::before': {
+                        content: '""',
+                        position: 'absolute',
+                        top: '-6px',
+                        left: '-6px',
+                        right: '-6px',
+                        bottom: '-6px',
+                        borderRadius: '50%',
+                        background: 'linear-gradient(45deg, #10B981, #34D399, #667eea, #764ba2, #f093fb)',
+                        animation: `${slideUp} 3s infinite linear`,
+                        zIndex: -1,
+                        opacity: 0.6,
+                      }
                     }}
                   >
-                    <PersonAdd sx={{ fontSize: 40, color: 'white' }} />
+                    <PersonAdd sx={{ fontSize: 48, color: 'white', filter: 'drop-shadow(0 3px 6px rgba(0,0,0,0.3))' }} />
                   </Box>
                 </Zoom>
                 

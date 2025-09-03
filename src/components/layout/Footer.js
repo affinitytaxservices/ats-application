@@ -35,7 +35,7 @@ const Footer = () => {
         component="footer"
         sx={{
           mt: 'auto',
-          py: 2,
+          py: 1.5,
           background: 'linear-gradient(180deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 58, 138, 0.95) 100%)',
           backdropFilter: 'blur(10px)',
           borderTop: '1px solid rgba(255, 255, 255, 0.1)',

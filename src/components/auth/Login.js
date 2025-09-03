@@ -143,7 +143,6 @@ function Login() {
     <Box
       sx={{
         minHeight: '100vh',
-        background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
         position: 'relative',
         overflow: 'hidden',
         display: 'flex',
@@ -156,72 +155,129 @@ function Login() {
           left: 0,
           right: 0,
           bottom: 0,
-          background: 'url("data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23000000" fill-opacity="0.05"%3E%3Ccircle cx="30" cy="30" r="2"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")',
-          animation: `${pulse} 20s infinite ease-in-out`,
+          backgroundImage: 'url("/src/assets/animated-login-bg.svg")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          zIndex: 0,
         },
         '&::after': {
           content: '""',
           position: 'absolute',
-          top: '-50%',
-          left: '-50%',
-          width: '200%',
-          height: '200%',
-          background: 'radial-gradient(circle, rgba(0,0,0,0.05) 0%, transparent 70%)',
-          animation: `${pulse} 15s infinite ease-in-out alternate`,
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0, 0, 0, 0.1)',
+          backdropFilter: 'blur(1px)',
+          zIndex: 1,
         }
       }}
     >
-      {/* Floating Elements */}
+      {/* Enhanced Floating Elements */}
       <Box
         sx={{
           position: 'absolute',
           top: '10%',
-          left: '10%',
+          right: '5%',
+          width: '150px',
+          height: '150px',
+          borderRadius: '50%',
+          background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(102, 126, 234, 0.2))',
+          backdropFilter: 'blur(20px)',
+          border: '1px solid rgba(255, 255, 255, 0.2)',
+          animation: `${pulse} 8s infinite ease-in-out, ${scaleUp} 12s infinite ease-in-out alternate`,
+          zIndex: 1,
+          boxShadow: '0 20px 40px rgba(16, 185, 129, 0.1)',
+        }}
+      />
+      <Box
+        sx={{
+          position: 'absolute',
+          bottom: '15%',
+          left: '5%',
           width: '100px',
           height: '100px',
+          borderRadius: '30%',
+          background: 'linear-gradient(45deg, rgba(118, 75, 162, 0.3), rgba(240, 147, 251, 0.3))',
+          backdropFilter: 'blur(25px)',
+          border: '1px solid rgba(255, 255, 255, 0.15)',
+          animation: `${pulse} 10s infinite ease-in-out reverse, ${fadeIn} 8s infinite ease-in-out alternate`,
+          zIndex: 1,
+          boxShadow: '0 15px 30px rgba(118, 75, 162, 0.15)',
+        }}
+      />
+      <Box
+        sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '2%',
+          width: '60px',
+          height: '60px',
           borderRadius: '50%',
-          background: 'rgba(0,0,0,0.05)',
-          backdropFilter: 'blur(10px)',
-          animation: `${pulse} 8s infinite ease-in-out`,
+          background: 'linear-gradient(90deg, rgba(245, 87, 108, 0.4), rgba(79, 172, 254, 0.4))',
+          backdropFilter: 'blur(15px)',
+          animation: `${slideUp} 15s infinite ease-in-out, ${pulse} 6s infinite ease-in-out`,
           zIndex: 1,
         }}
       />
       <Box
         sx={{
           position: 'absolute',
-          top: '70%',
-          right: '15%',
-          width: '150px',
-          height: '150px',
-          borderRadius: '30%',
-          background: 'rgba(0,0,0,0.03)',
-          backdropFilter: 'blur(15px)',
-          animation: `${pulse} 12s infinite ease-in-out reverse`,
+          top: '25%',
+          right: '25%',
+          width: '80px',
+          height: '80px',
+          borderRadius: '20%',
+          background: 'linear-gradient(180deg, rgba(0, 242, 254, 0.3), rgba(16, 185, 129, 0.3))',
+          backdropFilter: 'blur(18px)',
+          animation: `${scaleUp} 20s infinite ease-in-out, ${fadeIn} 14s infinite ease-in-out alternate`,
           zIndex: 1,
+          transform: 'rotate(45deg)',
         }}
       />
 
-      <Container maxWidth="sm" sx={{ position: 'relative', zIndex: 2 }}>
+      <Container maxWidth="sm" sx={{ position: 'relative', zIndex: 3 }}>
         <Fade in={animationStage >= 1} timeout={800}>
           <Paper
             elevation={0}
             sx={{
-              background: 'rgba(255, 255, 255, 0.9)',
-              backdropFilter: 'blur(20px)',
-              borderRadius: '24px',
-              border: '1px solid rgba(0, 0, 0, 0.1)',
-              boxShadow: '0 25px 50px rgba(0, 0, 0, 0.1)',
-              p: { xs: 3, sm: 5 },
+              background: 'rgba(255, 255, 255, 0.95)',
+              backdropFilter: 'blur(30px)',
+              borderRadius: '28px',
+              border: '1px solid rgba(255, 255, 255, 0.3)',
+              boxShadow: '0 30px 60px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.1) inset',
+              p: { xs: 4, sm: 6 },
               position: 'relative',
               overflow: 'hidden',
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                transform: 'translateY(-5px)',
+                boxShadow: '0 40px 80px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.2) inset',
+              },
               '&::before': {
                 content: '""',
                 position: 'absolute',
                 top: 0,
                 left: 0,
                 right: 0,
-                height: '2px',
-                background: 'linear-gradient(90deg, #667eea 0%, #764ba2 50%, #667eea 100%)',
+                height: '3px',
+                background: 'linear-gradient(90deg, #10B981 0%, #667eea 25%, #764ba2 50%, #f093fb 75%, #10B981 100%)',
+                backgroundSize: '200% 100%',
+                animation: `${slideUp} 3s infinite linear`,
+              },
+              '&::after': {
+                content: '""',
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                width: '200px',
+                height: '200px',
+                background: 'radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, transparent 70%)',
+                borderRadius: '50%',
+                transform: 'translate(-50%, -50%)',
+                animation: `${pulse} 4s infinite ease-in-out`,
+                zIndex: -1,
               }
             }}
           >
@@ -231,19 +287,33 @@ function Login() {
                 <Zoom in={animationStage >= 2} timeout={800}>
                   <Box
                     sx={{
-                      width: 80,
-                      height: 80,
+                      width: 90,
+                      height: 90,
                       borderRadius: '50%',
-                      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                      background: 'linear-gradient(135deg, #10B981 0%, #667eea 50%, #764ba2 100%)',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                       margin: '0 auto 24px',
-                      boxShadow: '0 10px 30px rgba(102, 126, 234, 0.3)',
-                      animation: `${scaleUp} 0.8s ease-out`,
+                      boxShadow: '0 15px 40px rgba(16, 185, 129, 0.4), 0 0 0 3px rgba(255, 255, 255, 0.3)',
+                      animation: `${scaleUp} 0.8s ease-out, ${pulse} 3s infinite ease-in-out`,
+                      position: 'relative',
+                      '&::before': {
+                        content: '""',
+                        position: 'absolute',
+                        top: '-5px',
+                        left: '-5px',
+                        right: '-5px',
+                        bottom: '-5px',
+                        borderRadius: '50%',
+                        background: 'linear-gradient(45deg, #10B981, #667eea, #764ba2, #f093fb)',
+                        animation: `${slideUp} 2s infinite linear`,
+                        zIndex: -1,
+                        opacity: 0.7,
+                      }
                     }}
                   >
-                    <Security sx={{ fontSize: 40, color: 'white' }} />
+                    <Security sx={{ fontSize: 45, color: 'white', filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))' }} />
                   </Box>
                 </Zoom>
                 
@@ -314,40 +384,47 @@ function Login() {
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
-                          <Email sx={{ color: 'rgba(0, 0, 0, 0.6)' }} />
+                          <Email sx={{ color: '#10B981' }} />
                         </InputAdornment>
                       ),
                     }}
                     sx={{
                       '& .MuiOutlinedInput-root': {
-                        background: 'rgba(255, 255, 255, 0.8)',
-                        backdropFilter: 'blur(10px)',
+                        background: 'rgba(240, 253, 244, 0.95)',
+                        backdropFilter: 'blur(15px)',
                         borderRadius: '16px',
-                        border: '1px solid rgba(0, 0, 0, 0.2)',
-                        color: '#1e293b',
+                        border: '2px solid rgba(16, 185, 129, 0.2)',
+                        color: '#064e3b',
                         transition: 'all 0.3s ease',
                         '& fieldset': {
                           border: 'none',
                         },
                         '&:hover': {
-                          background: 'rgba(255, 255, 255, 0.9)',
+                          background: 'rgba(236, 253, 245, 1)',
                           transform: 'translateY(-2px)',
-                          boxShadow: '0 8px 25px rgba(0, 0, 0, 0.1)',
+                          boxShadow: '0 8px 25px rgba(16, 185, 129, 0.15)',
+                          border: '2px solid rgba(16, 185, 129, 0.4)',
                         },
                         '&.Mui-focused': {
                           background: 'rgba(255, 255, 255, 1)',
-                          boxShadow: '0 0 20px rgba(102, 126, 234, 0.3)',
+                          boxShadow: '0 0 25px rgba(16, 185, 129, 0.4), 0 0 0 3px rgba(52, 211, 153, 0.1)',
+                          border: '2px solid #10B981',
                         },
                       },
                       '& .MuiInputLabel-root': {
-                        color: 'rgba(0, 0, 0, 0.6)',
+                        color: '#065f46',
+                        fontWeight: 500,
                         '&.Mui-focused': {
-                          color: '#667eea',
+                          color: '#10B981',
                         },
                       },
                       '& .MuiFormHelperText-root': {
-                        color: '#ff6b6b',
+                        color: '#dc2626',
                         fontWeight: 500,
+                        backgroundColor: 'rgba(254, 242, 242, 0.8)',
+                        padding: '4px 8px',
+                        borderRadius: '8px',
+                        marginTop: '8px',
                       },
                     }}
                   />
@@ -365,7 +442,7 @@ function Login() {
                     InputProps={{
                       startAdornment: (
                         <InputAdornment position="start">
-                          <Lock sx={{ color: 'rgba(0, 0, 0, 0.6)' }} />
+                          <Lock sx={{ color: '#10B981' }} />
                         </InputAdornment>
                       ),
                       endAdornment: (
@@ -373,7 +450,7 @@ function Login() {
                           <IconButton
                             onClick={togglePasswordVisibility}
                             edge="end"
-                            sx={{ color: 'rgba(0, 0, 0, 0.6)' }}
+                            sx={{ color: '#10B981' }}
                           >
                             {showPassword ? <VisibilityOff /> : <Visibility />}
                           </IconButton>
@@ -382,34 +459,41 @@ function Login() {
                     }}
                     sx={{
                       '& .MuiOutlinedInput-root': {
-                        background: 'rgba(255, 255, 255, 0.8)',
-                        backdropFilter: 'blur(10px)',
+                        background: 'rgba(240, 253, 244, 0.95)',
+                        backdropFilter: 'blur(15px)',
                         borderRadius: '16px',
-                        border: '1px solid rgba(0, 0, 0, 0.2)',
-                        color: '#1e293b',
+                        border: '2px solid rgba(16, 185, 129, 0.2)',
+                        color: '#064e3b',
                         transition: 'all 0.3s ease',
                         '& fieldset': {
                           border: 'none',
                         },
                         '&:hover': {
-                          background: 'rgba(255, 255, 255, 0.9)',
+                          background: 'rgba(236, 253, 245, 1)',
                           transform: 'translateY(-2px)',
-                          boxShadow: '0 8px 25px rgba(0, 0, 0, 0.1)',
+                          boxShadow: '0 8px 25px rgba(16, 185, 129, 0.15)',
+                          border: '2px solid rgba(16, 185, 129, 0.4)',
                         },
                         '&.Mui-focused': {
                           background: 'rgba(255, 255, 255, 1)',
-                          boxShadow: '0 0 20px rgba(102, 126, 234, 0.3)',
+                          boxShadow: '0 0 25px rgba(16, 185, 129, 0.4), 0 0 0 3px rgba(52, 211, 153, 0.1)',
+                          border: '2px solid #10B981',
                         },
                       },
                       '& .MuiInputLabel-root': {
-                        color: 'rgba(0, 0, 0, 0.6)',
+                        color: '#065f46',
+                        fontWeight: 500,
                         '&.Mui-focused': {
-                          color: '#667eea',
+                          color: '#10B981',
                         },
                       },
                       '& .MuiFormHelperText-root': {
-                        color: '#ff6b6b',
+                        color: '#dc2626',
                         fontWeight: 500,
+                        backgroundColor: 'rgba(254, 242, 242, 0.8)',
+                        padding: '4px 8px',
+                        borderRadius: '8px',
+                        marginTop: '8px',
                       },
                     }}
                   />
@@ -436,17 +520,35 @@ function Login() {
                     />
                     
                     <Button
-                      variant="text"
-                      sx={{
-                        color: 'rgba(255, 255, 255, 0.8)',
-                        textTransform: 'none',
-                        fontWeight: 500,
-                        '&:hover': {
-                          color: 'white',
-                          background: 'rgba(255, 255, 255, 0.1)',
+                    variant="text"
+                    sx={{
+                      color: 'rgba(255, 255, 255, 0.8)',
+                      textTransform: 'none',
+                      fontWeight: 500,
+                      borderRadius: '12px',
+                      position: 'relative',
+                      overflow: 'hidden',
+                      transition: 'all 0.3s ease',
+                      '&::before': {
+                        content: '""',
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        background: 'linear-gradient(45deg, rgba(16, 185, 129, 0.1), rgba(102, 126, 234, 0.1))',
+                        opacity: 0,
+                        transition: 'opacity 0.3s ease',
+                      },
+                      '&:hover': {
+                        color: 'white',
+                        transform: 'translateY(-1px)',
+                        '&::before': {
+                          opacity: 1,
                         },
-                      }}
-                    >
+                      },
+                    }}
+                  >
                       Forgot Password?
                     </Button>
                   </Box>
@@ -458,25 +560,42 @@ function Login() {
                     disabled={isSubmitting}
                     startIcon={!isSubmitting && <LoginIcon />}
                     sx={{
-                      py: 2,
-                      borderRadius: '16px',
-                      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                      boxShadow: '0 8px 25px rgba(102, 126, 234, 0.3)',
+                      py: 2.5,
+                      borderRadius: '20px',
+                      background: 'linear-gradient(135deg, #10B981 0%, #667eea 50%, #764ba2 100%)',
+                      boxShadow: '0 10px 30px rgba(16, 185, 129, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.2) inset',
                       fontSize: '1.1rem',
                       fontWeight: 600,
                       textTransform: 'none',
-                      transition: 'all 0.3s ease',
+                      position: 'relative',
+                      overflow: 'hidden',
+                      transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                      '&::before': {
+                        content: '""',
+                        position: 'absolute',
+                        top: 0,
+                        left: '-100%',
+                        width: '100%',
+                        height: '100%',
+                        background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent)',
+                        transition: 'left 0.6s ease',
+                      },
                       '&:hover': {
-                        transform: 'translateY(-3px)',
-                        boxShadow: '0 12px 35px rgba(102, 126, 234, 0.4)',
-                        background: 'linear-gradient(135deg, #764ba2 0%, #667eea 100%)',
+                        transform: 'translateY(-4px) scale(1.02)',
+                        boxShadow: '0 15px 40px rgba(16, 185, 129, 0.5), 0 0 0 2px rgba(255, 255, 255, 0.3) inset',
+                        background: 'linear-gradient(135deg, #667eea 0%, #10B981 50%, #764ba2 100%)',
+                        '&::before': {
+                          left: '100%',
+                        },
                       },
                       '&:active': {
-                        transform: 'translateY(-1px)',
+                        transform: 'translateY(-2px) scale(1.01)',
                       },
                       '&.Mui-disabled': {
                         background: 'rgba(255, 255, 255, 0.2)',
                         color: 'rgba(255, 255, 255, 0.5)',
+                        transform: 'none',
+                        boxShadow: 'none',
                       },
                     }}
                   >
