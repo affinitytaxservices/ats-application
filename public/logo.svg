@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="mainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A" />
+      <stop offset="100%" stop-color="#10B981" />
+    </linearGradient>
+    <linearGradient id="roofGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#10B981" />
+      <stop offset="100%" stop-color="#1E3A8A" />
+    </linearGradient>
+    <linearGradient id="shieldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A" opacity="0.9" />
+      <stop offset="100%" stop-color="#10B981" opacity="0.7" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Shield Shape with Modern Design -->
+  <g transform="translate(56, 56)">
+    <!-- Background Circle -->
+    <circle cx="200" cy="200" r="180" fill="url(#mainGradient)" opacity="0.1" />
+    
+    <!-- Shield Shape -->
+    <path 
+      d="M200 40 L320 100 V220 C320 280 260 340 200 380 C140 340 80 280 80 220 V100 Z" 
+      fill="url(#shieldGradient)" 
+      stroke="#10B981" 
+      stroke-width="3"
+      filter="drop-shadow(0 8px 16px rgba(0,0,0,0.2))"
+    />
+    
+    <!-- Inner Shield -->
+    <path 
+      d="M200 70 L300 120 V220 C300 270 250 320 200 350 C150 320 100 270 100 220 V120 Z" 
+      fill="#0F172A" 
+      opacity="0.7"
+    />
+    
+    <!-- ATS Letters -->
+    <g transform="translate(140, 140)">
+      <!-- A -->
+      <path 
+        d="M30 80 L60 40 L90 80 M40 70 H80" 
+        stroke="#10B981" 
+        stroke-width="8" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"
+      />
+      
+      <!-- T -->
+      <path 
+        d="M120 40 L120 80 M100 40 H140" 
+        stroke="#10B981" 
+        stroke-width="8" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"
+      />
+      
+      <!-- S -->
+      <path 
+        d="M170 40 C190 40 190 60 170 60 C150 60 150 80 170 80" 
+        stroke="#10B981" 
+        stroke-width="8" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"
+      />
+    </g>
+    
+    <!-- Tax Document -->
+    <g transform="translate(140, 180)">
+      <!-- Document Body -->
+      <rect 
+        x="0" y="0" 
+        width="120" height="140" 
+        rx="8" 
+        fill="white"
+        filter="drop-shadow(0 8px 16px rgba(0,0,0,0.15))"
+      />
+      
+      <!-- Document Lines -->
+      <g transform="translate(15, 20)">
+        <!-- Line 1 -->
+        <rect x="0" y="0" width="90" height="8" rx="4" fill="#1E3A8A" opacity="0.6" />
+        
+        <!-- Line 2 -->
+        <rect x="0" y="20" width="90" height="8" rx="4" fill="#1E3A8A" opacity="0.6" />
+        
+        <!-- Line 3 -->
+        <rect x="0" y="40" width="90" height="8" rx="4" fill="#1E3A8A" opacity="0.6" />
+        
+        <!-- Line 4 -->
+        <rect x="0" y="60" width="90" height="8" rx="4" fill="#1E3A8A" opacity="0.6" />
+        
+        <!-- Line 5 -->
+        <rect x="0" y="80" width="60" height="8" rx="4" fill="#1E3A8A" opacity="0.6" />
+        
+        <!-- Checkmark -->
+        <circle cx="75" cy="85" r="12" fill="#10B981" opacity="0.9" />
+        <path 
+          d="M68 85 L75 92 L82 78" 
+          stroke="white" 
+          stroke-width="3" 
+          fill="none" 
+          stroke-linecap="round" 
+          stroke-linejoin="round"
+        />
+      </g>
+    </g>
+  </g>
+  
+  <!-- Company Name with Modern Typography -->
+  <g transform="translate(256, 470)" text-anchor="middle">
+    <text 
+      font-family="Montserrat, sans-serif" 
+      font-weight="bold" 
+      font-size="52" 
+      fill="#1E3A8A"
+      letter-spacing="1"
+    >
+      <tspan x="0" y="0">Affinity</tspan>
+    </text>
+    <text 
+      font-family="Inter, sans-serif" 
+      font-weight="600" 
+      font-size="28" 
+      fill="#10B981"
+      letter-spacing="4"
+    >
+      <tspan x="0" y="35">TAX SERVICES</tspan>
+    </text>
+  </g>
+</svg>
