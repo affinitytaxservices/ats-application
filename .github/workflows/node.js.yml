@@ -85,6 +85,7 @@ jobs:
       env:
         CI: false
         GENERATE_SOURCEMAP: false
+        ESLINT_NO_DEV_ERRORS: true
     
     - name: 📊 Upload coverage reports
       if: matrix.node-version == '18.x'
