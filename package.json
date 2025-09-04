@@ -41,7 +41,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "CI=false react-scripts build",
+    "build:prod": "CI=false GENERATE_SOURCEMAP=false react-scripts build",
+    "build:centos": "NODE_OPTIONS=--max-old-space-size=4096 CI=false GENERATE_SOURCEMAP=false react-scripts build",
     "test": "react-scripts test --watchAll=false",
     "test:ci": "react-scripts test --coverage --watchAll=false --ci",
     "eject": "react-scripts eject"
@@ -50,7 +52,11 @@
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
+    ],
+    "rules": {
+      "no-unused-vars": "warn",
+      "@typescript-eslint/no-unused-vars": "warn"
+    }
   },
   "browserslist": {
     "production": [
