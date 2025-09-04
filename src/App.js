@@ -40,8 +40,6 @@ const ProtectedRoute = ({ children, requiredRole }) => {
 };
 
 function App() {
-  const { user } = useAuth();
-
   return (
     <div className="app">
       <Navbar />
