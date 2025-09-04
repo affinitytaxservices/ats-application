@@ -37,6 +37,42 @@ git push origin main
 
 For detailed setup instructions, see [DEPLOYMENT_SETUP.md](./DEPLOYMENT_SETUP.md).
 
+### 🚨 Error Handling & Recovery
+
+The project includes an advanced error handling workflow that provides:
+
+- **🔍 Automated Error Detection** - Monitors CI/CD pipeline for failures
+- **🔄 Emergency Rollback** - Automatic rollback on deployment failures
+- **🏥 Health Monitoring** - Comprehensive system health checks
+- **📧 Smart Notifications** - Slack alerts and GitHub issue creation
+- **📋 Recovery Guides** - Context-aware troubleshooting instructions
+
+#### Error Handling Features
+
+- **Automatic Triggers**: Activated when main pipeline fails
+- **Manual Triggers**: Can be run manually for specific error types
+- **Rollback Capability**: Restores previous working version
+- **System Diagnostics**: Server resource and service monitoring
+- **Team Notifications**: Slack integration and email alerts
+- **Issue Tracking**: Automatic GitHub issue creation for critical errors
+
+#### Quick Error Recovery
+
+```bash
+# Manual error handling trigger
+gh workflow run error-handling.yml \
+  -f error_type=deployment_failure \
+  -f severity=high \
+  -f auto_rollback=true
+
+# Emergency rollback only
+gh workflow run error-handling.yml \
+  -f error_type=rollback_required \
+  -f severity=critical
+```
+
+For detailed configuration and usage, see [Error Handling README](./.github/workflows/ERROR_HANDLING_README.md).
+
 ## 🚀 Features
 
 ### For Clients
