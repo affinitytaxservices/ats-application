@@ -287,7 +287,7 @@ Add the following configuration:
 ```nginx
 server {
     listen 80;
-    server_name www.affinitytaxservices.com;
+    server_name affinitytaxservices.com www.affinitytaxservices.com;
     
     # Redirect HTTP to HTTPS
     return 301 https://$server_name$request_uri;
@@ -295,7 +295,7 @@ server {
 
 server {
     listen 443 ssl http2;
-    server_name www.affinitytaxservices.com;
+    server_name affinitytaxservices.com www.affinitytaxservices.com;
     
     # SSL Configuration (will be added by Certbot)
     
@@ -390,7 +390,7 @@ sudo yum install -y certbot python3-certbot-nginx
 
 ```bash
 # Get SSL certificate
-sudo certbot --nginx -d www.affinitytaxservices.com
+sudo certbot --nginx -d affinitytaxservices.com -d www.affinitytaxservices.com
 
 # Test automatic renewal
 sudo certbot renew --dry-run
