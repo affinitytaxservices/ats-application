@@ -102,33 +102,116 @@ const ServiceCard = styled(Card)(({ theme }) => ({
 }));
 
 const GradientButton = styled(Button)(({ theme }) => ({
-  background: 'linear-gradient(90deg, #1E3A8A 0%, #10B981 100%)',
+  background: 'linear-gradient(135deg, #1E3A8A 0%, #10B981 50%, #0EA5E9 100%)',
   color: '#ffffff',
-  padding: '12px 24px',
-  borderRadius: '8px',
-  fontWeight: 600,
-  transition: 'all 0.3s ease',
-  boxShadow: '0 4px 15px rgba(16, 185, 129, 0.2)',
+  padding: { xs: '14px 28px', md: '16px 32px' },
+  borderRadius: '16px',
+  fontWeight: 700,
+  fontSize: { xs: '1rem', md: '1.1rem' },
+  textTransform: 'none',
+  minHeight: '48px',
+  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+  boxShadow: '0 6px 25px rgba(16, 185, 129, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1) inset',
+  position: 'relative',
+  overflow: 'hidden',
+  fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
+  '&::before': {
+    content: '""',
+    position: 'absolute',
+    top: 0,
+    left: '-100%',
+    width: '100%',
+    height: '100%',
+    background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent)',
+    transition: 'left 0.7s ease',
+  },
+  '&::after': {
+    content: '""',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%, rgba(255, 255, 255, 0.05) 100%)',
+    opacity: 0,
+    transition: 'opacity 0.3s ease',
+  },
   '&:hover': {
-    transform: 'translateY(-3px)',
-    boxShadow: '0 8px 25px rgba(16, 185, 129, 0.35)',
-    background: 'linear-gradient(90deg, #10B981 0%, #1E3A8A 100%)',
+    transform: 'translateY(-3px) scale(1.03)',
+    boxShadow: '0 12px 40px rgba(16, 185, 129, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.2) inset',
+    background: 'linear-gradient(135deg, #10B981 0%, #0EA5E9 50%, #1E3A8A 100%)',
+    '&::before': {
+      left: '100%',
+    },
+    '&::after': {
+      opacity: 1,
+    },
+  },
+  '&:active': {
+    transform: 'translateY(-2px) scale(1.02)',
+  },
+  [theme.breakpoints.down('sm')]: {
+    width: '100%',
+    maxWidth: '280px',
+    margin: '0 auto',
   },
 }));
 
 const OutlinedButton = styled(Button)(({ theme }) => ({
-  background: 'rgba(255, 255, 255, 0.05)',
-  backdropFilter: 'blur(10px)',
+  background: 'rgba(255, 255, 255, 0.06)',
+  backdropFilter: 'blur(15px)',
   color: '#ffffff',
-  padding: '12px 24px',
-  borderRadius: '8px',
+  padding: { xs: '14px 28px', md: '16px 32px' },
+  borderRadius: '16px',
   fontWeight: 600,
-  border: '1px solid rgba(255, 255, 255, 0.2)',
-  transition: 'all 0.3s ease',
+  fontSize: { xs: '1rem', md: '1.1rem' },
+  textTransform: 'none',
+  minHeight: '48px',
+  border: '1.5px solid rgba(255, 255, 255, 0.2)',
+  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+  position: 'relative',
+  overflow: 'hidden',
+  fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
+  '&::before': {
+    content: '""',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    background: 'linear-gradient(45deg, rgba(16, 185, 129, 0.08), rgba(14, 165, 233, 0.08))',
+    opacity: 0,
+    transition: 'opacity 0.3s ease',
+  },
+  '&::after': {
+    content: '""',
+    position: 'absolute',
+    top: 0,
+    left: '-100%',
+    width: '100%',
+    height: '100%',
+    background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent)',
+    transition: 'left 0.6s ease',
+  },
   '&:hover': {
-    background: 'rgba(255, 255, 255, 0.1)',
-    transform: 'translateY(-3px)',
-    border: '1px solid rgba(255, 255, 255, 0.3)',
+    background: 'rgba(255, 255, 255, 0.12)',
+    transform: 'translateY(-3px) scale(1.02)',
+    border: '1.5px solid rgba(255, 255, 255, 0.35)',
+    boxShadow: '0 8px 30px rgba(255, 255, 255, 0.15)',
+    '&::before': {
+      opacity: 1,
+    },
+    '&::after': {
+      left: '100%',
+    },
+  },
+  '&:active': {
+    transform: 'translateY(-2px) scale(1.01)',
+  },
+  [theme.breakpoints.down('sm')]: {
+    width: '100%',
+    maxWidth: '280px',
+    margin: '0 auto',
   },
 }));
 
@@ -315,7 +398,17 @@ const HomePage = () => {
                 >
                   Professional tax services that simplify your finances and maximize your returns
                 </Typography>
-                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2, mb: 6 }}>
+                <Box sx={{ 
+                  display: 'flex', 
+                  flexDirection: { xs: 'column', sm: 'row' },
+                  flexWrap: 'wrap', 
+                  gap: 2, 
+                  mb: 6,
+                  '& > *': {
+                    minWidth: { xs: '100%', sm: 'auto' },
+                    justifyContent: 'center'
+                  }
+                }}>
                   <GradientButton 
                     component={RouterLink} 
                     to="/register" 
@@ -464,9 +557,9 @@ const HomePage = () => {
             Comprehensive Tax Services
           </AnimatedTypography>
           
-          <Grid container spacing={4}>
+          <Grid container spacing={{ xs: 2, sm: 3, md: 4 }}>
             {services.map((service, index) => (
-              <Grid item xs={12} sm={6} md={3} key={index}>
+              <Grid item xs={12} sm={6} lg={3} key={index}>
                 <Slide direction="up" in={true} timeout={500 + (index * 200)}>
                   <ServiceCard>
                     <CardMedia

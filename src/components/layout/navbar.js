@@ -35,27 +35,59 @@ import LogoComponent from '../common/LogoComponent';
 // Common button style
 const commonButtonStyle = {
   '&:hover': {
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    transform: 'translateY(-2px)'
+    backgroundColor: 'rgba(255, 255, 255, 0.12)',
+    transform: 'translateY(-2px) scale(1.02)'
   },
-  borderRadius: 2,
-  px: 2,
-  py: 1,
+  '&:active': {
+    transform: 'translateY(-1px) scale(1.01)'
+  },
+  borderRadius: 3,
+  px: 2.5,
+  py: 1.2,
   mx: 0.5,
-  transition: 'all 0.3s ease',
-  fontWeight: 500
+  minHeight: '40px',
+  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+  fontWeight: 600,
+  textTransform: 'none',
+  fontSize: '0.95rem',
+  backdropFilter: 'blur(8px)',
+  border: '1px solid rgba(255, 255, 255, 0.1)',
+  position: 'relative',
+  overflow: 'hidden',
+  '&::before': {
+    content: '""',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    background: 'rgba(255, 255, 255, 0.05)',
+    opacity: 0,
+    transition: 'opacity 0.2s ease',
+  },
+  '&:hover::before': {
+    opacity: 1,
+  }
 };
 
 // Mobile drawer item style
 const drawerItemStyle = {
-  py: 1.5,
-  borderRadius: 1,
+  py: 2,
+  borderRadius: 2,
   my: 0.5,
   mx: 1,
+  minHeight: '56px',
   transition: 'all 0.3s ease',
   '&:hover': {
     backgroundColor: 'rgba(16, 185, 129, 0.1)',
     transform: 'translateX(5px)'
+  },
+  '& .MuiListItemIcon-root': {
+    minWidth: '48px'
+  },
+  '& .MuiListItemText-primary': {
+    fontSize: '1.1rem',
+    fontWeight: 500
   }
 };
 
@@ -578,16 +610,38 @@ function Navbar() {
                   to="/login"
                   startIcon={<LoginIcon />}
                   sx={{
-                    background: 'linear-gradient(90deg, #1E3A8A 0%, #10B981 100%)',
+                    background: 'linear-gradient(135deg, #1E3A8A 0%, #10B981 50%, #0EA5E9 100%)',
                     color: '#ffffff',
-                    padding: '10px 20px',
-                    borderRadius: '8px',
-                    transition: 'all 0.3s ease',
-                    boxShadow: '0 4px 15px rgba(16, 185, 129, 0.2)',
+                    padding: { xs: '12px 20px', md: '14px 28px' },
+                    borderRadius: '12px',
+                    fontWeight: 600,
+                    fontSize: { xs: '0.9rem', md: '1rem' },
+                    textTransform: 'none',
+                    minHeight: '44px',
+                    transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                    boxShadow: '0 4px 20px rgba(16, 185, 129, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.1) inset',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    '&::before': {
+                      content: '""',
+                      position: 'absolute',
+                      top: 0,
+                      left: '-100%',
+                      width: '100%',
+                      height: '100%',
+                      background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)',
+                      transition: 'left 0.6s ease',
+                    },
                     '&:hover': {
-                      transform: 'translateY(-3px)',
-                      boxShadow: '0 8px 25px rgba(16, 185, 129, 0.35)',
-                      background: 'linear-gradient(90deg, #10B981 0%, #1E3A8A 100%)',
+                      transform: 'translateY(-2px) scale(1.02)',
+                      boxShadow: '0 8px 30px rgba(16, 185, 129, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.2) inset',
+                      background: 'linear-gradient(135deg, #10B981 0%, #0EA5E9 50%, #1E3A8A 100%)',
+                      '&::before': {
+                        left: '100%',
+                      },
+                    },
+                    '&:active': {
+                      transform: 'translateY(-1px) scale(1.01)',
                     }
                   }}
                 >
@@ -599,16 +653,42 @@ function Navbar() {
                   to="/register"
                   startIcon={<PersonAddIcon />}
                   sx={{ 
-                    ml: 2,
-                    background: 'rgba(255, 255, 255, 0.1)',
-                    backdropFilter: 'blur(5px)',
+                    ml: { xs: 1, md: 2 },
+                    background: 'rgba(255, 255, 255, 0.08)',
+                    backdropFilter: 'blur(12px)',
                     color: '#ffffff',
-                    padding: '10px 20px',
-                    borderRadius: '8px',
-                    transition: 'all 0.3s ease',
+                    padding: { xs: '12px 20px', md: '14px 28px' },
+                    borderRadius: '12px',
+                    fontWeight: 600,
+                    fontSize: { xs: '0.9rem', md: '1rem' },
+                    textTransform: 'none',
+                    minHeight: '44px',
+                    border: '1px solid rgba(255, 255, 255, 0.15)',
+                    transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                    position: 'relative',
+                    overflow: 'hidden',
+                    '&::before': {
+                      content: '""',
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      background: 'linear-gradient(45deg, rgba(16, 185, 129, 0.1), rgba(14, 165, 233, 0.1))',
+                      opacity: 0,
+                      transition: 'opacity 0.3s ease',
+                    },
                     '&:hover': {
-                      backgroundColor: 'rgba(255, 255, 255, 0.2)',
-                      transform: 'translateY(-3px)'
+                      backgroundColor: 'rgba(255, 255, 255, 0.15)',
+                      transform: 'translateY(-2px) scale(1.02)',
+                      border: '1px solid rgba(255, 255, 255, 0.25)',
+                      boxShadow: '0 8px 25px rgba(255, 255, 255, 0.1)',
+                      '&::before': {
+                        opacity: 1,
+                      },
+                    },
+                    '&:active': {
+                      transform: 'translateY(-1px) scale(1.01)',
                     }
                   }}
                 >
@@ -623,18 +703,27 @@ function Navbar() {
       {/* Mobile drawer */}
       <Drawer
         variant="temporary"
+        anchor="left"
         open={mobileOpen}
         onClose={handleDrawerToggle}
         ModalProps={{
-          keepMounted: true // Better open performance on mobile
+          keepMounted: true, // Better open performance on mobile.
         }}
         sx={{
           display: { xs: 'block', md: 'none' },
-          '& .MuiDrawer-paper': { 
-            width: 280,
+          '& .MuiDrawer-paper': {
             boxSizing: 'border-box',
-            boxShadow: '0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22)'
+            width: { xs: '85vw', sm: 320 },
+            maxWidth: 320,
+            background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 58, 138, 0.9) 100%)',
+            backdropFilter: 'blur(10px)',
+            border: 'none',
+            borderRadius: '0 16px 16px 0',
+            overflow: 'hidden'
           },
+          '& .MuiBackdrop-root': {
+            backgroundColor: 'rgba(0, 0, 0, 0.7)'
+          }
         }}
       >
         {drawer}

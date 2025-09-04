@@ -44,11 +44,7 @@ const LogoComponent = ({ variant = 'medium', showText = true }) => {
           sx={{
             fontFamily: '"Montserrat", sans-serif',
             fontWeight: 600,
-            background: 'linear-gradient(90deg, #60A5FA 0%, #34D399 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-            color: 'transparent',
+            color: 'white',
             letterSpacing: '0.5px',
             textShadow: '0px 2px 4px rgba(0, 0, 0, 0.05)',
             whiteSpace: 'nowrap'

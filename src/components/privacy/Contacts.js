@@ -18,7 +18,7 @@ import {
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneIcon from '@mui/icons-material/Phone';
 import FacebookIcon from '@mui/icons-material/Facebook';
-import TwitterIcon from '@mui/icons-material/Twitter';
+import XIcon from '@mui/icons-material/X';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import SendIcon from '@mui/icons-material/Send';
@@ -361,7 +361,7 @@ function Contacts() {
                   <FacebookIcon />
                 </IconButton>
                 <IconButton 
-                  aria-label="twitter" 
+                  aria-label="x" 
                   sx={{ 
                     color: 'white',
                     bgcolor: 'rgba(255,255,255,0.1)',
@@ -372,7 +372,7 @@ function Contacts() {
                     transition: 'all 0.3s ease'
                   }}
                 >
-                  <TwitterIcon />
+                  <XIcon />
                 </IconButton>
                 <IconButton 
                   aria-label="linkedin" 

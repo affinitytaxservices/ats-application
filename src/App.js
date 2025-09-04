@@ -1,6 +1,7 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './contexts/AuthContext';
+import './styles/mobile.css';
 
 // Layout Components
 import Navbar from './components/layout/navbar';
@@ -39,6 +40,7 @@ const ProtectedRoute = ({ children, requiredRole }) => {
 };
 
 function App() {
+  const { user } = useAuth();
 
   return (
     <div className="app">
@@ -55,6 +57,7 @@ function App() {
             <Route path="/contacts" element={<Contacts />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-and-conditions" element={<Terms />} />
+
             <Route 
               path="/admin" 
               element={

@@ -2,7 +2,7 @@ import React from 'react';
 import { AppBar, Container, Box, Typography, Link, IconButton, Divider, useMediaQuery, useTheme, Fade } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import FacebookIcon from '@mui/icons-material/Facebook';
-import TwitterIcon from '@mui/icons-material/Twitter';
+import XIcon from '@mui/icons-material/X';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import LogoComponent from '../common/LogoComponent';
@@ -14,7 +14,7 @@ const Footer = () => {
 
   const socialLinks = [
     { icon: <FacebookIcon />, url: 'https://facebook.com', label: 'Facebook' },
-    { icon: <TwitterIcon />, url: 'https://twitter.com', label: 'Twitter' },
+    { icon: <XIcon />, url: 'https://x.com', label: 'X' },
     { icon: <LinkedInIcon />, url: 'https://linkedin.com', label: 'LinkedIn' },
     { icon: <InstagramIcon />, url: 'https://instagram.com', label: 'Instagram' },
   ];

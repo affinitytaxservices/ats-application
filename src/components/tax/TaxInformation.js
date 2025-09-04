@@ -151,8 +151,9 @@ function TaxInformation() {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const newLocal = <span style={{ color: theme.palette.secondary.main }}>Tax Information & Resources</span>;
   return (
-    <Container maxWidth="lg">
-      <Box sx={{ my: 6 }}>
+    <Box sx={{ backgroundColor: '#ffffff', minHeight: '100vh' }}>
+      <Container maxWidth="lg">
+        <Box sx={{ py: 6 }}>
         <Fade in timeout={800}>
           <Typography 
             variant="h3" 
@@ -309,8 +310,9 @@ function TaxInformation() {
             </StyledAccordion>
           </Fade>
         ))}
-      </Box>
-    </Container>
+        </Box>
+      </Container>
+    </Box>
   );
 }
 

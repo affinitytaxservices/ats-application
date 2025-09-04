@@ -16,6 +16,7 @@ let baseTheme = createTheme({
 // Create a responsive theme with breakpoints for mobile optimization
 let theme = createTheme({
   ...baseTheme,
+  spacing: (factor) => `${0.25 * factor}rem`, // 4px base unit
   palette: {
     primary: {
       main: '#10B981', // Light green for freshness and growth
@@ -93,31 +94,43 @@ let theme = createTheme({
     h1: {
       fontFamily: '"Montserrat", "Roboto", "Helvetica", "Arial", sans-serif',
       fontWeight: 700,
+      fontSize: 'clamp(2rem, 5vw, 2.5rem)',
+      lineHeight: 1.2,
       letterSpacing: '-0.01562em',
     },
     h2: {
       fontFamily: '"Montserrat", "Roboto", "Helvetica", "Arial", sans-serif',
       fontWeight: 700,
+      fontSize: 'clamp(1.5rem, 4vw, 2rem)',
+      lineHeight: 1.3,
       letterSpacing: '-0.00833em',
     },
     h3: {
       fontFamily: '"Montserrat", "Roboto", "Helvetica", "Arial", sans-serif',
       fontWeight: 600,
+      fontSize: 'clamp(1.25rem, 3.5vw, 1.75rem)',
+      lineHeight: 1.4,
       letterSpacing: '0',
     },
     h4: {
       fontFamily: '"Montserrat", "Roboto", "Helvetica", "Arial", sans-serif',
       fontWeight: 600,
+      fontSize: 'clamp(1.125rem, 3vw, 1.5rem)',
+      lineHeight: 1.4,
       letterSpacing: '0.00735em',
     },
     h5: {
       fontFamily: '"Montserrat", "Roboto", "Helvetica", "Arial", sans-serif',
       fontWeight: 600,
+      fontSize: 'clamp(1rem, 2.5vw, 1.25rem)',
+      lineHeight: 1.5,
       letterSpacing: '0',
     },
     h6: {
       fontFamily: '"Montserrat", "Roboto", "Helvetica", "Arial", sans-serif',
       fontWeight: 500,
+      fontSize: 'clamp(0.875rem, 2vw, 1rem)',
+      lineHeight: 1.5,
       letterSpacing: '0.0075em',
     },
     subtitle1: {
@@ -133,11 +146,15 @@ let theme = createTheme({
     body1: {
       fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
       fontWeight: 400,
+      fontSize: 'clamp(0.875rem, 2vw, 1rem)',
+      lineHeight: 1.6,
       letterSpacing: '0.00938em',
     },
     body2: {
       fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
       fontWeight: 400,
+      fontSize: 'clamp(0.75rem, 1.5vw, 0.875rem)',
+      lineHeight: 1.6,
       letterSpacing: '0.01071em',
     },
     button: {
@@ -504,6 +521,51 @@ let theme = createTheme({
              color: '#10B981',
            },
          },
+      },
+    },
+    // Mobile-optimized components
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          minHeight: '48px',
+          minWidth: '48px',
+          '@media (max-width: 600px)': {
+            minHeight: '44px',
+            minWidth: '44px',
+          },
+        },
+      },
+    },
+    MuiFab: {
+      styleOverrides: {
+        root: {
+          minHeight: '56px',
+          minWidth: '56px',
+        },
+      },
+    },
+    MuiListItem: {
+      styleOverrides: {
+        root: {
+          minHeight: '48px',
+          '@media (max-width: 600px)': {
+            minHeight: '56px',
+            paddingTop: '12px',
+            paddingBottom: '12px',
+          },
+        },
+      },
+    },
+    MuiMenuItem: {
+      styleOverrides: {
+        root: {
+          minHeight: '48px',
+          '@media (max-width: 600px)': {
+            minHeight: '56px',
+            paddingTop: '16px',
+            paddingBottom: '16px',
+          },
+        },
       },
     },
   }
