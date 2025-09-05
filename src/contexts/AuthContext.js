@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
-  const login = async (email, password) => {
+  const login = async (email, _password) => {
     try {
       // Simulate API call - replace with actual authentication
       const mockUser = {

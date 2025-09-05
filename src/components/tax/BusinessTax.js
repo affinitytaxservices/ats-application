@@ -24,7 +24,7 @@ import { styled } from '@mui/material/styles';
 import { Link as RouterLink } from 'react-router-dom';
 
 // Styled components
-const StyledCard = styled(Card)(({ theme }) => ({
+const StyledCard = styled(Card)(({ theme: _theme }) => ({
   height: '100%',
   background: 'rgba(248, 250, 252, 0.95)', // Light gray background
   backdropFilter: 'blur(10px)',
