@@ -1,0 +1,251 @@
+name: Monitoring & Alerts
+
+on:
+  schedule:
+    # Run health checks every 30 minutes
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+    inputs:
+      check_type:
+        description: 'Type of monitoring check'
+        required: true
+        type: choice
+        options:
+          - 'health-check'
+          - 'performance-test'
+          - 'uptime-check'
+        default: 'health-check'
+  workflow_run:
+    workflows: ["CI/CD Pipeline"]
+    types:
+      - completed
+
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || github.event.inputs.check_type == 'health-check'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Check application health
+      id: health_check
+      run: |
+        echo "Performing application health check..."
+        
+        # Check if health.html exists
+        if [ -f "public/health.html" ]; then
+          echo "Health endpoint file found"
+          echo "health_status=healthy" >> $GITHUB_OUTPUT
+        else
+          echo "Health endpoint file not found"
+          echo "health_status=unhealthy" >> $GITHUB_OUTPUT
+        fi
+        
+        # Check critical files
+        CRITICAL_FILES=("src/App.js" "src/index.js" "package.json")
+        for file in "${CRITICAL_FILES[@]}"; do
+          if [ ! -f "$file" ]; then
+            echo "Critical file missing: $file"
+            echo "health_status=unhealthy" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+        done
+        
+        echo "All critical files present"
+    
+    - name: Test build process
+      run: |
+        echo "Testing build process..."
+        npm ci
+        npm run build:prod
+        
+        # Check if build was successful
+        if [ -d "build" ] && [ -f "build/index.html" ]; then
+          echo "Build process successful"
+        else
+          echo "Build process failed"
+          exit 1
+        fi
+    
+    - name: Send health status notification
+      if: failure()
+      run: |
+        echo "Health check failed - sending notification"
+        # Add your notification logic here (Slack, email, etc.)
+        # Example:
+        # curl -X POST -H 'Content-type: application/json' \
+        #   --data '{"text":"🚨 ATS Application health check failed!"}' \
+        #   ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  performance-test:
+    runs-on: ubuntu-latest
+    if: github.event.inputs.check_type == 'performance-test'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18.x'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Build application
+      run: npm run build:prod
+    
+    - name: Install performance testing tools
+      run: |
+        npm install -g lighthouse
+        npm install -g http-server
+    
+    - name: Run performance tests
+      run: |
+        cd build
+        http-server -p 3000 -s &
+        SERVER_PID=$!
+        sleep 10
+        
+        # Run Lighthouse performance audit
+        lighthouse http://localhost:3000 \
+          --output json \
+          --output-path lighthouse-results.json \
+          --chrome-flags="--headless --no-sandbox" \
+          --quiet
+        
+        kill $SERVER_PID
+        
+        # Parse results
+        PERFORMANCE_SCORE=$(node -e "console.log(JSON.parse(require('fs').readFileSync('lighthouse-results.json')).categories.performance.score * 100)")
+        echo "Performance Score: $PERFORMANCE_SCORE"
+        
+        if [ "$PERFORMANCE_SCORE" -lt 80 ]; then
+          echo "Performance score below threshold (80). Current: $PERFORMANCE_SCORE"
+          exit 1
+        fi
+    
+    - name: Upload performance results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: lighthouse-results
+        path: build/lighthouse-results.json
+        retention-days: 30
+
+  uptime-monitoring:
+    runs-on: ubuntu-latest
+    if: github.event.inputs.check_type == 'uptime-check'
+    
+    steps:
+    - name: Check production uptime
+      run: |
+        echo "Checking production uptime..."
+        
+        # Replace with your actual production URL
+        PRODUCTION_URL="https://www.affinitytaxservices.com"
+        
+        # Perform uptime check
+        HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$PRODUCTION_URL" || echo "000")
+        RESPONSE_TIME=$(curl -s -o /dev/null -w "%{time_total}" "$PRODUCTION_URL" || echo "0")
+        
+        echo "HTTP Status: $HTTP_STATUS"
+        echo "Response Time: ${RESPONSE_TIME}s"
+        
+        if [ "$HTTP_STATUS" != "200" ]; then
+          echo "Production site is down! HTTP Status: $HTTP_STATUS"
+          exit 1
+        fi
+        
+        # Check if response time is acceptable (less than 3 seconds)
+        if (( $(echo "$RESPONSE_TIME > 3.0" | bc -l) )); then
+          echo "Response time too slow: ${RESPONSE_TIME}s"
+          exit 1
+        fi
+        
+        echo "Uptime check passed"
+
+  deployment-notification:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_run'
+    
+    steps:
+    - name: Get workflow run info
+      id: workflow_info
+      run: |
+        echo "workflow_name=${{ github.event.workflow_run.name }}" >> $GITHUB_OUTPUT
+        echo "workflow_status=${{ github.event.workflow_run.conclusion }}" >> $GITHUB_OUTPUT
+        echo "workflow_url=${{ github.event.workflow_run.html_url }}" >> $GITHUB_OUTPUT
+    
+    - name: Send deployment notification
+      run: |
+        WORKFLOW_NAME="${{ steps.workflow_info.outputs.workflow_name }}"
+        WORKFLOW_STATUS="${{ steps.workflow_info.outputs.workflow_status }}"
+        WORKFLOW_URL="${{ steps.workflow_info.outputs.workflow_url }}"
+        
+        if [ "$WORKFLOW_STATUS" = "success" ]; then
+          EMOJI="✅"
+          MESSAGE="Deployment successful!"
+        else
+          EMOJI="❌"
+          MESSAGE="Deployment failed!"
+        fi
+        
+        echo "$EMOJI $MESSAGE"
+        echo "Workflow: $WORKFLOW_NAME"
+        echo "Status: $WORKFLOW_STATUS"
+        echo "URL: $WORKFLOW_URL"
+        
+        # Add your notification logic here
+        # Example Slack notification:
+        # curl -X POST -H 'Content-type: application/json' \
+        #   --data "{
+        #     \"text\": \"$EMOJI ATS Application - $MESSAGE\",
+        #     \"attachments\": [{
+        #       \"fields\": [
+        #         {\"title\": \"Workflow\", \"value\": \"$WORKFLOW_NAME\", \"short\": true},
+        #         {\"title\": \"Status\", \"value\": \"$WORKFLOW_STATUS\", \"short\": true},
+        #         {\"title\": \"Branch\", \"value\": \"${{ github.ref_name }}\", \"short\": true}
+        #       ],
+        #       \"actions\": [{
+        #         \"type\": \"button\",
+        #         \"text\": \"View Workflow\",
+        #         \"url\": \"$WORKFLOW_URL\"
+        #       }]
+        #     }]
+        #   }" \
+        #   ${{ secrets.SLACK_WEBHOOK_URL }}
+
+  security-monitoring:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Check for security issues
+      run: |
+        echo "Checking for potential security issues..."
+        
+        # Check for hardcoded secrets or API keys
+        if grep -r -i "api[_-]key\|secret\|password\|token" src/ --include="*.js" --include="*.jsx" | grep -v "process.env"; then
+          echo "⚠️ Potential hardcoded secrets found!"
+          # Don't fail the workflow, just warn
+        fi
+        
+        # Check for console.log in production files
+        if grep -r "console\.log" src/ --include="*.js" --include="*.jsx"; then
+          echo "⚠️ Console.log statements found in source code"
+        fi
+        
+        # Check for TODO/FIXME comments that might indicate security issues
+        if grep -r -i "todo.*security\|fixme.*security\|hack\|temporary" src/ --include="*.js" --include="*.jsx"; then
+          echo "⚠️ Security-related TODO/FIXME comments found"
+        fi
+        
+        echo "Security monitoring completed"

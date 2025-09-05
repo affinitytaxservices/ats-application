@@ -1,0 +1,144 @@
+name: Code Quality
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  code-quality:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18.x'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Run ESLint
+      run: |
+        npx eslint src --ext .js,.jsx --format json --output-file eslint-results.json || true
+        npx eslint src --ext .js,.jsx
+    
+    - name: Run Prettier check
+      run: |
+        npx prettier --check "src/**/*.{js,jsx,css,json,md}" || {
+          echo "Code formatting issues found. Run 'npm run format' to fix them."
+          exit 1
+        }
+    
+    - name: Check for console.log statements
+      run: |
+        if grep -r "console\.log" src/; then
+          echo "Warning: console.log statements found in source code"
+          echo "Please remove console.log statements before merging to production"
+          exit 1
+        else
+          echo "No console.log statements found"
+        fi
+    
+    - name: Check bundle size
+      run: |
+        npm run build:prod
+        BUNDLE_SIZE=$(du -sh build/static/js/*.js | awk '{print $1}' | head -1)
+        echo "Main bundle size: $BUNDLE_SIZE"
+        # Add bundle size analysis here if needed
+    
+    - name: Upload ESLint results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: eslint-results
+        path: eslint-results.json
+        retention-days: 7
+    
+    - name: Comment PR with code quality results
+      if: github.event_name == 'pull_request'
+      run: |
+        echo "Code quality check completed"
+        # Add logic to comment on PR with results
+
+  accessibility-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18.x'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Build application
+      run: npm run build:prod
+    
+    - name: Install accessibility testing tools
+      run: |
+        npm install -g @axe-core/cli
+        npm install -g http-server
+    
+    - name: Start local server and run accessibility tests
+      run: |
+        cd build
+        http-server -p 3000 -s &
+        SERVER_PID=$!
+        sleep 5
+        
+        # Run axe accessibility tests
+        axe http://localhost:3000 --exit || {
+          echo "Accessibility issues found"
+          kill $SERVER_PID
+          exit 1
+        }
+        
+        kill $SERVER_PID
+        echo "Accessibility tests passed"
+
+  performance-check:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18.x'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Build and analyze bundle
+      run: |
+        npm run build:prod
+        
+        # Check for large files
+        find build/static -name "*.js" -size +500k -exec echo "Warning: Large JavaScript file found: {}" \;
+        find build/static -name "*.css" -size +100k -exec echo "Warning: Large CSS file found: {}" \;
+        
+        # Display build statistics
+        echo "Build completed. File sizes:"
+        du -sh build/static/js/*.js
+        du -sh build/static/css/*.css
+    
+    - name: Upload build analysis
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-analysis
+        path: build/
+        retention-days: 7

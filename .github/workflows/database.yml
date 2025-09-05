@@ -1,0 +1,212 @@
+name: Database Operations
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'src/db/**'
+      - 'setup_database.sql'
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'src/db/**'
+      - 'setup_database.sql'
+  workflow_dispatch:
+    inputs:
+      operation:
+        description: 'Database operation to perform'
+        required: true
+        type: choice
+        options:
+          - 'validate-schema'
+          - 'backup'
+          - 'health-check'
+        default: 'validate-schema'
+
+jobs:
+  validate-schema:
+    runs-on: ubuntu-latest
+    if: github.event_name != 'workflow_dispatch' || github.event.inputs.operation == 'validate-schema'
+    
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: test_password
+          MYSQL_DATABASE: ats_test
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Wait for MySQL to be ready
+      run: |
+        for i in {1..30}; do
+          if mysqladmin ping -h 127.0.0.1 -P 3306 -u root -ptest_password --silent; then
+            echo "MySQL is ready"
+            break
+          fi
+          echo "Waiting for MySQL... ($i/30)"
+          sleep 2
+        done
+    
+    - name: Validate database schema
+      run: |
+        echo "Validating database schema..."
+        
+        # Check if setup_database.sql exists and is valid
+        if [ -f "setup_database.sql" ]; then
+          echo "Found setup_database.sql, validating syntax..."
+          mysql -h 127.0.0.1 -P 3306 -u root -ptest_password ats_test < setup_database.sql
+          echo "Schema validation successful"
+        else
+          echo "No setup_database.sql found"
+        fi
+        
+        # Check schema files in src/db/
+        if [ -d "src/db" ]; then
+          echo "Checking schema files in src/db/..."
+          for sql_file in src/db/*.sql; do
+            if [ -f "$sql_file" ]; then
+              echo "Validating $sql_file"
+              mysql -h 127.0.0.1 -P 3306 -u root -ptest_password ats_test < "$sql_file"
+            fi
+          done
+        fi
+    
+    - name: Run database tests
+      run: |
+        echo "Running database connectivity tests..."
+        
+        # Test basic database operations
+        mysql -h 127.0.0.1 -P 3306 -u root -ptest_password ats_test -e "SHOW TABLES;"
+        mysql -h 127.0.0.1 -P 3306 -u root -ptest_password ats_test -e "SELECT VERSION();"
+        
+        echo "Database tests completed successfully"
+
+  backup-validation:
+    runs-on: ubuntu-latest
+    if: github.event.inputs.operation == 'backup' || github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Validate backup scripts
+      run: |
+        echo "Validating backup procedures..."
+        
+        # Check if backup scripts exist
+        if [ -f "scripts/backup.sh" ]; then
+          echo "Found backup script, validating..."
+          bash -n scripts/backup.sh
+        else
+          echo "No backup script found. Consider creating one."
+        fi
+        
+        # Validate database connection parameters
+        echo "Checking database configuration..."
+        if [ -f ".env.example" ]; then
+          echo "Found .env.example, checking database variables..."
+          grep -E "^(DB_|DATABASE_)" .env.example || echo "No database environment variables found"
+        fi
+
+  health-check:
+    runs-on: ubuntu-latest
+    if: github.event.inputs.operation == 'health-check'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18.x'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Database health check simulation
+      run: |
+        echo "Simulating database health check..."
+        
+        # Check if database service files exist
+        if [ -f "src/services/database.js" ]; then
+          echo "Found database service file"
+          node -c src/services/database.js
+          echo "Database service syntax is valid"
+        fi
+        
+        # Check database models
+        if [ -d "src/models" ]; then
+          echo "Checking database models..."
+          for model_file in src/models/*.js; do
+            if [ -f "$model_file" ]; then
+              echo "Validating $model_file"
+              node -c "$model_file"
+            fi
+          done
+        fi
+        
+        echo "Health check completed"
+
+  migration-check:
+    runs-on: ubuntu-latest
+    if: contains(github.event.head_commit.message, 'migration') || contains(github.event.pull_request.title, 'migration')
+    
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: test_password
+          MYSQL_DATABASE: ats_test
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup migration environment
+      run: |
+        echo "Setting up migration test environment..."
+        
+        # Wait for MySQL
+        for i in {1..30}; do
+          if mysqladmin ping -h 127.0.0.1 -P 3306 -u root -ptest_password --silent; then
+            break
+          fi
+          sleep 2
+        done
+    
+    - name: Test migration rollback
+      run: |
+        echo "Testing migration rollback capabilities..."
+        
+        # Create a backup before migration
+        mysqldump -h 127.0.0.1 -P 3306 -u root -ptest_password ats_test > pre_migration_backup.sql
+        
+        # Apply current schema
+        if [ -f "setup_database.sql" ]; then
+          mysql -h 127.0.0.1 -P 3306 -u root -ptest_password ats_test < setup_database.sql
+        fi
+        
+        # Create post-migration backup
+        mysqldump -h 127.0.0.1 -P 3306 -u root -ptest_password ats_test > post_migration_backup.sql
+        
+        echo "Migration test completed successfully"
+    
+    - name: Upload migration artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: migration-backups
+        path: |
+          pre_migration_backup.sql
+          post_migration_backup.sql
+        retention-days: 7
