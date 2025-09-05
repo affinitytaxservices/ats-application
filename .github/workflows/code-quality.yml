@@ -1,0 +1,143 @@
+# Code Quality and Linting Workflow
+# Runs ESLint, Prettier, and code quality checks on pull requests
+
+name: Code Quality Checks
+
+on:
+  pull_request:
+    branches: [ "main", "develop" ]
+  push:
+    branches: [ "develop" ]
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '18.x'
+
+jobs:
+  code-quality:
+    runs-on: ubuntu-latest
+    name: Code Quality Analysis
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: 🔧 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+    
+    - name: 📦 Install dependencies
+      run: npm ci --prefer-offline --no-audit
+    
+    - name: 🔍 Run ESLint
+      run: |
+        echo "Running ESLint checks..."
+        npx eslint src/ --ext .js,.jsx,.ts,.tsx --format=json --output-file eslint-report.json || true
+        npx eslint src/ --ext .js,.jsx,.ts,.tsx
+    
+    - name: 🎨 Check Prettier formatting
+      run: |
+        echo "Checking code formatting..."
+        npx prettier --check "src/**/*.{js,jsx,ts,tsx,json,css,md}"
+    
+    - name: 📊 Upload ESLint report
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: eslint-report
+        path: eslint-report.json
+        retention-days: 7
+    
+    - name: 💬 Comment PR with results
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const fs = require('fs');
+          try {
+            const eslintReport = JSON.parse(fs.readFileSync('eslint-report.json', 'utf8'));
+            const totalErrors = eslintReport.reduce((sum, file) => sum + file.errorCount, 0);
+            const totalWarnings = eslintReport.reduce((sum, file) => sum + file.warningCount, 0);
+            
+            const comment = `## 🔍 Code Quality Report\n\n` +
+              `- **ESLint Errors:** ${totalErrors}\n` +
+              `- **ESLint Warnings:** ${totalWarnings}\n\n` +
+              (totalErrors > 0 ? '❌ Please fix the ESLint errors before merging.' : '✅ No ESLint errors found!');
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+          } catch (error) {
+            console.log('Could not read ESLint report:', error.message);
+          }
+
+  dependency-check:
+    runs-on: ubuntu-latest
+    name: Dependency Vulnerability Check
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+    
+    - name: 🔧 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+    
+    - name: 📦 Install dependencies
+      run: npm ci --prefer-offline
+    
+    - name: 🛡️ Run security audit
+      run: |
+        echo "Running npm security audit..."
+        npm audit --audit-level moderate --json > audit-report.json || true
+        npm audit --audit-level moderate
+    
+    - name: 📊 Upload audit report
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: security-audit-report
+        path: audit-report.json
+        retention-days: 30
+
+  build-check:
+    runs-on: ubuntu-latest
+    name: Build Verification
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+    
+    - name: 🔧 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+    
+    - name: 📦 Install dependencies
+      run: npm ci --prefer-offline --no-audit
+    
+    - name: 🏗️ Test build
+      run: |
+        echo "Testing production build..."
+        NODE_OPTIONS="--max-old-space-size=4096" npm run build
+      env:
+        CI: false
+        GENERATE_SOURCEMAP: false
+        ESLINT_NO_DEV_ERRORS: true
+    
+    - name: 📦 Archive build for review
+      uses: actions/upload-artifact@v3
+      with:
+        name: pr-build-files
+        path: build/
+        retention-days: 3

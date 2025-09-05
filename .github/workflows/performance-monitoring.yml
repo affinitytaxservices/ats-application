@@ -1,0 +1,261 @@
+# Performance Monitoring Workflow
+# Tracks build performance, bundle size, and lighthouse scores
+
+name: Performance Monitoring
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  schedule:
+    # Run performance checks daily at 2 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '18.x'
+
+jobs:
+  bundle-analysis:
+    runs-on: ubuntu-latest
+    name: Bundle Size Analysis
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: 🔧 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+    
+    - name: 📦 Install dependencies
+      run: npm ci --prefer-offline --no-audit
+    
+    - name: 🏗️ Build application
+      run: |
+        echo "Building application for bundle analysis..."
+        NODE_OPTIONS="--max-old-space-size=4096" npm run build
+      env:
+        CI: false
+        GENERATE_SOURCEMAP: true
+        ESLINT_NO_DEV_ERRORS: true
+    
+    - name: 📊 Analyze bundle size
+      run: |
+        echo "Analyzing bundle sizes..."
+        
+        # Install bundle analyzer
+        npm install --no-save webpack-bundle-analyzer
+        
+        # Generate bundle report
+        npx webpack-bundle-analyzer build/static/js/*.js --report --mode static --report-filename ../bundle-report.html
+        
+        # Calculate total bundle size
+        total_size=$(du -sh build/ | cut -f1)
+        js_size=$(du -sh build/static/js/ | cut -f1)
+        css_size=$(du -sh build/static/css/ | cut -f1)
+        
+        echo "Bundle Size Report:" > bundle-size-report.txt
+        echo "==================" >> bundle-size-report.txt
+        echo "Total Build Size: $total_size" >> bundle-size-report.txt
+        echo "JavaScript Size: $js_size" >> bundle-size-report.txt
+        echo "CSS Size: $css_size" >> bundle-size-report.txt
+        echo "" >> bundle-size-report.txt
+        echo "Detailed file breakdown:" >> bundle-size-report.txt
+        find build/static -name "*.js" -o -name "*.css" | xargs ls -lh >> bundle-size-report.txt
+        
+        cat bundle-size-report.txt
+    
+    - name: 📤 Upload bundle analysis
+      uses: actions/upload-artifact@v3
+      with:
+        name: bundle-analysis
+        path: |
+          bundle-report.html
+          bundle-size-report.txt
+          build/
+        retention-days: 30
+    
+    - name: 💬 Comment bundle size on PR
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const fs = require('fs');
+          try {
+            const report = fs.readFileSync('bundle-size-report.txt', 'utf8');
+            const comment = `## 📦 Bundle Size Report\n\n\`\`\`\n${report}\`\`\`\n\n` +
+              `📊 [View detailed bundle analysis](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+          } catch (error) {
+            console.log('Could not read bundle report:', error.message);
+          }
+
+  build-performance:
+    runs-on: ubuntu-latest
+    name: Build Performance Tracking
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+    
+    - name: 🔧 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+    
+    - name: 📦 Install dependencies (timed)
+      run: |
+        echo "Starting dependency installation..."
+        start_time=$(date +%s)
+        npm ci --prefer-offline --no-audit
+        end_time=$(date +%s)
+        install_duration=$((end_time - start_time))
+        echo "INSTALL_TIME=$install_duration" >> $GITHUB_ENV
+        echo "Dependencies installed in ${install_duration} seconds"
+    
+    - name: 🏗️ Build application (timed)
+      run: |
+        echo "Starting application build..."
+        start_time=$(date +%s)
+        NODE_OPTIONS="--max-old-space-size=4096" npm run build
+        end_time=$(date +%s)
+        build_duration=$((end_time - start_time))
+        echo "BUILD_TIME=$build_duration" >> $GITHUB_ENV
+        echo "Build completed in ${build_duration} seconds"
+      env:
+        CI: false
+        GENERATE_SOURCEMAP: false
+        ESLINT_NO_DEV_ERRORS: true
+    
+    - name: 📊 Generate performance report
+      run: |
+        echo "Performance Report - $(date)" > performance-report.txt
+        echo "================================" >> performance-report.txt
+        echo "" >> performance-report.txt
+        echo "⏱️ Build Timings:" >> performance-report.txt
+        echo "  - Dependency Installation: ${INSTALL_TIME} seconds" >> performance-report.txt
+        echo "  - Application Build: ${BUILD_TIME} seconds" >> performance-report.txt
+        echo "  - Total Time: $((INSTALL_TIME + BUILD_TIME)) seconds" >> performance-report.txt
+        echo "" >> performance-report.txt
+        echo "💾 System Resources:" >> performance-report.txt
+        echo "  - Available Memory: $(free -h | grep '^Mem:' | awk '{print $7}')" >> performance-report.txt
+        echo "  - CPU Cores: $(nproc)" >> performance-report.txt
+        echo "  - Node.js Version: $(node --version)" >> performance-report.txt
+        echo "  - NPM Version: $(npm --version)" >> performance-report.txt
+        
+        cat performance-report.txt
+    
+    - name: 📤 Upload performance report
+      uses: actions/upload-artifact@v3
+      with:
+        name: performance-report
+        path: performance-report.txt
+        retention-days: 90
+
+  lighthouse-audit:
+    runs-on: ubuntu-latest
+    name: Lighthouse Performance Audit
+    needs: bundle-analysis
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+    
+    - name: 📦 Download build artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: bundle-analysis
+        path: .
+    
+    - name: 🔧 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+    
+    - name: 🌐 Install and start local server
+      run: |
+        npm install -g serve
+        serve -s build -l 3000 &
+        sleep 5
+        echo "Local server started on http://localhost:3000"
+    
+    - name: 🔍 Run Lighthouse audit
+      run: |
+        npm install -g @lhci/cli
+        
+        # Create Lighthouse CI config
+        cat > lighthouserc.json << 'EOF'
+        {
+          "ci": {
+            "collect": {
+              "url": ["http://localhost:3000"],
+              "numberOfRuns": 3
+            },
+            "assert": {
+              "assertions": {
+                "categories:performance": ["warn", {"minScore": 0.8}],
+                "categories:accessibility": ["error", {"minScore": 0.9}],
+                "categories:best-practices": ["warn", {"minScore": 0.8}],
+                "categories:seo": ["warn", {"minScore": 0.8}]
+              }
+            },
+            "upload": {
+              "target": "temporary-public-storage"
+            }
+          }
+        }
+        EOF
+        
+        # Run Lighthouse CI
+        lhci collect --config=lighthouserc.json
+        lhci assert --config=lighthouserc.json || true
+        lhci upload --config=lighthouserc.json || true
+    
+    - name: 📊 Generate Lighthouse summary
+      run: |
+        echo "Lighthouse Audit Summary" > lighthouse-summary.txt
+        echo "========================" >> lighthouse-summary.txt
+        echo "" >> lighthouse-summary.txt
+        
+        if [ -d ".lighthouseci" ]; then
+          # Extract scores from the latest report
+          latest_report=$(find .lighthouseci -name "*.json" | head -1)
+          if [ -f "$latest_report" ]; then
+            performance=$(node -e "console.log(Math.round(require('$latest_report').categories.performance.score * 100))")
+            accessibility=$(node -e "console.log(Math.round(require('$latest_report').categories.accessibility.score * 100))")
+            best_practices=$(node -e "console.log(Math.round(require('$latest_report').categories['best-practices'].score * 100))")
+            seo=$(node -e "console.log(Math.round(require('$latest_report').categories.seo.score * 100))")
+            
+            echo "📊 Lighthouse Scores:" >> lighthouse-summary.txt
+            echo "  - Performance: ${performance}/100" >> lighthouse-summary.txt
+            echo "  - Accessibility: ${accessibility}/100" >> lighthouse-summary.txt
+            echo "  - Best Practices: ${best_practices}/100" >> lighthouse-summary.txt
+            echo "  - SEO: ${seo}/100" >> lighthouse-summary.txt
+          fi
+        else
+          echo "⚠️ Lighthouse reports not found" >> lighthouse-summary.txt
+        fi
+        
+        cat lighthouse-summary.txt
+    
+    - name: 📤 Upload Lighthouse reports
+      uses: actions/upload-artifact@v3
+      with:
+        name: lighthouse-reports
+        path: |
+          .lighthouseci/
+          lighthouse-summary.txt
+        retention-days: 30
