@@ -36,6 +36,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, _password) => {
     try {
+      // TODO: Implement actual password validation with: _password
       // Simulate API call - replace with actual authentication
       const mockUser = {
         id: 1,

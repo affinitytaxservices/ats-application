@@ -32,7 +32,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 
 // Styled components
-const AnimatedTypography = styled(Typography)(({ theme: _theme }) => ({
+const AnimatedTypography = styled(Typography)(() => ({
   overflow: 'hidden',
   fontFamily: '"Montserrat", sans-serif',
   fontWeight: 700,

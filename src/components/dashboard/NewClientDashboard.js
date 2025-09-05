@@ -975,7 +975,7 @@ function NewClientDashboard() {
               
               {notifications.length > 0 ? (
                 <List sx={{ '& .MuiListItem-root': { px: 0 } }}>
-                  {notifications.map((notification, _index) => (
+                  {notifications.map((notification) => (
                     <ListItem
                       key={notification.id}
                       sx={{

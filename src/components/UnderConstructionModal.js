@@ -5,6 +5,7 @@ import { scaleUp } from '../styles/animations';
 
 const UnderConstructionModal = ({ open, onClose }) => {
   const theme = useTheme();
+  
   return (
     <Dialog
       open={open}

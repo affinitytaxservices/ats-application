@@ -92,7 +92,7 @@ export const deleteUser = async (id) => {
  * @param {string} password - User password (plain text)
  * @returns {Promise<User|null>} User object if authenticated, null otherwise
  */
-export const authenticateUser = async (email, password) => {
+export const authenticateUser = async (email, _password) => {
   // In a real implementation, you would:
   // 1. Get the user by email
   // 2. Compare the hashed password
@@ -107,7 +107,8 @@ export const authenticateUser = async (email, password) => {
   
   // In a real implementation, you would use a proper password comparison
   // like bcrypt.compare(password, user.password)
-  const passwordMatches = true; // Placeholder
+  // TODO: Implement actual password validation using the password parameter
+  const passwordMatches = true; // Placeholder - should validate: password
   
   return passwordMatches ? user : null;
 };

@@ -30,7 +30,7 @@ import {
 import { styled } from '@mui/material/styles';
 
 // Styled components
-const StyledCard = styled(Card)(({ theme: _theme }) => ({
+const StyledCard = styled(Card)(() => ({
   height: '100%',
   background: 'rgba(248, 250, 252, 0.95)', // Light gray background
   backdropFilter: 'blur(10px)',
