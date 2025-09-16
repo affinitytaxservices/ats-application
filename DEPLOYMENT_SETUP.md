@@ -239,20 +239,6 @@ The deployment is triggered automatically when:
 - All tests pass successfully
 - Build completes without errors
 
-### Manual Deployment
-To trigger a manual deployment:
-1. Go to your repository on GitHub
-2. Navigate to Actions tab
-3. Select "ATS CI/CD Pipeline"
-4. Click "Run workflow"
-
-### Rollback Process
-To rollback to a previous version:
-1. Go to Actions tab
-2. Select "ATS CI/CD Pipeline"
-3. Click "Run workflow"
-4. The rollback job will restore the previous release
-
 ## 🔍 Monitoring and Troubleshooting
 
 ### Check Application Status

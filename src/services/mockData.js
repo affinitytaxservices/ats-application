@@ -1,4 +1,4 @@
- // Mock data for Affinity Tax Services application
+// Mock data for Affinity Tax Services application
 // This file provides fallback data when API calls fail
 
 // Mock dashboard statistics for admin
@@ -101,7 +101,7 @@ export const clientDashboardData = {
     { id: 201, title: 'Tax Return Ready for Review', message: 'Your 2022 tax return has been prepared and is ready for review', priority: 'info', createdAt: '2023-07-20T09:30:15Z', isRead: false },
     { id: 202, title: 'Document Uploaded', message: 'New tax document uploaded: W-2 Form 2022', priority: 'success', createdAt: '2023-02-10T09:45:12Z', isRead: true },
     { id: 203, title: 'Payment Reminder', message: 'Reminder: Quarterly estimated tax payment due in 5 days', priority: 'warning', createdAt: '2023-07-10T08:15:30Z', isRead: true },
-    { id: 204, title: 'Additional Information Required', message: 'Your tax preparer has requested additional information', priority: 'high', createdAt: '2023-06-28T14:22:45Z', isRead: false },
+    { id: 204, title: 'Additional Information Required', message: 'Additional information is required for your tax return', priority: 'high', createdAt: '2023-06-28T14:22:45Z', isRead: false },
     { id: 205, title: 'Refund Processed', message: 'Tax refund of $1,250 has been processed', priority: 'success', createdAt: '2023-05-15T11:10:22Z', isRead: true }
   ],
   

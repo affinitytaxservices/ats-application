@@ -3,8 +3,24 @@ import { Container, Typography, Box, Paper, Divider } from '@mui/material';
 
 function PrivacyPolicy() {
   return (
-    <Container maxWidth="lg" sx={{ py: 6 }}>
-      <Paper elevation={3} sx={{ p: 6, borderRadius: 2 }}>
+    <Box sx={{ 
+      minHeight: '100vh', 
+      background: 'rgba(248, 250, 252, 0.95)',
+      backdropFilter: 'blur(10px)',
+      position: 'relative',
+      '&::before': {
+        content: '""',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: 'linear-gradient(135deg, #1E3A8A 0%, #10B981 100%)',
+        zIndex: -1
+      }
+    }}>
+      <Container maxWidth="lg" sx={{ py: 6 }}>
+        <Paper elevation={3} sx={{ p: 6, borderRadius: 2, background: 'rgba(255, 255, 255, 0.95)', backdropFilter: 'blur(10px)' }}>
         <Box sx={{ mb: 4, textAlign: 'center' }}>
           <Typography 
             variant="h2" 
@@ -86,8 +102,9 @@ function PrivacyPolicy() {
             Last updated: {new Date().toLocaleDateString()}
           </Typography>
         </Box>
-      </Paper>
-    </Container>
+        </Paper>
+      </Container>
+    </Box>
   );
 }
 

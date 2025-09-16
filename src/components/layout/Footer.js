@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppBar, Container, Box, Typography, Link, IconButton, Divider, useMediaQuery, useTheme, Fade } from '@mui/material';
+import { AppBar, Container, Box, Typography, Link, IconButton, Button, Divider, useMediaQuery, useTheme, Fade } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import XIcon from '@mui/icons-material/X';
@@ -82,25 +82,28 @@ const Footer = () => {
                 }}
               >
                 {socialLinks.map((social, index) => (
-                  <IconButton 
+                  <Button 
                     key={index} 
-                    component="a" 
-                    href={social.url} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
+                    onClick={() => window.open(social.url, '_blank', 'noopener,noreferrer')}
                     aria-label={social.label}
                     sx={{
                       color: 'rgba(255, 255, 255, 0.7)',
                       mr: 1,
+                      minWidth: 'auto',
+                      width: 48,
+                      height: 48,
+                      borderRadius: '50%',
+                      padding: 0,
                       transition: 'all 0.3s ease',
                       '&:hover': {
                         color: '#10B981',
-                        transform: 'translateY(-3px)'
+                        transform: 'translateY(-3px)',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)'
                       }
                     }}
                   >
                     {social.icon}
-                  </IconButton>
+                  </Button>
                 ))}
               </Box>
             </Box>

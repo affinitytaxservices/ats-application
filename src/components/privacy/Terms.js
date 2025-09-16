@@ -4,12 +4,30 @@ import { fadeIn, slideUp } from '../../styles/animations';
 
 function Terms() {
   return (
-    <Container maxWidth="lg" sx={{ py: 6 }}>
-      <Paper 
+    <Box sx={{ 
+      minHeight: '100vh', 
+      background: 'rgba(248, 250, 252, 0.95)',
+      backdropFilter: 'blur(10px)',
+      position: 'relative',
+      '&::before': {
+        content: '""',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: 'linear-gradient(135deg, #1E3A8A 0%, #10B981 100%)',
+        zIndex: -1
+      }
+    }}>
+      <Container maxWidth="lg" sx={{ py: 6 }}>
+        <Paper 
         elevation={3} 
         sx={{ 
           p: { xs: 3, md: 6 }, 
           borderRadius: 2,
+          background: 'rgba(255, 255, 255, 0.95)',
+          backdropFilter: 'blur(10px)',
           boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
           overflow: 'hidden',
           position: 'relative',
@@ -20,7 +38,7 @@ function Terms() {
             left: 0,
             width: '100%',
             height: '5px',
-            background: 'linear-gradient(90deg, #2E5077 0%, #38B2AC 100%)',
+            background: 'linear-gradient(90deg, #1E3A8A 0%, #10B981 100%)',
           },
           animation: `${fadeIn} 0.8s ease-out`
         }}
@@ -123,8 +141,9 @@ function Terms() {
             Last updated: {new Date().toLocaleDateString()}
           </Typography>
         </Box>
-      </Paper>
-    </Container>
+        </Paper>
+      </Container>
+    </Box>
   );
 }
 

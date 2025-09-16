@@ -18,6 +18,11 @@ import RefundStatus from './components/RefundStatus';
 import TaxInformation from './components/tax/TaxInformation';
 import IndividualTax from './components/tax/IndividualTax';
 import BusinessTax from './components/tax/BusinessTax';
+import AboutUs from './components/about/AboutUs';
+import TaxPlanning from './components/tax/TaxPlanning';
+
+
+
 import Contacts from './components/privacy/Contacts';
 import PrivacyPolicy from './components/privacy/PrivacyPolicy';
 import Terms from './components/privacy/Terms';
@@ -52,6 +57,11 @@ function App() {
             <Route path="/tax-information" element={<TaxInformation />} />
             <Route path="/individual-tax" element={<IndividualTax />} />
             <Route path="/business-tax" element={<BusinessTax />} />
+            <Route path="/about" element={<AboutUs />} />
+            <Route path="/tax-planning" element={<TaxPlanning />} />
+
+
+
             <Route path="/contacts" element={<Contacts />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-and-conditions" element={<Terms />} />

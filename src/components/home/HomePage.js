@@ -359,7 +359,7 @@ const HomePage = () => {
   return (
     <Box sx={{ 
       minHeight: '100vh',
-      background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 58, 138, 0.9) 100%)',
+      background: 'linear-gradient(135deg, #1E3A8A 0%, #10B981 100%)',
       color: '#ffffff',
       pt: { xs: 8, md: 12 },
       pb: { xs: 10, md: 15 }

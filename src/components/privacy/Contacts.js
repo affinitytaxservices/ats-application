@@ -270,14 +270,24 @@ function Contacts() {
                   </Avatar>
                   <Box>
                     <Typography variant="subtitle2" sx={{ color: 'rgba(255,255,255,0.7)' }}>Email</Typography>
-                    <Typography component="a" href="mailto:info@affinitytaxservices.com" sx={{ 
-                      color: 'white', 
-                      textDecoration: 'none',
-                      fontWeight: 500,
-                      '&:hover': { textDecoration: 'underline' } 
-                    }}>
+                    <Button
+                      onClick={() => window.location.href = 'mailto:info@affinitytaxservices.com'}
+                      sx={{ 
+                        color: 'white', 
+                        textDecoration: 'none',
+                        fontWeight: 500,
+                        padding: 0,
+                        minWidth: 'auto',
+                        textTransform: 'none',
+                        justifyContent: 'flex-start',
+                        '&:hover': { 
+                          textDecoration: 'underline',
+                          backgroundColor: 'transparent'
+                        } 
+                      }}
+                    >
                       info@affinitytaxservices.com
-                    </Typography>
+                    </Button>
                   </Box>
                 </Box>
                 
@@ -292,14 +302,24 @@ function Contacts() {
                   </Avatar>
                   <Box>
                     <Typography variant="subtitle2" sx={{ color: 'rgba(255,255,255,0.7)' }}>Phone</Typography>
-                    <Typography component="a" href="tel:+1123456" sx={{ 
-                      color: 'white', 
-                      textDecoration: 'none',
-                      fontWeight: 500,
-                      '&:hover': { textDecoration: 'underline' } 
-                    }}>
+                    <Button
+                      onClick={() => window.location.href = 'tel:+1123456'}
+                      sx={{ 
+                        color: 'white', 
+                        textDecoration: 'none',
+                        fontWeight: 500,
+                        padding: 0,
+                        minWidth: 'auto',
+                        textTransform: 'none',
+                        justifyContent: 'flex-start',
+                        '&:hover': { 
+                          textDecoration: 'underline',
+                          backgroundColor: 'transparent'
+                        } 
+                      }}
+                    >
                       (123) 456-7890
-                    </Typography>
+                    </Button>
                   </Box>
                 </Box>
                 

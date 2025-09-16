@@ -118,9 +118,7 @@ const RefundStatus = () => {
               <Button
                 variant="contained"
                 endIcon={<LaunchIcon />}
-                href={stateRefundLinks.federal.url}
-                target="_blank"
-                rel="noopener noreferrer"
+                onClick={() => window.open(stateRefundLinks.federal.url, '_blank', 'noopener,noreferrer')}
                 sx={{ 
                   justifyContent: 'flex-start',
                   backgroundColor: '#1E3A8A', // Updated to primary color
@@ -207,9 +205,7 @@ const RefundStatus = () => {
                     <Button
                       variant="outlined"
                       endIcon={<LaunchIcon />}
-                      href={state.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      onClick={() => window.open(state.url, '_blank', 'noopener,noreferrer')}
                       sx={{
                         borderColor: '#10B981', // Updated to secondary color
                         color: '#1E293B',

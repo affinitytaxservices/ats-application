@@ -21,7 +21,8 @@
  * @property {Date} updatedAt - Last update date
  */
 
-import { query, getById, insert, update, remove } from '../services/database';
+// Database imports removed for client-side compatibility
+// import { query, getById, insert, update, remove } from '../services/database';
 
 const TABLE_NAME = 'tax_returns';
 

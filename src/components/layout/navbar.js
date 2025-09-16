@@ -27,6 +27,10 @@ import UploadFileIcon from '@mui/icons-material/UploadFile';
 import InfoIcon from '@mui/icons-material/Info';
 import LoginIcon from '@mui/icons-material/Login';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import EmailIcon from '@mui/icons-material/Email';
+import StarIcon from '@mui/icons-material/Star';
+import SecurityIcon from '@mui/icons-material/Security';
 
 import LogoutIcon from '@mui/icons-material/Logout';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -165,12 +169,54 @@ function Navbar() {
       <List sx={{ px: 2 }}>
         <ListItem 
           button 
-          onClick={() => handleNavigation('/tax-information')} 
+          onClick={() => handleNavigation('/about')} 
           sx={{
             ...drawerItemStyle,
-            backgroundColor: isActive('/tax-information') ? 'rgba(16, 185, 129, 0.15)' : 'transparent',
+            backgroundColor: isActive('/about') ? 'rgba(16, 185, 129, 0.15)' : 'transparent',
           }}
         >
+          <ListItemIcon><SecurityIcon sx={{ color: '#10B981' }} /></ListItemIcon>
+          <ListItemText 
+            primary="About Us" 
+            sx={{ 
+              '& .MuiListItemText-primary': { 
+                color: '#ffffff', 
+                fontWeight: isActive('/about') ? 600 : 400,
+                fontFamily: '"Montserrat", sans-serif',
+              } 
+            }} 
+          />
+        </ListItem>
+        <ListItem 
+          button 
+          onClick={() => handleNavigation('/tax-planning')} 
+          sx={{
+            ...drawerItemStyle,
+            backgroundColor: isActive('/tax-planning') ? 'rgba(16, 185, 129, 0.15)' : 'transparent',
+          }}
+        >
+          <ListItemIcon><TrendingUpIcon sx={{ color: '#10B981' }} /></ListItemIcon>
+          <ListItemText 
+            primary="Tax Planning" 
+            sx={{ 
+              '& .MuiListItemText-primary': { 
+                color: '#ffffff', 
+                fontWeight: isActive('/tax-planning') ? 600 : 400,
+                fontFamily: '"Montserrat", sans-serif',
+              } 
+            }} 
+          />
+        </ListItem>
+
+
+         <ListItem 
+           button 
+           onClick={() => handleNavigation('/tax-information')} 
+           sx={{
+             ...drawerItemStyle,
+             backgroundColor: isActive('/tax-information') ? 'rgba(16, 185, 129, 0.15)' : 'transparent',
+           }}
+         >
           <ListItemIcon><InfoIcon sx={{ color: '#10B981' }} /></ListItemIcon>
           <ListItemText 
             primary="Tax Resources" 
@@ -183,6 +229,7 @@ function Navbar() {
             }} 
           />
         </ListItem>
+
         
         {isAuthenticated ? (
           <>
@@ -374,9 +421,62 @@ function Navbar() {
                       borderBottom: '3px solid #3B82F6'
                     }
                   }}
-                >
-                  📊 Tax Hub
+                >📊 Tax Hub
                 </Button>
+                <Button
+                  color="inherit"
+                  component={RouterLink}
+                  to="/about"
+                  sx={{
+                    ...commonButtonStyle,
+                    ml: 2,
+                    background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(34, 197, 94, 0.1))',
+                    backdropFilter: 'blur(10px)',
+                    color: '#10B981',
+                    border: '1px solid rgba(16, 185, 129, 0.3)',
+                    borderRadius: '12px',
+                    boxShadow: '0 4px 15px rgba(16, 185, 129, 0.1)',
+                    borderBottom: isActive('/about') ? '2px solid #10B981' : '2px solid transparent',
+                    '&:hover': {
+                      background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(34, 197, 94, 0.2))',
+                      backdropFilter: 'blur(15px)',
+                      transform: 'translateY(-2px) scale(1.02)',
+                      borderBottom: '2px solid #10B981',
+                      color: '#059669',
+                      boxShadow: '0 8px 25px rgba(16, 185, 129, 0.2)'
+                    }
+                  }}
+                >
+                  About Us
+                </Button>
+                <Button
+                   color="inherit"
+                   component={RouterLink}
+                   to="/tax-planning"
+                   sx={{
+                     ...commonButtonStyle,
+                     ml: 2,
+                     background: 'rgba(16, 185, 129, 0.1)',
+                     backdropFilter: 'blur(10px)',
+                     color: '#10B981',
+                     border: '1px solid rgba(16, 185, 129, 0.3)',
+                     borderRadius: '12px',
+                     boxShadow: '0 4px 15px rgba(16, 185, 129, 0.1)',
+                     borderBottom: isActive('/tax-planning') ? '2px solid #10B981' : '2px solid transparent',
+                     '&:hover': {
+                       background: 'rgba(16, 185, 129, 0.2)',
+                       backdropFilter: 'blur(15px)',
+                       transform: 'translateY(-2px) scale(1.02)',
+                       borderBottom: '2px solid #10B981',
+                       color: '#059669',
+                       boxShadow: '0 8px 25px rgba(16, 185, 129, 0.2)'
+                     }
+                   }}
+                 >
+                   Tax Planning
+                 </Button>
+
+
                 {/* Contact Us, Privacy Policy, and Terms links removed from header */}
                 <Menu
                   anchorEl={resourcesAnchorEl}
@@ -478,6 +578,7 @@ function Navbar() {
                     </ListItemIcon>
                     🏢 Business Tax
                   </MenuItem>
+
                 </Menu>
               </Box>
             )}
