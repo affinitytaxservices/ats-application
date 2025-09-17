@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppBar, Container, Box, Typography, Link, IconButton, Button, Divider, useMediaQuery, useTheme, Fade } from '@mui/material';
+import { AppBar, Container, Box, Typography, Link, IconButton, Divider, useMediaQuery, useTheme, Fade, keyframes } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import XIcon from '@mui/icons-material/X';
@@ -11,6 +11,27 @@ const Footer = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const currentYear = new Date().getFullYear();
+
+  // Animation keyframes for the footer text
+  const slideUpFade = keyframes`
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  `;
+
+  const heartBeat = keyframes`
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+  `;
 
   const socialLinks = [
     { icon: <FacebookIcon />, url: 'https://facebook.com', label: 'Facebook' },
@@ -35,10 +56,11 @@ const Footer = () => {
         component="footer"
         sx={{
           mt: 'auto',
-          py: 1.5,
-          background: 'linear-gradient(180deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 58, 138, 0.95) 100%)',
-          backdropFilter: 'blur(10px)',
-          borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+          py: 3,
+          background: 'rgba(249, 250, 251, 0.95)',
+          backdropFilter: 'blur(20px)',
+          borderTop: '1px solid rgba(229, 231, 235, 0.8)',
+          color: '#374151',
         }}
       >
         <Container maxWidth="lg">
@@ -59,17 +81,18 @@ const Footer = () => {
                 mb: isMobile ? 3 : 0
               }}
             >
-              <LogoComponent variant="small" showText={true} />
+              <LogoComponent variant="medium" showText={true} />
               <Typography 
                 variant="body2" 
                 color="text.secondary" 
                 sx={{ 
-                  mt: 1, 
+                  mt: 1.5, 
                   maxWidth: 300,
                   textAlign: isMobile ? 'center' : 'left',
-                  color: 'rgba(255, 255, 255, 0.7)',
+                  color: '#6B7280',
                   fontFamily: '"Inter", sans-serif',
-                fontSize: '0.75rem',
+                  fontSize: '0.875rem',
+                  lineHeight: 1.5,
                 }}
               >
                 Professional tax services for individuals and businesses. We make tax season stress-free.
@@ -77,33 +100,31 @@ const Footer = () => {
               <Box 
                 sx={{ 
                   display: 'flex', 
-                  mt: 1,
+                  mt: 2,
                   justifyContent: isMobile ? 'center' : 'flex-start',
+                  gap: 1,
                 }}
               >
                 {socialLinks.map((social, index) => (
-                  <Button 
+                  <IconButton 
                     key={index} 
                     onClick={() => window.open(social.url, '_blank', 'noopener,noreferrer')}
                     aria-label={social.label}
                     sx={{
-                      color: 'rgba(255, 255, 255, 0.7)',
-                      mr: 1,
-                      minWidth: 'auto',
-                      width: 48,
-                      height: 48,
-                      borderRadius: '50%',
-                      padding: 0,
-                      transition: 'all 0.3s ease',
+                      color: '#9CA3AF',
+                      width: 40,
+                      height: 40,
+                      borderRadius: '8px',
+                      transition: 'all 0.2s ease',
                       '&:hover': {
-                        color: '#10B981',
-                        transform: 'translateY(-3px)',
-                        backgroundColor: 'rgba(16, 185, 129, 0.1)'
+                        color: '#3B82F6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.08)',
+                        transform: 'translateY(-1px)',
                       }
                     }}
                   >
                     {social.icon}
-                  </Button>
+                  </IconButton>
                 ))}
               </Box>
             </Box>
@@ -118,11 +139,11 @@ const Footer = () => {
               <Typography 
                 variant="h6" 
                 sx={{ 
-                  mb: 1,
-                  color: '#ffffff',
+                  mb: 2,
+                  color: '#374151',
                   fontWeight: 600,
                   fontSize: '1rem',
-                  fontFamily: '"Montserrat", sans-serif',
+                  fontFamily: '"Inter", sans-serif',
                 }}
               >
                 Quick Links
@@ -133,6 +154,7 @@ const Footer = () => {
                   flexDirection: isMobile ? 'row' : 'column',
                   flexWrap: isMobile ? 'wrap' : 'nowrap',
                   justifyContent: isMobile ? 'center' : 'flex-end',
+                  gap: isMobile ? 2 : 1,
                 }}
               >
                 {footerLinks.map((link, index) => (
@@ -142,31 +164,16 @@ const Footer = () => {
                     to={link.path}
                     underline="none"
                     sx={{
-                      color: 'rgba(255, 255, 255, 0.7)',
-                      mb: isMobile ? 0 : 1,
-                      mx: isMobile ? 1.5 : 0,
+                      color: '#6B7280',
                       fontFamily: '"Inter", sans-serif',
-                      transition: 'all 0.3s ease',
-                      position: 'relative',
-                      padding: '2px 6px',
-                      borderRadius: '4px',
+                      fontSize: '0.875rem',
+                      transition: 'all 0.2s ease',
+                      padding: '4px 8px',
+                      borderRadius: '6px',
                       '&:hover': {
-                        color: '#10B981',
-                        transform: isMobile ? 'translateY(-2px)' : 'translateX(5px)',
-                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                        '&::after': {
-                          width: '100%',
-                        }
-                      },
-                      '&::after': {
-                        content: '""',
-                        position: 'absolute',
-                        bottom: -2,
-                        left: 0,
-                        width: 0,
-                        height: '1px',
-                        backgroundColor: '#10B981',
-                        transition: 'width 0.3s ease'
+                        color: '#3B82F6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.06)',
+                        transform: 'translateY(-1px)',
                       }
                     }}
                   >
@@ -177,7 +184,7 @@ const Footer = () => {
             </Box>
           </Box>
 
-          <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.1)', mb: 1 }} />
+          <Divider sx={{ borderColor: 'rgba(229, 231, 235, 0.6)', mb: 2 }} />
 
           <Box 
             sx={{
@@ -185,28 +192,41 @@ const Footer = () => {
               flexDirection: isMobile ? 'column' : 'row',
               justifyContent: 'space-between',
               alignItems: 'center',
+              gap: isMobile ? 1 : 0,
             }}
           >
             <Typography 
               variant="body2" 
               sx={{ 
-                color: 'rgba(255, 255, 255, 0.5)',
+                color: '#9CA3AF',
                 textAlign: isMobile ? 'center' : 'left',
-                mb: isMobile ? 0.5 : 0,
                 fontFamily: '"Inter", sans-serif',
+                fontSize: '0.875rem',
               }}
             >
-              © {currentYear} Affinity Tax Services. All rights reserved.
+              © {currentYear} <Box component="span" sx={{ color: '#3B82F6', fontWeight: 600 }}>Affinity Tax Services</Box>. All rights reserved.
             </Typography>
             <Typography 
               variant="body2" 
               sx={{ 
-                color: 'rgba(255, 255, 255, 0.5)',
+                color: '#1F2937', // Dark gray color instead of light gray
                 textAlign: isMobile ? 'center' : 'right',
                 fontFamily: '"Inter", sans-serif',
+                fontSize: '0.875rem',
+                animation: `${slideUpFade} 1s ease-out`,
+                animationDelay: '0.5s',
+                animationFillMode: 'both',
               }}
             >
-              Designed with <Box component="span" sx={{ color: theme.palette.error.main }}>♥</Box> for better tax experiences
+              Designed with <Box 
+                component="span" 
+                sx={{ 
+                  color: '#3B82F6',
+                  animation: `${heartBeat} 2s ease-in-out infinite`,
+                  animationDelay: '3.0s',
+                  display: 'inline-block',
+                }}
+              >♥</Box> for better tax experiences
             </Typography>
           </Box>
         </Container>

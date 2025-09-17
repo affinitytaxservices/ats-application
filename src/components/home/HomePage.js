@@ -13,9 +13,9 @@ import {
   Card,
   CardContent,
   CardMedia,
-  // Divider, // Unused import
-  // useTheme, // Unused import
-  // useMediaQuery, // Unused import
+  Chip,
+  Avatar,
+  Divider,
   Fade,
   Slide,
   Zoom
@@ -29,12 +29,14 @@ import PlanningIcon from '@mui/icons-material/BarChart';
 import AuditIcon from '@mui/icons-material/Gavel';
 import DigitalIcon from '@mui/icons-material/CloudUpload';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import useScrollAnimation from '../../hooks/useScrollAnimation';
+import '../styles/animations.css';
 
 
 // Styled components
 const AnimatedTypography = styled(Typography)(() => ({
   overflow: 'hidden',
-  fontFamily: '"Montserrat", sans-serif',
+  fontFamily: '"Inter", sans-serif',
   fontWeight: 700,
   position: 'relative',
   '&::after': {
@@ -43,11 +45,11 @@ const AnimatedTypography = styled(Typography)(() => ({
     bottom: 0,
     left: 0,
     width: '100%',
-    height: '3px',
-    background: 'linear-gradient(90deg, #10B981, #1E3A8A)',
+    height: '2px',
+    backgroundColor: '#3B82F6',
     transform: 'scaleX(0)',
     transformOrigin: 'bottom right',
-    transition: 'transform 0.5s ease-out',
+    transition: 'transform 0.3s ease-out',
   },
   '&:hover::after': {
     transform: 'scaleX(1)',
@@ -66,15 +68,13 @@ const AnimatedTypography = styled(Typography)(() => ({
 
 const StatBox = styled(Box)(({ theme }) => ({
   padding: theme.spacing(3),
-  borderRadius: theme.spacing(2),
-  backgroundColor: 'rgba(255, 255, 255, 0.05)',
-  backdropFilter: 'blur(10px)',
-  border: '1px solid rgba(255, 255, 255, 0.1)',
-  transition: 'all 0.3s ease',
+  borderRadius: '12px',
+  backgroundColor: '#ffffff',
+  border: '1px solid #E5E7EB',
+  transition: 'all 0.2s ease',
   '&:hover': {
-    transform: 'translateY(-5px)',
-    boxShadow: '0 10px 25px -5px rgba(16, 185, 129, 0.2)',
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+    borderColor: '#D1D5DB',
   },
 }));
 
@@ -82,73 +82,39 @@ const ServiceCard = styled(Card)(({ theme }) => ({
   height: '100%',
   display: 'flex',
   flexDirection: 'column',
-  borderRadius: theme.spacing(2),
-  overflow: 'hidden',
-  backgroundColor: 'rgba(255, 255, 255, 0.03)',
-  backdropFilter: 'blur(10px)',
-  border: '1px solid rgba(255, 255, 255, 0.1)',
-  transition: 'all 0.3s ease',
+  borderRadius: '16px',
+  border: '1px solid #E5E7EB',
+  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+  transition: 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+  cursor: 'pointer',
   '&:hover': {
-    transform: 'translateY(-10px)',
-    boxShadow: '0 20px 25px -5px rgba(16, 185, 129, 0.2)',
-    backgroundColor: 'rgba(255, 255, 255, 0.08)',
-    '& .MuiCardMedia-root': {
-      transform: 'scale(1.05)',
+    transform: 'translateY(-10px) scale(1.03)',
+    boxShadow: '0 20px 40px rgba(0, 0, 0, 0.15)',
+    '& .service-icon': {
+      animation: 'iconBounce 0.6s ease-in-out',
+      color: '#10B981',
     },
-  },
-  '& .MuiCardMedia-root': {
-    transition: 'transform 0.5s ease',
   },
 }));
 
 const GradientButton = styled(Button)(({ theme }) => ({
-  background: 'linear-gradient(135deg, #1E3A8A 0%, #10B981 50%, #0EA5E9 100%)',
+  backgroundColor: '#3B82F6',
   color: '#ffffff',
-  padding: { xs: '14px 28px', md: '16px 32px' },
-  borderRadius: '16px',
-  fontWeight: 700,
-  fontSize: { xs: '1rem', md: '1.1rem' },
+  padding: '12px 24px',
+  borderRadius: '8px',
+  fontWeight: 600,
+  fontSize: '1rem',
   textTransform: 'none',
-  minHeight: '48px',
-  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-  boxShadow: '0 6px 25px rgba(16, 185, 129, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1) inset',
-  position: 'relative',
-  overflow: 'hidden',
-  fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
-  '&::before': {
-    content: '""',
-    position: 'absolute',
-    top: 0,
-    left: '-100%',
-    width: '100%',
-    height: '100%',
-    background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent)',
-    transition: 'left 0.7s ease',
-  },
-  '&::after': {
-    content: '""',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 50%, rgba(255, 255, 255, 0.05) 100%)',
-    opacity: 0,
-    transition: 'opacity 0.3s ease',
-  },
+  minHeight: '44px',
+  transition: 'all 0.2s ease',
+  fontFamily: '"Inter", sans-serif',
   '&:hover': {
-    transform: 'translateY(-3px) scale(1.03)',
-    boxShadow: '0 12px 40px rgba(16, 185, 129, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.2) inset',
-    background: 'linear-gradient(135deg, #10B981 0%, #0EA5E9 50%, #1E3A8A 100%)',
-    '&::before': {
-      left: '100%',
-    },
-    '&::after': {
-      opacity: 1,
-    },
+    backgroundColor: '#2563EB',
+    transform: 'translateY(-1px)',
+    boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)',
   },
   '&:active': {
-    transform: 'translateY(-2px) scale(1.02)',
+    transform: 'translateY(0)',
   },
   [theme.breakpoints.down('sm')]: {
     width: '100%',
@@ -158,55 +124,35 @@ const GradientButton = styled(Button)(({ theme }) => ({
 }));
 
 const OutlinedButton = styled(Button)(({ theme }) => ({
-  background: 'rgba(255, 255, 255, 0.06)',
-  backdropFilter: 'blur(15px)',
-  color: '#ffffff',
-  padding: { xs: '14px 28px', md: '16px 32px' },
-  borderRadius: '16px',
+  borderRadius: '12px',
+  padding: '12px 32px',
+  fontSize: '1rem',
   fontWeight: 600,
-  fontSize: { xs: '1rem', md: '1.1rem' },
   textTransform: 'none',
-  minHeight: '48px',
-  border: '1.5px solid rgba(255, 255, 255, 0.2)',
-  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+  border: '2px solid #3B82F6',
+  color: '#3B82F6',
+  backgroundColor: 'transparent',
   position: 'relative',
   overflow: 'hidden',
-  fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
+  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
   '&::before': {
-    content: '""',
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    background: 'linear-gradient(45deg, rgba(16, 185, 129, 0.08), rgba(14, 165, 233, 0.08))',
-    opacity: 0,
-    transition: 'opacity 0.3s ease',
-  },
-  '&::after': {
     content: '""',
     position: 'absolute',
     top: 0,
     left: '-100%',
     width: '100%',
     height: '100%',
-    background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent)',
-    transition: 'left 0.6s ease',
+    background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent)',
+    transition: 'left 0.5s',
   },
   '&:hover': {
-    background: 'rgba(255, 255, 255, 0.12)',
-    transform: 'translateY(-3px) scale(1.02)',
-    border: '1.5px solid rgba(255, 255, 255, 0.35)',
-    boxShadow: '0 8px 30px rgba(255, 255, 255, 0.15)',
+    transform: 'translateY(-2px)',
+    boxShadow: '0 8px 25px rgba(59, 130, 246, 0.4)',
+    backgroundColor: '#3B82F6',
+    color: 'white',
     '&::before': {
-      opacity: 1,
-    },
-    '&::after': {
       left: '100%',
     },
-  },
-  '&:active': {
-    transform: 'translateY(-2px) scale(1.01)',
   },
   [theme.breakpoints.down('sm')]: {
     width: '100%',
@@ -217,25 +163,21 @@ const OutlinedButton = styled(Button)(({ theme }) => ({
 
 const UpdateCard = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(3),
-  borderRadius: theme.spacing(2),
-  backgroundColor: 'rgba(255, 255, 255, 0.03)',
-  backdropFilter: 'blur(10px)',
-  border: '1px solid rgba(255, 255, 255, 0.1)',
-  transition: 'all 0.3s ease',
+  borderRadius: '12px',
+  backgroundColor: '#ffffff',
+  border: '1px solid #E5E7EB',
+  transition: 'all 0.2s ease',
   height: '100%',
   display: 'flex',
   flexDirection: 'column',
   '&:hover': {
-    transform: 'translateY(-5px)',
-    boxShadow: '0 10px 25px -5px rgba(16, 185, 129, 0.1)',
-    backgroundColor: 'rgba(255, 255, 255, 0.08)',
-    '& .update-icon': {
-      transform: 'rotate(360deg)',
-    },
+    transform: 'translateY(-2px)',
+    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+    borderColor: '#D1D5DB',
   },
   '& .update-icon': {
-    transition: 'transform 0.5s ease',
-    color: '#10B981',
+    transition: 'transform 0.3s ease',
+    color: '#3B82F6',
   },
 }));
 
@@ -250,30 +192,37 @@ const HomePage = () => {
   const [count2, setCount2] = useState(0);
   const [count3, setCount3] = useState(0);
 
+  // Scroll animation hooks for different sections
+  const [heroRef, heroVisible] = useScrollAnimation(0.2);
+  const [servicesRef, servicesVisible] = useScrollAnimation(0.1);
+  const [statsRef, statsVisible] = useScrollAnimation(0.3);
+  const [updatesRef, updatesVisible] = useScrollAnimation(0.2);
+  const [featuresRef, featuresVisible] = useScrollAnimation(0.2);
+
   // Sample data for services
   const services = [
     {
       title: 'Tax Preparation',
       description: 'Comprehensive tax preparation services for individuals and businesses with expert guidance to maximize your refund.',
-      icon: <TaxIcon sx={{ fontSize: 60, color: '#10B981' }} />,
+      icon: <TaxIcon sx={{ fontSize: 60, color: '#3B82F6' }} />,
       image: '/images/tax-preparation.jpg'
     },
     {
       title: 'Tax Planning',
       description: 'Strategic tax planning to minimize your tax liability and develop personalized strategies for your financial goals.',
-      icon: <PlanningIcon sx={{ fontSize: 60, color: '#10B981' }} />,
+      icon: <PlanningIcon sx={{ fontSize: 60, color: '#3B82F6' }} />,
       image: '/images/tax-planning.jpg'
     },
     {
       title: 'Audit Support',
       description: 'Professional representation and support during tax audits to ensure your rights are protected throughout the process.',
-      icon: <AuditIcon sx={{ fontSize: 60, color: '#10B981' }} />,
+      icon: <AuditIcon sx={{ fontSize: 60, color: '#3B82F6' }} />,
       image: '/images/audit-support.jpg'
     },
     {
       title: 'Digital Filing',
       description: 'Secure electronic filing with fast processing and direct deposit options for quicker access to your refund.',
-      icon: <DigitalIcon sx={{ fontSize: 60, color: '#10B981' }} />,
+      icon: <DigitalIcon sx={{ fontSize: 60, color: '#3B82F6' }} />,
       image: '/images/digital-filing.jpg'
     }
   ];
@@ -359,8 +308,8 @@ const HomePage = () => {
   return (
     <Box sx={{ 
       minHeight: '100vh',
-      background: 'linear-gradient(135deg, #1E3A8A 0%, #10B981 100%)',
-      color: '#ffffff',
+      backgroundColor: '#FAFAFA',
+      color: '#374151',
       pt: { xs: 8, md: 12 },
       pb: { xs: 10, md: 15 }
     }}>
@@ -368,65 +317,66 @@ const HomePage = () => {
       <Container maxWidth="lg">
         <Grid container spacing={4} alignItems="center" sx={{ mb: { xs: 6, md: 10 } }}>
           <Grid item xs={12} md={6}>
-            <Fade in={true} timeout={1000}>
-              <Box>
-                <Typography 
-                  variant="h1" 
-                  sx={{ 
-                    fontSize: { xs: '2.5rem', md: '3.5rem' },
-                    fontWeight: 800,
-                    mb: 2,
-                    background: 'linear-gradient(90deg, #ffffff, #10B981)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    fontFamily: '"Montserrat", sans-serif',
-                    lineHeight: 1.2
-                  }}
+            <Box 
+              ref={heroRef}
+              className={`animate-on-scroll ${heroVisible ? 'slide-left' : ''}`}
+            >
+              <Typography 
+                variant="h1" 
+                sx={{ 
+                  fontSize: { xs: '2.5rem', md: '3.5rem' },
+                  fontWeight: 700,
+                  mb: 2,
+                  color: '#1F2937',
+                  fontFamily: '"Inter", sans-serif',
+                  lineHeight: 1.2
+                }}
+              >
+                Smart Tax Solutions for Your Success
+              </Typography>
+              <Typography 
+                variant="h2" 
+                sx={{ 
+                  fontSize: { xs: '1.25rem', md: '1.5rem' },
+                  fontWeight: 400,
+                  mb: 4,
+                  color: '#6B7280',
+                  fontFamily: '"Inter", sans-serif',
+                  maxWidth: '90%'
+                }}
+              >
+                Professional tax services that simplify your finances and maximize your returns
+              </Typography>
+              <Box sx={{ 
+                display: 'flex', 
+                flexDirection: { xs: 'column', sm: 'row' },
+                flexWrap: 'wrap', 
+                gap: 2, 
+                mb: 6,
+                '& > *': {
+                  minWidth: { xs: '100%', sm: 'auto' },
+                  justifyContent: 'center'
+                }
+              }}>
+                <GradientButton 
+                  component={RouterLink} 
+                  to="/register" 
+                  size="large" 
+                  endIcon={<ArrowForwardIcon />}
+                  className="micro-bounce"
                 >
-                  Smart Tax Solutions for Your Success
-                </Typography>
-                <Typography 
-                  variant="h2" 
-                  sx={{ 
-                    fontSize: { xs: '1.25rem', md: '1.5rem' },
-                    fontWeight: 400,
-                    mb: 4,
-                    color: 'rgba(255, 255, 255, 0.8)',
-                    fontFamily: '"Inter", sans-serif',
-                    maxWidth: '90%'
-                  }}
+                  Get Started
+                </GradientButton>
+                <OutlinedButton 
+                  component={RouterLink} 
+                  to="/tax-information" 
+                  size="large"
+                  className="button-hover-glow"
                 >
-                  Professional tax services that simplify your finances and maximize your returns
-                </Typography>
-                <Box sx={{ 
-                  display: 'flex', 
-                  flexDirection: { xs: 'column', sm: 'row' },
-                  flexWrap: 'wrap', 
-                  gap: 2, 
-                  mb: 6,
-                  '& > *': {
-                    minWidth: { xs: '100%', sm: 'auto' },
-                    justifyContent: 'center'
-                  }
-                }}>
-                  <GradientButton 
-                    component={RouterLink} 
-                    to="/register" 
-                    size="large" 
-                    endIcon={<ArrowForwardIcon />}
-                  >
-                    Get Started
-                  </GradientButton>
-                  <OutlinedButton 
-                    component={RouterLink} 
-                    to="/services" 
-                    size="large"
-                  >
-                    Learn More
-                  </OutlinedButton>
-                </Box>
+                  Learn More
+                </OutlinedButton>
               </Box>
-            </Fade>
+            </Box>
           </Grid>
           <Grid item xs={12} md={6}>
             <Zoom in={true} timeout={1500}>
@@ -462,9 +412,9 @@ const HomePage = () => {
                   sx={{ 
                     fontSize: { xs: '2.5rem', md: '3rem' },
                     fontWeight: 700,
-                    color: '#10B981',
+                    color: '#3B82F6',
                     mb: 1,
-                    fontFamily: '"Montserrat", sans-serif',
+                    fontFamily: '"Inter", sans-serif',
                   }}
                 >
                   {count1}%
@@ -472,7 +422,7 @@ const HomePage = () => {
                 <Typography 
                   variant="body1" 
                   sx={{ 
-                    color: 'rgba(255, 255, 255, 0.8)',
+                    color: '#6B7280',
                     fontFamily: '"Inter", sans-serif',
                   }}
                 >
@@ -489,9 +439,9 @@ const HomePage = () => {
                   sx={{ 
                     fontSize: { xs: '2.5rem', md: '3rem' },
                     fontWeight: 700,
-                    color: '#10B981',
+                    color: '#3B82F6',
                     mb: 1,
-                    fontFamily: '"Montserrat", sans-serif',
+                    fontFamily: '"Inter", sans-serif',
                   }}
                 >
                   {count2}+
@@ -499,7 +449,7 @@ const HomePage = () => {
                 <Typography 
                   variant="body1" 
                   sx={{ 
-                    color: 'rgba(255, 255, 255, 0.8)',
+                    color: '#6B7280',
                     fontFamily: '"Inter", sans-serif',
                   }}
                 >
@@ -516,9 +466,9 @@ const HomePage = () => {
                   sx={{ 
                     fontSize: { xs: '2.5rem', md: '3rem' },
                     fontWeight: 700,
-                    color: '#10B981',
+                    color: '#3B82F6',
                     mb: 1,
-                    fontFamily: '"Montserrat", sans-serif',
+                    fontFamily: '"Inter", sans-serif',
                   }}
                 >
                   {count3}%
@@ -526,7 +476,7 @@ const HomePage = () => {
                 <Typography 
                   variant="body1" 
                   sx={{ 
-                    color: 'rgba(255, 255, 255, 0.8)',
+                    color: '#6B7280',
                     fontFamily: '"Inter", sans-serif',
                   }}
                 >
@@ -547,11 +497,11 @@ const HomePage = () => {
               mb: 6,
               fontSize: { xs: '1.75rem', md: '2.25rem' },
               fontWeight: 700,
-              color: '#ffffff',
+              color: '#1F2937',
               position: 'relative',
               display: 'inline-block',
               mx: 'auto',
-              fontFamily: '"Montserrat", sans-serif',
+              fontFamily: '"Inter", sans-serif',
             }}
           >
             Comprehensive Tax Services
@@ -569,10 +519,12 @@ const HomePage = () => {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        backgroundColor: 'rgba(15, 23, 42, 0.8)',
+                        backgroundColor: '#F9FAFB',
                       }}
                     >
-                      {service.icon}
+                      <Box className="service-icon">
+                        {service.icon}
+                      </Box>
                     </CardMedia>
                     <CardContent sx={{ flexGrow: 1 }}>
                       <Typography 
@@ -581,8 +533,8 @@ const HomePage = () => {
                         component="h3" 
                         sx={{ 
                           fontWeight: 600,
-                          color: '#ffffff',
-                          fontFamily: '"Montserrat", sans-serif',
+                          color: '#1F2937',
+                          fontFamily: '"Inter", sans-serif',
                         }}
                       >
                         {service.title}
@@ -590,7 +542,7 @@ const HomePage = () => {
                       <Typography 
                         variant="body2" 
                         sx={{ 
-                          color: 'rgba(255, 255, 255, 0.7)',
+                          color: '#6B7280',
                           fontFamily: '"Inter", sans-serif',
                         }}
                       >
@@ -614,11 +566,11 @@ const HomePage = () => {
               mb: 6,
               fontSize: { xs: '1.75rem', md: '2.25rem' },
               fontWeight: 700,
-              color: '#ffffff',
+              color: '#1F2937',
               position: 'relative',
               display: 'inline-block',
               mx: 'auto',
-              fontFamily: '"Montserrat", sans-serif',
+              fontFamily: '"Inter", sans-serif',
             }}
           >
             Latest Tax Updates
@@ -636,8 +588,8 @@ const HomePage = () => {
                         component="h3" 
                         sx={{ 
                           fontWeight: 600,
-                          color: '#ffffff',
-                          fontFamily: '"Montserrat", sans-serif',
+                          color: '#1F2937',
+                          fontFamily: '"Inter", sans-serif',
                         }}
                       >
                         {update.title}
@@ -646,7 +598,7 @@ const HomePage = () => {
                     <Typography 
                       variant="body2" 
                       sx={{ 
-                        color: 'rgba(255, 255, 255, 0.7)',
+                        color: '#6B7280',
                         fontFamily: '"Inter", sans-serif',
                         flexGrow: 1
                       }}
@@ -673,8 +625,8 @@ const HomePage = () => {
                       mb: 4,
                       fontSize: { xs: '1.75rem', md: '2.25rem' },
                       fontWeight: 700,
-                      color: '#ffffff',
-                      fontFamily: '"Montserrat", sans-serif',
+                      color: '#1F2937',
+                      fontFamily: '"Inter", sans-serif',
                     }}
                   >
                     Why Choose Us
@@ -686,13 +638,13 @@ const HomePage = () => {
                         {features.slice(0, 3).map((feature, index) => (
                           <ListItem key={index} sx={{ px: 0 }}>
                             <ListItemIcon>
-                              <CheckIcon sx={{ color: '#10B981' }} />
+                              <CheckIcon sx={{ color: '#3B82F6' }} />
                             </ListItemIcon>
                             <ListItemText 
                               primary={feature} 
                               sx={{ 
                                 '& .MuiListItemText-primary': { 
-                                  color: 'rgba(255, 255, 255, 0.8)',
+                                  color: '#6B7280',
                                   fontFamily: '"Inter", sans-serif',
                                 } 
                               }} 
@@ -712,7 +664,7 @@ const HomePage = () => {
                               primary={feature} 
                               sx={{ 
                                 '& .MuiListItemText-primary': { 
-                                  color: 'rgba(255, 255, 255, 0.8)',
+                                  color: '#6B7280',
                                   fontFamily: '"Inter", sans-serif',
                                 } 
                               }} 
@@ -768,7 +720,7 @@ const HomePage = () => {
             py: 6,
             px: { xs: 3, md: 6 },
             borderRadius: 4,
-            background: 'linear-gradient(135deg, rgba(30, 58, 138, 0.9) 0%, rgba(16, 185, 129, 0.8) 100%)',
+            background: 'linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%)',
             backdropFilter: 'blur(10px)',
             boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
             textAlign: 'center'
@@ -780,12 +732,12 @@ const HomePage = () => {
                 variant="h3" 
                 component="h2" 
                 sx={{ 
-                  mb: 2,
-                  fontSize: { xs: '1.75rem', md: '2.25rem' },
-                  fontWeight: 700,
-                  color: '#ffffff',
-                  fontFamily: '"Montserrat", sans-serif',
-                }}
+                    mb: 2,
+                    fontSize: { xs: '1.75rem', md: '2.25rem' },
+                    fontWeight: 700,
+                    color: '#ffffff',
+                    fontFamily: '"Inter", sans-serif',
+                  }}
               >
                 Ready to Simplify Your Taxes?
               </Typography>
@@ -793,6 +745,7 @@ const HomePage = () => {
                 variant="body1" 
                 sx={{ 
                   mb: 4,
+                  fontSize: { xs: '1rem', md: '1.125rem' },
                   color: 'rgba(255, 255, 255, 0.9)',
                   maxWidth: 700,
                   mx: 'auto',

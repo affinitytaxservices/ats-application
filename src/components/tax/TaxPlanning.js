@@ -20,24 +20,19 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Chip,
 } from '@mui/material';
 import {
   CheckCircle as CheckCircleIcon,
   TrendingUp as TrendingUpIcon,
   Assessment as AssessmentIcon,
-  AccountBalance as AccountBalanceIcon,
   ArrowForward as ArrowForwardIcon,
   ExpandMore as ExpandMoreIcon,
-  Schedule as ScheduleIcon,
   Security as SecurityIcon,
   MonetizationOn as MonetizationOnIcon,
   Business as BusinessIcon,
-  Person as PersonIcon,
   CalendarToday as CalendarIcon,
 } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
-import { Link as RouterLink } from 'react-router-dom';
 
 // Styled components
 const StyledCard = styled(Card)(() => ({
@@ -47,7 +42,6 @@ const StyledCard = styled(Card)(() => ({
   border: '1px solid rgba(226, 232, 240, 0.8)',
   transition: 'all 0.3s ease',
   '&:hover': {
-    transform: 'translateY(-5px)',
     boxShadow: '0 8px 25px rgba(59, 130, 246, 0.15)',
     background: 'rgba(241, 245, 249, 0.98)',
   }
@@ -241,7 +235,6 @@ const TaxPlanning = () => {
                 textTransform: 'none',
                 boxShadow: '0 8px 25px rgba(16, 185, 129, 0.3)',
                 '&:hover': {
-                  transform: 'translateY(-2px)',
                   boxShadow: '0 12px 35px rgba(16, 185, 129, 0.4)',
                 }
               }}
@@ -410,7 +403,6 @@ const TaxPlanning = () => {
                       textTransform: 'none',
                       boxShadow: '0 8px 25px rgba(30, 58, 138, 0.3)',
                       '&:hover': {
-                        transform: 'translateY(-2px)',
                         boxShadow: '0 12px 35px rgba(30, 58, 138, 0.4)',
                       }
                     }}

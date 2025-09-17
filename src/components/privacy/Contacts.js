@@ -205,7 +205,7 @@ function Contacts() {
               justifyContent: 'center',
             }}>
               <Typography variant="h4" sx={{ color: 'white', fontWeight: 700, textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}>
-                Affinity Tax Services
+                <Box component="span" sx={{ color: '#3B82F6' }}>Affinity Tax Services</Box>
               </Typography>
             </Box>
           </Box>

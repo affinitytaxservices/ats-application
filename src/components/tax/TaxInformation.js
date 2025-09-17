@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Container,
@@ -37,7 +38,6 @@ const StyledCard = styled(Card)(() => ({
   border: '1px solid rgba(226, 232, 240, 0.8)', // Light border
   transition: 'all 0.3s ease',
   '&:hover': {
-    transform: 'translateY(-5px)',
     boxShadow: '0 8px 25px rgba(59, 130, 246, 0.15)', // Blue shadow on hover
     background: 'rgba(241, 245, 249, 0.98)', // Slightly darker light background on hover
   }
@@ -76,16 +76,19 @@ const taxGuides = [
     title: 'Individual Tax Guide',
     content: 'Understanding personal income tax, deductions, credits, and filing requirements.',
     icon: <ArticleIcon />,
+    route: '/individual-tax',
   },
   {
     title: 'Business Tax Guide',
     content: 'Essential information for business owners about corporate taxes, deductions, and compliance.',
     icon: <AssignmentIcon />,
+    route: '/business-tax',
   },
   {
     title: 'Tax Education Center',
     content: 'Learn about tax basics, advanced topics, and stay updated with tax law changes.',
     icon: <SchoolIcon />,
+    route: '/tax-planning',
   },
 ];
 
@@ -149,7 +152,8 @@ const taxTopics = [
 function TaxInformation() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const newLocal = <span style={{ color: theme.palette.secondary.main }}>Tax Information & Resources</span>;
+  const navigate = useNavigate();
+  const newLocal = <span style={{ color: '#DC2626', fontWeight: 'bold', textShadow: '0 1px 2px rgba(220,38,38,0.3)' }}>Tax Information & Resources</span>;
   return (
     <Box sx={{ backgroundColor: '#ffffff', minHeight: '100vh' }}>
       <Container maxWidth="lg">
@@ -193,6 +197,7 @@ function TaxInformation() {
                     <Button 
                       variant="outlined" 
                       endIcon={<ArrowForwardIcon />}
+                      onClick={() => navigate(guide.route)}
                       sx={{ 
                         borderColor: '#10B981',
                         color: '#1E293B',

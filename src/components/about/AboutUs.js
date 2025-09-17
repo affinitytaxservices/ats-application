@@ -1,15 +1,5 @@
 import React from 'react';
-import {
-  Box,
-  Container,
-  Typography,
-  Grid,
-  Card,
-  CardContent,
-  Avatar,
-  Fade,
-  Divider,
-} from '@mui/material';
+import { Box, Container, Typography, Grid, Card, CardContent, Avatar, Fade, Divider } from '@mui/material';
 import {
   Business as BusinessIcon,
   School as SchoolIcon,
@@ -127,7 +117,7 @@ const AboutUs = () => {
                 textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
               }}
             >
-              About Affinity Tax Services
+              About <Box component="span" sx={{ color: '#3B82F6' }}>Affinity Tax Services</Box>
             </Typography>
             <Typography
               variant="h5"

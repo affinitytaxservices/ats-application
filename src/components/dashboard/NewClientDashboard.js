@@ -348,11 +348,8 @@ function NewClientDashboard() {
             sx={{ 
               fontSize: { xs: '1.8rem', sm: '2.125rem' }, 
               fontWeight: 'bold',
-              fontFamily: 'Montserrat, sans-serif',
-              background: `linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              textShadow: '0px 2px 5px rgba(0, 0, 0, 0.1)'
+              fontFamily: '"Inter", sans-serif',
+              color: '#1F2937'
             }}
           >
             Welcome, {user?.firstName || 'Client'}
@@ -375,41 +372,29 @@ function NewClientDashboard() {
               sx={{
                 p: { xs: 2, sm: 3 },
                 height: '100%',
-                borderRadius: 2,
-                boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.15)',
-                backdropFilter: 'blur(8px)',
-                WebkitBackdropFilter: 'blur(8px)',
-                border: '1px solid rgba(255, 255, 255, 0.18)',
+                borderRadius: '12px',
+                background: '#ffffff',
+                border: '1px solid #E5E7EB',
                 display: 'flex',
                 flexDirection: 'column',
                 overflow: 'hidden',
                 position: 'relative',
-                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                transition: 'all 0.2s ease-in-out',
                 '&:hover': {
-                  transform: 'translateY(-5px)',
-                  boxShadow: '0 12px 40px 0 rgba(31, 38, 135, 0.25)',
+                  transform: 'translateY(-2px)',
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                  borderColor: '#D1D5DB',
                 },
-                '&::after': {
-                  content: '""',
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '100%',
-                  height: '4px',
-                  background: `linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`
-                }
               }}
             >
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-                <AccountBalance sx={{ color: theme.palette.primary.main, mr: 1 }} />
+                <AccountBalance sx={{ color: '#3B82F6', mr: 1 }} />
                 <Typography 
                   variant="h6" 
                   sx={{ 
                     fontWeight: 'bold',
-                    fontFamily: 'Montserrat, sans-serif',
-                    background: `linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
+                    fontFamily: '"Inter", sans-serif',
+                    color: '#1F2937'
                   }}
                 >
                   Tax Summary
@@ -420,21 +405,21 @@ function NewClientDashboard() {
                   <Box
                     sx={{
                       p: 2,
-                      bgcolor: 'primary.lighter',
-                      borderRadius: 2,
-                      transition: 'all 0.3s ease',
-                      boxShadow: '0 4px 20px 0 rgba(0,0,0,0.05)',
+                      bgcolor: '#F8FAFC',
+                      borderRadius: '8px',
+                      transition: 'all 0.2s ease-in-out',
+                      border: '1px solid #E5E7EB',
                       '&:hover': { 
-                        transform: 'translateY(-4px)',
-                        boxShadow: '0 8px 25px 0 rgba(31, 38, 135, 0.15)',
-                        background: `linear-gradient(145deg, ${theme.palette.background.paper}, ${theme.palette.primary.lighter})`,
+                        transform: 'translateY(-1px)',
+                        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+                        borderColor: '#D1D5DB',
                       }
                     }}
                   >
-                    <Typography variant="subtitle2" color="primary.dark" gutterBottom>
+                    <Typography variant="subtitle2" sx={{ color: '#6B7280', fontFamily: '"Inter", sans-serif' }} gutterBottom>
                       Total Income
                     </Typography>
-                    <Typography variant="h5" color="primary.dark" sx={{ fontWeight: 'bold' }}>
+                    <Typography variant="h5" sx={{ color: '#1F2937', fontWeight: 'bold', fontFamily: '"Inter", sans-serif' }}>
                       {formatCurrency(taxSummary?.totalIncome || 0)}
                     </Typography>
                   </Box>
@@ -443,21 +428,21 @@ function NewClientDashboard() {
                   <Box
                     sx={{
                       p: 2,
-                      bgcolor: 'success.lighter',
-                      borderRadius: 2,
-                      transition: 'all 0.3s ease',
-                      boxShadow: '0 4px 20px 0 rgba(0,0,0,0.05)',
+                      bgcolor: '#F8FAFC',
+                      borderRadius: '8px',
+                      transition: 'all 0.2s ease-in-out',
+                      border: '1px solid #E5E7EB',
                       '&:hover': { 
-                        transform: 'translateY(-4px)',
-                        boxShadow: '0 8px 25px 0 rgba(31, 38, 135, 0.15)',
-                        background: `linear-gradient(145deg, ${theme.palette.background.paper}, ${theme.palette.success.lighter})`,
+                        transform: 'translateY(-1px)',
+                        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+                        borderColor: '#D1D5DB',
                       }
                     }}
                   >
-                    <Typography variant="subtitle2" color="success.dark" gutterBottom>
+                    <Typography variant="subtitle2" sx={{ color: '#6B7280', fontFamily: '"Inter", sans-serif' }} gutterBottom>
                       Total Deductions
                     </Typography>
-                    <Typography variant="h5" color="success.dark" sx={{ fontWeight: 'bold' }}>
+                    <Typography variant="h5" sx={{ color: '#1F2937', fontWeight: 'bold', fontFamily: '"Inter", sans-serif' }}>
                       {formatCurrency(taxSummary?.totalDeductions || 0)}
                     </Typography>
                   </Box>
@@ -466,21 +451,21 @@ function NewClientDashboard() {
                   <Box
                     sx={{
                       p: 2,
-                      bgcolor: 'warning.lighter',
-                      borderRadius: 2,
-                      transition: 'all 0.3s ease',
-                      boxShadow: '0 4px 20px 0 rgba(0,0,0,0.05)',
+                      bgcolor: '#F8FAFC',
+                      borderRadius: '8px',
+                      transition: 'all 0.2s ease-in-out',
+                      border: '1px solid #E5E7EB',
                       '&:hover': { 
-                        transform: 'translateY(-4px)',
-                        boxShadow: '0 8px 25px 0 rgba(31, 38, 135, 0.15)',
-                        background: `linear-gradient(145deg, ${theme.palette.background.paper}, ${theme.palette.warning.lighter})`,
+                        transform: 'translateY(-1px)',
+                        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+                        borderColor: '#D1D5DB',
                       }
                     }}
                   >
-                    <Typography variant="subtitle2" color="warning.dark" gutterBottom>
+                    <Typography variant="subtitle2" sx={{ color: '#6B7280', fontFamily: '"Inter", sans-serif' }} gutterBottom>
                       Estimated Tax
                     </Typography>
-                    <Typography variant="h5" color="warning.dark" sx={{ fontWeight: 'bold' }}>
+                    <Typography variant="h5" sx={{ color: '#1F2937', fontWeight: 'bold', fontFamily: '"Inter", sans-serif' }}>
                       {formatCurrency(taxSummary?.estimatedTax || 0)}
                     </Typography>
                   </Box>
@@ -489,21 +474,21 @@ function NewClientDashboard() {
                   <Box
                     sx={{
                       p: 2,
-                      bgcolor: 'info.lighter',
-                      borderRadius: 2,
-                      transition: 'all 0.3s ease',
-                      boxShadow: '0 4px 20px 0 rgba(0,0,0,0.05)',
+                      bgcolor: '#F8FAFC',
+                      borderRadius: '8px',
+                      transition: 'all 0.2s ease-in-out',
+                      border: '1px solid #E5E7EB',
                       '&:hover': { 
-                        transform: 'translateY(-4px)',
-                        boxShadow: '0 8px 25px 0 rgba(31, 38, 135, 0.15)',
-                        background: `linear-gradient(145deg, ${theme.palette.background.paper}, ${theme.palette.info.lighter})`,
+                        transform: 'translateY(-1px)',
+                        boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+                        borderColor: '#D1D5DB',
                       }
                     }}
                   >
-                    <Typography variant="subtitle2" color="info.dark" gutterBottom>
+                    <Typography variant="subtitle2" sx={{ color: '#6B7280', fontFamily: '"Inter", sans-serif' }} gutterBottom>
                       Tax Paid
                     </Typography>
-                    <Typography variant="h5" color="info.dark" sx={{ fontWeight: 'bold' }}>
+                    <Typography variant="h5" sx={{ color: '#1F2937', fontWeight: 'bold', fontFamily: '"Inter", sans-serif' }}>
                       {formatCurrency(taxSummary?.taxPaid || 0)}
                     </Typography>
                   </Box>
@@ -522,42 +507,30 @@ function NewClientDashboard() {
               sx={{
                 p: { xs: 2, sm: 3 },
                 height: '100%',
-                borderRadius: 2,
-                boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.15)',
-                backdropFilter: 'blur(8px)',
-                WebkitBackdropFilter: 'blur(8px)',
-                border: '1px solid rgba(255, 255, 255, 0.18)',
+                borderRadius: '12px',
+                background: '#ffffff',
+                border: '1px solid #E5E7EB',
                 display: 'flex',
                 flexDirection: 'column',
                 overflow: 'hidden',
                 position: 'relative',
-                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                transition: 'all 0.2s ease-in-out',
                 '&:hover': {
-                  transform: 'translateY(-5px)',
-                  boxShadow: '0 12px 40px 0 rgba(31, 38, 135, 0.25)',
+                  transform: 'translateY(-2px)',
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                  borderColor: '#D1D5DB',
                 },
-                '&::after': {
-                  content: '""',
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '100%',
-                  height: '4px',
-                  background: `linear-gradient(90deg, ${theme.palette.secondary.main} 0%, ${theme.palette.primary.main} 100%)`
-                }
               }}
             >
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 3 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Description sx={{ color: theme.palette.secondary.main, mr: 1 }} />
+                  <Description sx={{ color: '#3B82F6', mr: 1 }} />
                   <Typography 
                     variant="h6" 
                     sx={{ 
                       fontWeight: 'bold',
-                      fontFamily: 'Montserrat, sans-serif',
-                      background: `linear-gradient(90deg, ${theme.palette.secondary.main} 0%, ${theme.palette.primary.main} 100%)`,
-                      WebkitBackgroundClip: 'text',
-                      WebkitTextFillColor: 'transparent',
+                      fontFamily: '"Inter", sans-serif',
+                      color: '#1F2937'
                     }}
                   >
                     Recent Documents
@@ -569,15 +542,16 @@ function NewClientDashboard() {
                   startIcon={<CloudUpload />}
                   onClick={() => setUploadDialogOpen(true)}
                   sx={{ 
-                    borderRadius: 8,
-                    borderColor: theme.palette.secondary.main,
-                    color: theme.palette.secondary.main,
+                    borderRadius: '8px',
+                    borderColor: '#3B82F6',
+                    color: '#3B82F6',
+                    fontFamily: '"Inter", sans-serif',
                     '&:hover': {
-                      borderColor: theme.palette.secondary.dark,
-                      backgroundColor: 'rgba(16, 185, 129, 0.05)',
-                      transform: 'translateY(-2px)',
+                      borderColor: '#2563EB',
+                      backgroundColor: '#3B82F610',
+                      transform: 'translateY(-1px)',
                     },
-                    transition: 'all 0.3s ease'
+                    transition: 'all 0.2s ease-in-out'
                   }}
                 >
                   Upload

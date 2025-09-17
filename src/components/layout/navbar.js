@@ -16,7 +16,7 @@ import {
   useTheme,
   Slide,
   Fade,
-  Tooltip
+  Divider,
 } from '@mui/material';
 import { useNavigate, Link as RouterLink, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
@@ -28,69 +28,68 @@ import InfoIcon from '@mui/icons-material/Info';
 import LoginIcon from '@mui/icons-material/Login';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import EmailIcon from '@mui/icons-material/Email';
-import StarIcon from '@mui/icons-material/Star';
 import SecurityIcon from '@mui/icons-material/Security';
-
+import WorkIcon from '@mui/icons-material/Work';
 import LogoutIcon from '@mui/icons-material/Logout';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import LogoComponent from '../common/LogoComponent';
 
-// Common button style
+// Clean minimalist button style
 const commonButtonStyle = {
   '&:hover': {
-    backgroundColor: 'rgba(255, 255, 255, 0.12)',
-    transform: 'translateY(-2px) scale(1.02)'
+    backgroundColor: 'rgba(59, 130, 246, 0.06)',
+    transform: 'translateY(-1px)',
+    color: '#3B82F6'
   },
   '&:active': {
-    transform: 'translateY(-1px) scale(1.01)'
+    transform: 'translateY(0px)',
+    color: '#2563EB'
   },
-  borderRadius: 3,
-  px: 2.5,
-  py: 1.2,
-  mx: 0.5,
-  minHeight: '40px',
-  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-  fontWeight: 600,
+  borderRadius: '8px',
+  px: 3,
+  py: 1.5,
+  mx: 1,
+  minHeight: '42px',
+  transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+  fontWeight: 500,
   textTransform: 'none',
   fontSize: '0.95rem',
-  backdropFilter: 'blur(8px)',
-  border: '1px solid rgba(255, 255, 255, 0.1)',
+  color: '#64748B',
+  border: 'none',
   position: 'relative',
-  overflow: 'hidden',
-  '&::before': {
+  '&::after': {
     content: '""',
     position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
     bottom: 0,
-    background: 'rgba(255, 255, 255, 0.05)',
-    opacity: 0,
-    transition: 'opacity 0.2s ease',
+    left: '50%',
+    width: 0,
+    height: '2px',
+    backgroundColor: '#3B82F6',
+    transition: 'all 0.3s ease',
+    transform: 'translateX(-50%)',
   },
-  '&:hover::before': {
-    opacity: 1,
+  '&:hover::after': {
+    width: '80%',
   }
 };
 
-// Mobile drawer item style
+// Clean minimalist mobile drawer item style
 const drawerItemStyle = {
-  py: 2,
-  borderRadius: 2,
+  py: 1.5,
+  borderRadius: '8px',
   my: 0.5,
-  mx: 1,
-  minHeight: '56px',
-  transition: 'all 0.3s ease',
+  mx: 2,
+  minHeight: '48px',
+  transition: 'all 0.2s ease',
   '&:hover': {
-    backgroundColor: 'rgba(16, 185, 129, 0.1)',
-    transform: 'translateX(5px)'
+    backgroundColor: 'rgba(59, 130, 246, 0.08)',
+    transform: 'translateX(4px)'
   },
   '& .MuiListItemIcon-root': {
-    minWidth: '48px'
+    minWidth: '44px'
   },
   '& .MuiListItemText-primary': {
-    fontSize: '1.1rem',
+    fontSize: '1rem',
     fontWeight: 500
   }
 };
@@ -300,6 +299,27 @@ function Navbar() {
           </>
         ) : (
           <>
+            <Divider sx={{ my: 2, backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
+            <ListItem 
+              button 
+              onClick={() => handleNavigation('/employee-login')} 
+              sx={{
+                ...drawerItemStyle,
+                backgroundColor: isActive('/employee-login') ? 'rgba(124, 58, 237, 0.15)' : 'transparent',
+              }}
+            >
+              <ListItemIcon><WorkIcon sx={{ color: '#7C3AED' }} /></ListItemIcon>
+              <ListItemText 
+                primary="Employee Login" 
+                sx={{ 
+                  '& .MuiListItemText-primary': { 
+                    color: '#ffffff', 
+                    fontWeight: isActive('/employee-login') ? 600 : 400,
+                    fontFamily: '"Montserrat", sans-serif',
+                  } 
+                }} 
+              />
+            </ListItem>
             <ListItem 
               button 
               onClick={() => handleNavigation('/login')} 
@@ -310,7 +330,7 @@ function Navbar() {
             >
               <ListItemIcon><LoginIcon sx={{ color: '#10B981' }} /></ListItemIcon>
               <ListItemText 
-                primary="Login" 
+                primary="Client Login" 
                 sx={{ 
                   '& .MuiListItemText-primary': { 
                     color: '#ffffff', 
@@ -354,12 +374,14 @@ function Navbar() {
           position="sticky" 
           elevation={0}
           sx={{
-            background: 'rgba(15, 23, 42, 0.85)',
-            backdropFilter: 'blur(10px)',
-            borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+            background: 'rgba(255, 255, 255, 0.95)',
+            backdropFilter: 'blur(20px)',
+            borderBottom: '1px solid rgba(229, 231, 235, 0.8)',
+            boxShadow: 'none',
+            color: '#374151',
           }}
         >
-          <Toolbar sx={{ py: 1 }}>
+          <Toolbar sx={{ py: 1.5, px: { xs: 2, md: 4 } }}>
             {isMobile && (
               <IconButton
                 color="inherit"
@@ -368,11 +390,10 @@ function Navbar() {
                 onClick={handleDrawerToggle}
                 sx={{ 
                   mr: 2,
-                  color: '#ffffff',
+                  color: '#6B7280',
                   '&:hover': {
-                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                    transform: 'rotate(180deg)',
-                    transition: 'transform 0.3s ease'
+                    backgroundColor: 'rgba(59, 130, 246, 0.08)',
+                    color: '#3B82F6'
                   }
                 }}
               >
@@ -388,10 +409,11 @@ function Navbar() {
                 textDecoration: 'none',
                 color: 'inherit',
                 display: 'flex',
-                alignItems: 'center'
+                alignItems: 'center',
+                py: 0.5
               }}
             >
-              <LogoComponent variant={isMobile ? 'small' : 'medium'} showText={true} />
+              <LogoComponent variant={isMobile ? 'medium' : 'large'} showText={true} />
             </Box>
 
             {!isMobile && (
@@ -402,26 +424,12 @@ function Navbar() {
                   onClick={handleResourcesMenu}
                   sx={{
                     ...commonButtonStyle,
-                    background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(16, 185, 129, 0.1))',
-                    border: '1px solid rgba(59, 130, 246, 0.2)',
-                    borderRadius: '12px',
-                    color: '#1E40AF',
-                    fontWeight: 600,
-                    fontSize: '0.95rem',
-                    px: 3,
-                    py: 1.2,
                     borderBottom: Boolean(resourcesAnchorEl) || isActive('/tax-information') || isActive('/individual-tax') || isActive('/business-tax')
-                      ? '3px solid #3B82F6'
-                      : '3px solid transparent',
-                    '&:hover': {
-                      background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(16, 185, 129, 0.15))',
-                      borderColor: 'rgba(59, 130, 246, 0.4)',
-                      transform: 'translateY(-2px)',
-                      boxShadow: '0 8px 25px rgba(59, 130, 246, 0.2)',
-                      borderBottom: '3px solid #3B82F6'
-                    }
+                      ? '2px solid #3B82F6'
+                      : '2px solid transparent',
                   }}
-                >📊 Tax Hub
+                >
+                  Tax Hub
                 </Button>
                 <Button
                   color="inherit"
@@ -429,22 +437,7 @@ function Navbar() {
                   to="/about"
                   sx={{
                     ...commonButtonStyle,
-                    ml: 2,
-                    background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(34, 197, 94, 0.1))',
-                    backdropFilter: 'blur(10px)',
-                    color: '#10B981',
-                    border: '1px solid rgba(16, 185, 129, 0.3)',
-                    borderRadius: '12px',
-                    boxShadow: '0 4px 15px rgba(16, 185, 129, 0.1)',
-                    borderBottom: isActive('/about') ? '2px solid #10B981' : '2px solid transparent',
-                    '&:hover': {
-                      background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(34, 197, 94, 0.2))',
-                      backdropFilter: 'blur(15px)',
-                      transform: 'translateY(-2px) scale(1.02)',
-                      borderBottom: '2px solid #10B981',
-                      color: '#059669',
-                      boxShadow: '0 8px 25px rgba(16, 185, 129, 0.2)'
-                    }
+                    borderBottom: isActive('/about') ? '2px solid #3B82F6' : '2px solid transparent',
                   }}
                 >
                   About Us
@@ -455,22 +448,7 @@ function Navbar() {
                    to="/tax-planning"
                    sx={{
                      ...commonButtonStyle,
-                     ml: 2,
-                     background: 'rgba(16, 185, 129, 0.1)',
-                     backdropFilter: 'blur(10px)',
-                     color: '#10B981',
-                     border: '1px solid rgba(16, 185, 129, 0.3)',
-                     borderRadius: '12px',
-                     boxShadow: '0 4px 15px rgba(16, 185, 129, 0.1)',
-                     borderBottom: isActive('/tax-planning') ? '2px solid #10B981' : '2px solid transparent',
-                     '&:hover': {
-                       background: 'rgba(16, 185, 129, 0.2)',
-                       backdropFilter: 'blur(15px)',
-                       transform: 'translateY(-2px) scale(1.02)',
-                       borderBottom: '2px solid #10B981',
-                       color: '#059669',
-                       boxShadow: '0 8px 25px rgba(16, 185, 129, 0.2)'
-                     }
+                     borderBottom: isActive('/tax-planning') ? '2px solid #3B82F6' : '2px solid transparent',
                    }}
                  >
                    Tax Planning
@@ -484,30 +462,30 @@ function Navbar() {
                   onClose={handleResourcesClose}
                   TransitionComponent={Fade}
                   PaperProps={{
-                    elevation: 8,
+                    elevation: 0,
                     sx: {
                       mt: 1.5,
                       overflow: 'visible',
-                      filter: 'drop-shadow(0px 8px 32px rgba(59, 130, 246, 0.15))',
-                      borderRadius: 3,
-                      minWidth: 220,
-                      border: '1px solid rgba(59, 130, 246, 0.1)',
+                      boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
+                      borderRadius: '12px',
+                      minWidth: 200,
+                      border: '1px solid rgba(229, 231, 235, 0.8)',
                       '&:before': {
                         content: '""',
                         display: 'block',
                         position: 'absolute',
                         top: 0,
                         left: 20,
-                        width: 12,
-                        height: 12,
+                        width: 10,
+                        height: 10,
                         bgcolor: 'background.paper',
                         transform: 'translateY(-50%) rotate(45deg)',
                         zIndex: 0,
-                        border: '1px solid rgba(59, 130, 246, 0.1)',
+                        border: '1px solid rgba(229, 231, 235, 0.8)',
                         borderBottom: 'none',
                         borderRight: 'none',
                       },
-                      background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.95))',
+                      background: 'rgba(255, 255, 255, 0.98)',
                       backdropFilter: 'blur(20px)',
                     },
                   }}
@@ -515,68 +493,68 @@ function Navbar() {
                   <MenuItem 
                     onClick={() => handleNavigation('/tax-information')} 
                     sx={{ 
-                      py: 2, 
-                      px: 2.5,
-                      borderRadius: 2,
+                      py: 1.5, 
+                      px: 2,
+                      borderRadius: '8px',
                       mx: 1,
                       my: 0.5,
-                      borderLeft: isActive('/tax-information') ? '4px solid #3B82F6' : '4px solid transparent',
-                      background: isActive('/tax-information') ? 'linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(16, 185, 129, 0.05))' : 'transparent',
+                      borderLeft: isActive('/tax-information') ? '3px solid #3B82F6' : '3px solid transparent',
+                      background: isActive('/tax-information') ? 'rgba(59, 130, 246, 0.06)' : 'transparent',
                       '&:hover': { 
-                        backgroundColor: 'rgba(59, 130, 246, 0.08)',
-                        transform: 'translateX(4px)',
+                        backgroundColor: 'rgba(59, 130, 246, 0.06)',
+                        transform: 'translateX(2px)',
                         transition: 'all 0.2s ease'
                       }
                     }}
                   >
                     <ListItemIcon>
-                      <InfoIcon fontSize="medium" sx={{ color: '#3B82F6', mr: 1 }} />
+                      <InfoIcon fontSize="small" sx={{ color: '#3B82F6', mr: 1 }} />
                     </ListItemIcon>
-                    📋 Tax Information
+                    Tax Information
                   </MenuItem>
                   <MenuItem 
                     onClick={() => handleNavigation('/individual-tax')} 
                     sx={{ 
-                      py: 2, 
-                      px: 2.5,
-                      borderRadius: 2,
+                      py: 1.5, 
+                      px: 2,
+                      borderRadius: '8px',
                       mx: 1,
                       my: 0.5,
-                      borderLeft: isActive('/individual-tax') ? '4px solid #3B82F6' : '4px solid transparent',
-                      background: isActive('/individual-tax') ? 'linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(16, 185, 129, 0.05))' : 'transparent',
+                      borderLeft: isActive('/individual-tax') ? '3px solid #3B82F6' : '3px solid transparent',
+                      background: isActive('/individual-tax') ? 'rgba(59, 130, 246, 0.06)' : 'transparent',
                       '&:hover': { 
-                        backgroundColor: 'rgba(59, 130, 246, 0.08)',
-                        transform: 'translateX(4px)',
+                        backgroundColor: 'rgba(59, 130, 246, 0.06)',
+                        transform: 'translateX(2px)',
                         transition: 'all 0.2s ease'
                       }
                     }}
                   >
                     <ListItemIcon>
-                      <PersonAddIcon fontSize="medium" sx={{ color: '#10B981', mr: 1 }} />
+                      <PersonAddIcon fontSize="small" sx={{ color: '#6B7280', mr: 1 }} />
                     </ListItemIcon>
-                    👤 Individual Tax
+                    Individual Tax
                   </MenuItem>
                   <MenuItem 
                     onClick={() => handleNavigation('/business-tax')} 
                     sx={{ 
-                      py: 2, 
-                      px: 2.5,
-                      borderRadius: 2,
+                      py: 1.5, 
+                      px: 2,
+                      borderRadius: '8px',
                       mx: 1,
                       my: 0.5,
-                      borderLeft: isActive('/business-tax') ? '4px solid #3B82F6' : '4px solid transparent',
-                      background: isActive('/business-tax') ? 'linear-gradient(135deg, rgba(59, 130, 246, 0.08), rgba(16, 185, 129, 0.05))' : 'transparent',
+                      borderLeft: isActive('/business-tax') ? '3px solid #3B82F6' : '3px solid transparent',
+                      background: isActive('/business-tax') ? 'rgba(59, 130, 246, 0.06)' : 'transparent',
                       '&:hover': { 
-                        backgroundColor: 'rgba(59, 130, 246, 0.08)',
-                        transform: 'translateX(4px)',
+                        backgroundColor: 'rgba(59, 130, 246, 0.06)',
+                        transform: 'translateX(2px)',
                         transition: 'all 0.2s ease'
                       }
                     }}
                   >
                     <ListItemIcon>
-                      <DashboardIcon fontSize="medium" sx={{ color: '#8B5CF6', mr: 1 }} />
+                      <WorkIcon fontSize="small" sx={{ color: '#6B7280', mr: 1 }} />
                     </ListItemIcon>
-                    🏢 Business Tax
+                    Business Tax
                   </MenuItem>
 
                 </Menu>
@@ -584,81 +562,47 @@ function Navbar() {
             )}
 
             {isAuthenticated ? (
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Tooltip title="Dashboard" arrow>
-                  <Button
-                    color="inherit"
-                    startIcon={<DashboardIcon />}
-                    component={RouterLink}
-                    to={isAdmin ? '/admin' : '/client-dashboard'}
-                    sx={{
-                      ...commonButtonStyle,
-                      borderBottom: isActive('/admin') || isActive('/client-dashboard') 
-                        ? '2px solid #10B981' 
-                        : '2px solid transparent',
-                      '&:hover': {
-                        ...commonButtonStyle['&:hover'],
-                        borderBottom: '2px solid #10B981'
-                      }
-                    }}
-                  >
-                    Dashboard
-                  </Button>
-                </Tooltip>
-                <Tooltip title="Documents" arrow>
-                  <Button
-                    color="inherit"
-                    startIcon={<UploadFileIcon />}
-                    component={RouterLink}
-                    to="/documents"
-                    sx={{
-                      ...commonButtonStyle,
-                      borderBottom: isActive('/documents') ? '2px solid #10B981' : '2px solid transparent',
-                      '&:hover': {
-                        ...commonButtonStyle['&:hover'],
-                        borderBottom: '2px solid #10B981'
-                      }
-                    }}
-                  >
-                    Documents
-                  </Button>
-                </Tooltip>
-                {isAdmin && (
-                  <Tooltip title="Admin Panel" arrow>
-                    <Button
-                      color="inherit"
-                      component={RouterLink}
-                      to="/admin"
-                      sx={{
-                        ...commonButtonStyle,
-                        borderBottom: isActive('/admin') ? '2px solid #10B981' : '2px solid transparent',
-                        '&:hover': {
-                          ...commonButtonStyle['&:hover'],
-                          borderBottom: '2px solid #10B981'
-                        }
-                      }}
-                    >
-                      Admin
-                    </Button>
-                  </Tooltip>
-                )}
-                <Tooltip title="Account" arrow>
-                  <IconButton
-                    size="large"
-                    onClick={handleMenu}
-                    color="inherit"
-                    sx={{
-                      ml: 1,
-                      transition: 'all 0.3s ease',
-                      '&:hover': {
-                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                        transform: 'translateY(-2px)'
-                      }
-                    }}
-                  >
-                    <AccountCircle />
-                  </IconButton>
-                </Tooltip>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <Button
+                  color="inherit"
+                  component={RouterLink}
+                  to={isAdmin ? '/admin' : '/client-dashboard'}
+                  sx={{
+                    ...commonButtonStyle,
+                    borderBottom: (isActive('/admin') || isActive('/client-dashboard')) ? '2px solid #3B82F6' : '2px solid transparent',
+                  }}
+                >
+                  Dashboard
+                </Button>
+                <Button
+                  color="inherit"
+                  component={RouterLink}
+                  to="/documents"
+                  sx={{
+                    ...commonButtonStyle,
+                    borderBottom: isActive('/documents') ? '2px solid #3B82F6' : '2px solid transparent',
+                  }}
+                >
+                  Documents
+                </Button>
+                <IconButton
+                  size="large"
+                  aria-label="account of current user"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleMenu}
+                  color="inherit"
+                  sx={{
+                    ml: 1,
+                    color: '#6B7280',
+                    '&:hover': {
+                      backgroundColor: 'rgba(59, 130, 246, 0.08)',
+                      color: '#3B82F6'
+                    }
+                  }}
+                >
+                  <AccountCircle />
+                </IconButton>
                 <Menu
                   anchorEl={anchorEl}
                   open={Boolean(anchorEl)}
@@ -704,93 +648,36 @@ function Navbar() {
                 </Menu>
               </Box>
             ) : (
-              <Box>
-                <Button 
-                  color="inherit" 
-                  component={RouterLink} 
-                  to="/login"
-                  startIcon={<LoginIcon />}
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <Button
+                  color="inherit"
+                  component={RouterLink}
+                  to="/employee-login"
                   sx={{
-                    background: 'linear-gradient(135deg, #1E3A8A 0%, #10B981 50%, #0EA5E9 100%)',
-                    color: '#ffffff',
-                    padding: { xs: '12px 20px', md: '14px 28px' },
-                    borderRadius: '12px',
-                    fontWeight: 600,
-                    fontSize: { xs: '0.9rem', md: '1rem' },
-                    textTransform: 'none',
-                    minHeight: '44px',
-                    transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-                    boxShadow: '0 4px 20px rgba(16, 185, 129, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.1) inset',
-                    position: 'relative',
-                    overflow: 'hidden',
-                    '&::before': {
-                      content: '""',
-                      position: 'absolute',
-                      top: 0,
-                      left: '-100%',
-                      width: '100%',
-                      height: '100%',
-                      background: 'linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent)',
-                      transition: 'left 0.6s ease',
-                    },
-                    '&:hover': {
-                      transform: 'translateY(-2px) scale(1.02)',
-                      boxShadow: '0 8px 30px rgba(16, 185, 129, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.2) inset',
-                      background: 'linear-gradient(135deg, #10B981 0%, #0EA5E9 50%, #1E3A8A 100%)',
-                      '&::before': {
-                        left: '100%',
-                      },
-                    },
-                    '&:active': {
-                      transform: 'translateY(-1px) scale(1.01)',
-                    }
+                    ...commonButtonStyle,
+                    borderBottom: isActive('/employee-login') ? '2px solid #3B82F6' : '2px solid transparent',
+                  }}
+                >
+                  Employee
+                </Button>
+                <Button
+                  color="inherit"
+                  component={RouterLink}
+                  to="/login"
+                  sx={{
+                    ...commonButtonStyle,
+                    borderBottom: isActive('/login') ? '2px solid #3B82F6' : '2px solid transparent',
                   }}
                 >
                   Login
                 </Button>
-                <Button 
-                  color="inherit" 
-                  component={RouterLink} 
+                <Button
+                  color="inherit"
+                  component={RouterLink}
                   to="/register"
-                  startIcon={<PersonAddIcon />}
-                  sx={{ 
-                    ml: { xs: 1, md: 2 },
-                    background: 'rgba(255, 255, 255, 0.08)',
-                    backdropFilter: 'blur(12px)',
-                    color: '#ffffff',
-                    padding: { xs: '12px 20px', md: '14px 28px' },
-                    borderRadius: '12px',
-                    fontWeight: 600,
-                    fontSize: { xs: '0.9rem', md: '1rem' },
-                    textTransform: 'none',
-                    minHeight: '44px',
-                    border: '1px solid rgba(255, 255, 255, 0.15)',
-                    transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-                    position: 'relative',
-                    overflow: 'hidden',
-                    '&::before': {
-                      content: '""',
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      background: 'linear-gradient(45deg, rgba(16, 185, 129, 0.1), rgba(14, 165, 233, 0.1))',
-                      opacity: 0,
-                      transition: 'opacity 0.3s ease',
-                    },
-                    '&:hover': {
-                      backgroundColor: 'rgba(255, 255, 255, 0.15)',
-                      transform: 'translateY(-2px) scale(1.02)',
-                      border: '1px solid rgba(255, 255, 255, 0.25)',
-                      boxShadow: '0 8px 25px rgba(255, 255, 255, 0.1)',
-                      '&::before': {
-                        opacity: 1,
-                      },
-                    },
-                    '&:active': {
-                      transform: 'translateY(-1px) scale(1.01)',
-                    }
+                  sx={{
+                    ...commonButtonStyle,
+                    borderBottom: isActive('/register') ? '2px solid #3B82F6' : '2px solid transparent',
                   }}
                 >
                   Register

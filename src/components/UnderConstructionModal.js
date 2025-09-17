@@ -58,7 +58,7 @@ const UnderConstructionModal = ({ open, onClose }) => {
               textShadow: '0 2px 4px rgba(0,0,0,0.1)'
             }}
           >
-            <span style={{ color: theme.palette.secondary.main }}>Under Construction</span>
+            <span style={{ color: '#FF6B35', fontWeight: 'bold', textShadow: '0 1px 2px rgba(255,107,53,0.3)' }}>Under Construction</span>
           </Typography>
           <Typography
             variant="body1"
@@ -69,7 +69,7 @@ const UnderConstructionModal = ({ open, onClose }) => {
               lineHeight: 1.6
             }}
           >
-            <span style={{ fontSize: '1.2rem', color: theme.palette.secondary.main }}>We're working hard to bring you an amazing experience. Please check back soon!</span>
+            <span style={{ fontSize: '1.2rem', color: '#9333EA', fontWeight: '500', textShadow: '0 1px 2px rgba(147,51,234,0.2)' }}>We're working hard to bring you an amazing experience. Please check back soon!</span>
           </Typography>
         </Box>
       </DialogContent>

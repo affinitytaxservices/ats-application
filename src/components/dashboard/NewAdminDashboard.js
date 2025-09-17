@@ -1456,7 +1456,7 @@ function NewAdminDashboard() {
                         height={36} 
                         iconType="circle"
                         formatter={(value) => (
-                          <span style={{ fontFamily: 'Inter, sans-serif', color: theme.palette.text.primary }}>
+                          <span style={{ fontFamily: 'Inter, sans-serif', color: '#059669', fontWeight: 'bold', textShadow: '0 1px 2px rgba(5,150,105,0.2)' }}>
                             {value}
                           </span>
                         )}
@@ -1571,7 +1571,7 @@ function NewAdminDashboard() {
                         verticalAlign="top" 
                         height={36}
                         formatter={(value) => (
-                          <span style={{ fontFamily: 'Inter, sans-serif', color: theme.palette.text.primary }}>
+                          <span style={{ fontFamily: 'Inter, sans-serif', color: '#7C3AED', fontWeight: 'bold', textShadow: '0 1px 2px rgba(124,58,237,0.2)' }}>
                             {value}
                           </span>
                         )}
