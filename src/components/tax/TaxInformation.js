@@ -94,28 +94,28 @@ const taxGuides = [
 
 const importantDates = [
   {
-    date: 'April 15, 2025',
-    event: 'Individual Tax Return Due Date for 2024 Tax Year',
+    date: 'April 15, 2026',
+    event: 'Individual Tax Return Due Date for 2025 Tax Year',
   },
   {
-    date: 'April 15, 2025',
-    event: 'Deadline to Make IRA and HSA Contributions for 2024 Tax Year',
+    date: 'April 15, 2026',
+    event: 'Deadline to Make IRA and HSA Contributions for 2025 Tax Year',
   },
   {
-    date: 'April 15, 2025',
-    event: 'First Quarter Estimated Tax Payment Due for 2025',
+    date: 'April 15, 2026',
+    event: 'First Quarter Estimated Tax Payment Due for 2026',
   },
   {
-    date: 'June 15, 2025',
-    event: 'Second Quarter Estimated Tax Payment Due for 2025',
+    date: 'June 15, 2026',
+    event: 'Second Quarter Estimated Tax Payment Due for 2026',
   },
   {
-    date: 'September 15, 2025',
-    event: 'Third Quarter Estimated Tax Payment Due for 2025',
+    date: 'September 15, 2026',
+    event: 'Third Quarter Estimated Tax Payment Due for 2026',
   },
   {
-    date: 'January 15, 2026',
-    event: 'Fourth Quarter Estimated Tax Payment Due for 2025',
+    date: 'January 15, 2027',
+    event: 'Fourth Quarter Estimated Tax Payment Due for 2026',
   },
 ];
 
