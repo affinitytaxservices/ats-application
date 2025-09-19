@@ -1,6 +1,8 @@
 {
   "short_name": "ATS",
   "name": "Affinity Tax Services",
+  "lang": "en",
+  "dir": "ltr",
   "icons": [
     {
       "src": "favicon.svg",
