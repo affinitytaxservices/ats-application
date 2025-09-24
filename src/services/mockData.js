@@ -63,20 +63,20 @@ export const userActivity = [
 
 // Mock users data
 export const users = [
-  { id: 1, firstName: 'John', lastName: 'Doe', email: 'john.doe@example.com', role: 'client', status: 'active', lastLogin: '2023-07-24T08:30:15Z' },
-  { id: 2, firstName: 'Jane', lastName: 'Smith', email: 'jane.smith@example.com', role: 'client', status: 'active', lastLogin: '2023-07-23T14:22:36Z' },
-  { id: 3, firstName: 'Robert', lastName: 'Johnson', email: 'robert.johnson@example.com', role: 'client', status: 'inactive', lastLogin: '2023-07-15T09:45:21Z' },
-  { id: 4, firstName: 'Emily', lastName: 'Williams', email: 'emily.williams@example.com', role: 'admin', status: 'active', lastLogin: '2023-07-24T10:12:45Z' },
-  { id: 5, firstName: 'Michael', lastName: 'Brown', email: 'michael.brown@example.com', role: 'client', status: 'active', lastLogin: '2023-07-22T16:08:33Z' }
+  { id: 1, firstName: 'Tony', lastName: 'Stark', email: 'tony.stark@example.com', role: 'client', status: 'active', lastLogin: '2023-07-24T08:30:15Z' },
+  { id: 2, firstName: 'Natasha', lastName: 'Romanoff', email: 'natasha.romanoff@example.com', role: 'client', status: 'active', lastLogin: '2023-07-23T14:22:36Z' },
+  { id: 3, firstName: 'Bruce', lastName: 'Banner', email: 'bruce.banner@example.com', role: 'client', status: 'inactive', lastLogin: '2023-07-15T09:45:21Z' },
+  { id: 4, firstName: 'Wanda', lastName: 'Maximoff', email: 'wanda.maximoff@example.com', role: 'admin', status: 'active', lastLogin: '2023-07-24T10:12:45Z' },
+  { id: 5, firstName: 'Thor', lastName: 'Odinson', email: 'thor.odinson@example.com', role: 'client', status: 'active', lastLogin: '2023-07-22T16:08:33Z' }
 ];
 
 // Mock tasks data
 export const tasks = [
-  { id: 1, title: 'Review tax return for client #1234', description: 'Perform detailed review of 2022 tax return', assigneeId: 4, assigneeName: 'Emily Williams', status: 'pending', priority: 'high', dueDate: '2023-07-28T23:59:59Z', createdAt: '2023-07-20T14:25:10Z' },
-  { id: 2, title: 'Prepare quarterly filing for ABC Corp', description: 'Complete Q2 2023 filing', assigneeId: 4, assigneeName: 'Emily Williams', status: 'in_progress', priority: 'high', dueDate: '2023-07-30T23:59:59Z', createdAt: '2023-07-15T09:12:45Z' },
-  { id: 3, title: 'Client consultation with Jane Smith', description: 'Discuss tax planning strategies for 2023', assigneeId: 4, assigneeName: 'Emily Williams', status: 'completed', priority: 'medium', dueDate: '2023-07-22T16:00:00Z', createdAt: '2023-07-18T11:30:00Z', completedAt: '2023-07-22T16:45:22Z' },
-  { id: 4, title: 'Update client portal documentation', description: 'Revise user guides for new features', assigneeId: 4, assigneeName: 'Emily Williams', status: 'pending', priority: 'low', dueDate: '2023-08-05T23:59:59Z', createdAt: '2023-07-23T13:15:40Z' },
-  { id: 5, title: 'Audit preparation for XYZ Inc', description: 'Gather and organize documents for upcoming audit', assigneeId: 4, assigneeName: 'Emily Williams', status: 'in_progress', priority: 'medium', dueDate: '2023-08-10T23:59:59Z', createdAt: '2023-07-19T10:45:12Z' }
+  { id: 1, title: 'Review tax return for client #1234', description: 'Perform detailed review of 2022 tax return', assigneeId: 4, assigneeName: 'Wanda Maximoff', status: 'pending', priority: 'high', dueDate: '2023-07-28T23:59:59Z', createdAt: '2023-07-20T14:25:10Z' },
+  { id: 2, title: 'Prepare quarterly filing for ABC Corp', description: 'Complete Q2 2023 filing', assigneeId: 4, assigneeName: 'Wanda Maximoff', status: 'in_progress', priority: 'high', dueDate: '2023-07-30T23:59:59Z', createdAt: '2023-07-15T09:12:45Z' },
+  { id: 3, title: 'Client consultation with Natasha Romanoff', description: 'Discuss tax planning strategies for 2023', assigneeId: 4, assigneeName: 'Wanda Maximoff', status: 'completed', priority: 'medium', dueDate: '2023-07-22T16:00:00Z', createdAt: '2023-07-18T11:30:00Z', completedAt: '2023-07-22T16:45:22Z' },
+  { id: 4, title: 'Update client portal documentation', description: 'Revise user guides for new features', assigneeId: 4, assigneeName: 'Wanda Maximoff', status: 'pending', priority: 'low', dueDate: '2023-08-05T23:59:59Z', createdAt: '2023-07-23T13:15:40Z' },
+  { id: 5, title: 'Audit preparation for XYZ Inc', description: 'Gather and organize documents for upcoming audit', assigneeId: 4, assigneeName: 'Wanda Maximoff', status: 'in_progress', priority: 'medium', dueDate: '2023-08-10T23:59:59Z', createdAt: '2023-07-19T10:45:12Z' }
 ];
 
 // Mock client dashboard data
@@ -107,8 +107,8 @@ export const clientDashboardData = {
   
   // Upcoming appointments for client dashboard
   upcomingAppointments: [
-    { id: 301, appointmentDate: '2023-08-05T14:00:00Z', duration: 60, professionalName: 'Emily Williams' },
-    { id: 302, appointmentDate: '2023-07-28T10:30:00Z', duration: 45, professionalName: 'Emily Williams' },
-    { id: 303, appointmentDate: '2023-08-15T15:45:00Z', duration: 30, professionalName: 'Michael Johnson' }
+    { id: 301, appointmentDate: '2023-08-05T14:00:00Z', duration: 60, professionalName: 'Wanda Maximoff' },
+    { id: 302, appointmentDate: '2023-07-28T10:30:00Z', duration: 45, professionalName: 'Wanda Maximoff' },
+    { id: 303, appointmentDate: '2023-08-15T15:45:00Z', duration: 30, professionalName: 'Stephen Strange' }
   ]
 };

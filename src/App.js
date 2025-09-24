@@ -48,6 +48,31 @@ const ProtectedRoute = ({ children, requiredRole }) => {
   return children;
 };
 
+// Dashboard Route Component - redirects to appropriate dashboard based on user role
+const DashboardRoute = () => {
+  const { user } = useAuth();
+  
+  if (!user) {
+    return <Navigate to="/login" />;
+  }
+  
+  // Redirect based on user role
+  switch (user.role) {
+    case 'admin':
+      return <Navigate to="/admin" />;
+    case 'client':
+      return <Navigate to="/client-dashboard" />;
+    case 'preparer':
+      return <Navigate to="/preparer-dashboard" />;
+    case 'manager':
+      return <Navigate to="/manager-dashboard" />;
+    case 'employee':
+      return <Navigate to="/employee-dashboard" />;
+    default:
+      return <Navigate to="/client-dashboard" />;
+  }
+};
+
 function App() {
   return (
     <div className="app">
@@ -59,6 +84,7 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/employee-login" element={<EmployeeLogin />} />
+            <Route path="/dashboard" element={<DashboardRoute />} />
             <Route path="/refund-status" element={<RefundStatus />} />
             <Route path="/tax-information" element={<TaxInformation />} />
             <Route path="/individual-tax" element={<IndividualTax />} />

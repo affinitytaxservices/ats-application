@@ -86,7 +86,7 @@ function Notifications() {
     {
       id: 2,
       title: 'Appointment Reminder',
-      message: 'You have an appointment scheduled for tomorrow at 2:00 PM with Sarah Johnson, EA.',
+      message: 'You have an appointment scheduled for tomorrow at 2:00 PM with Wanda Maximoff, EA.',
       type: 'info',
       category: 'appointment',
       timestamp: '2025-02-09T14:00:00Z',

@@ -449,7 +449,7 @@ const HomePage = () => {
                   px: { xs: 1, sm: 2 },
                 }}
               >
-                Premium Tax Services
+                Turn Tax Season Into
                 <br />
                 <Box component="span" sx={{ 
                   background: 'linear-gradient(135deg, #10B981 0%, #3B82F6 100%)',
@@ -457,7 +457,7 @@ const HomePage = () => {
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                 }}>
-                  Made Simple
+                  Wealth Season
                 </Box>
               </AnimatedTypography>
               
@@ -475,7 +475,7 @@ const HomePage = () => {
                   px: { xs: 2, sm: 3 },
                 }}
               >
-                Expert tax preparation and planning services designed to maximize your savings and minimize your stress.
+                Stop leaving money on the table. Our expert strategies don't just file your taxes—they build your financial empire, one deduction at a time.
               </Typography>
               
               <Box sx={{ display: 'flex', justifyContent: 'center', gap: 3, flexWrap: 'wrap', mb: 8 }}>
@@ -545,7 +545,7 @@ const HomePage = () => {
                     variant="h2" 
                     component="div" 
                     sx={{ 
-                      fontWeight: 800,
+                      fontWeight: 500,
                       color: '#3B82F6',
                       fontFamily: '"Inter", sans-serif',
                       fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' },

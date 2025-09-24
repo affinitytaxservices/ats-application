@@ -302,26 +302,6 @@ function Navbar() {
             <Divider sx={{ my: 2, backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
             <ListItem 
               button 
-              onClick={() => handleNavigation('/employee-login')} 
-              sx={{
-                ...drawerItemStyle,
-                backgroundColor: isActive('/employee-login') ? 'rgba(124, 58, 237, 0.15)' : 'transparent',
-              }}
-            >
-              <ListItemIcon><WorkIcon sx={{ color: '#7C3AED' }} /></ListItemIcon>
-              <ListItemText 
-                primary="Employee Login" 
-                sx={{ 
-                  '& .MuiListItemText-primary': { 
-                    color: '#ffffff', 
-                    fontWeight: isActive('/employee-login') ? 600 : 400,
-                    fontFamily: '"Montserrat", sans-serif',
-                  } 
-                }} 
-              />
-            </ListItem>
-            <ListItem 
-              button 
               onClick={() => handleNavigation('/login')} 
               sx={{
                 ...drawerItemStyle,
@@ -665,17 +645,6 @@ function Navbar() {
               </Box>
             ) : (
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <Button
-                  color="inherit"
-                  component={RouterLink}
-                  to="/employee-login"
-                  sx={{
-                    ...commonButtonStyle,
-                    borderBottom: isActive('/employee-login') ? '2px solid #3B82F6' : '2px solid transparent',
-                  }}
-                >
-                  Employee
-                </Button>
                 <Button
                   color="inherit"
                   component={RouterLink}

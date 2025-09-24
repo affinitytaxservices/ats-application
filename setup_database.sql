@@ -95,9 +95,9 @@ INSERT INTO `users` (
   `updatedAt`
 ) VALUES (
   'admin@affinitytax.com',
-  '$2b$10$iGEMA76FzT7h6mRmVV.Nw.FvAn5JUNp7Q8YaJRzQuzT/1.GXSz4Aq', -- hashed password for 'password123'
-  'Admin',
-  'User',
+  '$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', -- hashed password for 'password123'
+  'Nick',
+  'Fury',
   'admin',
   '555-123-4567',
   NOW(),
@@ -116,9 +116,9 @@ INSERT INTO `users` (
   `updatedAt`
 ) VALUES (
   'taxpro@affinitytax.com',
-  '$2b$10$iGEMA76FzT7h6mRmVV.Nw.FvAn5JUNp7Q8YaJRzQuzT/1.GXSz4Aq', -- hashed password for 'password123'
-  'Tax',
-  'Professional',
+  '$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', -- hashed password for 'password123'
+  'Steve',
+  'Rogers',
   'tax_professional',
   '555-987-6543',
   NOW(),
@@ -141,9 +141,9 @@ INSERT INTO `users` (
   `updatedAt`
 ) VALUES (
   'client@example.com',
-  '$2b$10$iGEMA76FzT7h6mRmVV.Nw.FvAn5JUNp7Q8YaJRzQuzT/1.GXSz4Aq', -- hashed password for 'password123'
-  'John',
-  'Doe',
+  '$2b$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', -- hashed password for 'password123'
+  'Peter',
+  'Parker',
   'client',
   '555-555-5555',
   '123 Main St',

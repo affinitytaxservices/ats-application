@@ -210,18 +210,18 @@ const Footer = () => {
                 gap: 0.5
               }}
             >
-              Made with 
+              Engineered with 
               <Box 
                 component="span" 
                 sx={{ 
-                  color: '#EF4444',
+                  color: '#8B5CF6',
                   animation: `${heartBeat} 2s ease-in-out infinite`,
                   display: 'inline-block'
                 }}
               >
-                ♥
+                🚀
               </Box> 
-              by Premium Tax Team
+              by Tax Wizards 
             </Typography>
           </Box>
         </Container>

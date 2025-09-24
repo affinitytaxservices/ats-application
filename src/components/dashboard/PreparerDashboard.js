@@ -51,8 +51,8 @@ function PreparerDashboard() {
   const [recentClients] = useState([
     {
       id: 1,
-      name: 'John Smith',
-      email: 'john.smith@email.com',
+      name: 'Tony Stark',
+    email: 'tony.stark@email.com',
       phone: '(555) 123-4567',
       status: 'In Progress',
       returnType: 'Individual',

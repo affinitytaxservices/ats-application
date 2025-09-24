@@ -9,19 +9,16 @@ import {
   InputAdornment,
   IconButton,
   CircularProgress,
-  Container,
   Paper,
   Stack,
-  Divider,
+  Link,
 } from '@mui/material';
 import {
-  Person,
+  Email,
   Lock,
   Visibility,
   VisibilityOff,
   Login as LoginIcon,
-  Business,
-  AccountCircle,
 } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 import { useAuth } from '../../contexts/AuthContext';
@@ -30,14 +27,13 @@ function Login() {
   const navigate = useNavigate();
   const { login } = useAuth();
   const [formData, setFormData] = useState({
-    username: '',
+    email: '',
     password: '',
   });
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [generalError, setGeneralError] = useState('');
-  const [loginType, setLoginType] = useState('client'); // 'client' or 'employee'
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -52,17 +48,24 @@ function Login() {
         [name]: ''
       }));
     }
+    if (generalError) {
+      setGeneralError('');
+    }
   };
 
   const validateForm = () => {
     const newErrors = {};
     
-    if (!formData.username.trim()) {
-      newErrors.username = 'Username is required';
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email address';
     }
     
     if (!formData.password) {
       newErrors.password = 'Password is required';
+    } else if (formData.password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters';
     }
     
     setErrors(newErrors);
@@ -80,14 +83,14 @@ function Login() {
     setIsSubmitting(true);
 
     try {
-      const success = await login(formData.username, formData.password, loginType);
+      const success = await login(formData.email, formData.password);
       if (success) {
-        navigate(loginType === 'employee' ? '/employee-dashboard' : '/dashboard');
+        navigate('/dashboard');
       } else {
-        setGeneralError('Invalid username or password');
+        setGeneralError('Invalid email or password. Please try again.');
       }
     } catch (error) {
-      setGeneralError('Login failed. Please try again.');
+      setGeneralError('Login failed. Please check your connection and try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -101,379 +104,239 @@ function Login() {
     <Box
       sx={{
         minHeight: '100vh',
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        background: '#FAFAFA',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         padding: 2,
-        position: 'relative',
-        overflow: 'hidden',
       }}
     >
-      {/* Animated background elements */}
       <motion.div
-        animate={{
-          x: [0, 100, 0],
-          y: [0, -100, 0],
-          rotate: [0, 180, 360],
-        }}
-        transition={{
-          duration: 20,
-          repeat: Infinity,
-          ease: "linear"
-        }}
-        style={{
-          position: 'absolute',
-          top: '10%',
-          left: '10%',
-          width: '100px',
-          height: '100px',
-          background: 'rgba(255, 255, 255, 0.1)',
-          borderRadius: '50%',
-          zIndex: 0,
-        }}
-      />
-
-      <motion.div
-        animate={{
-          x: [0, -150, 0],
-          y: [0, 150, 0],
-          rotate: [0, -180, -360],
-        }}
-        transition={{
-          duration: 25,
-          repeat: Infinity,
-          ease: "linear"
-        }}
-        style={{
-          position: 'absolute',
-          bottom: '10%',
-          right: '10%',
-          width: '150px',
-          height: '150px',
-          background: 'rgba(255, 255, 255, 0.05)',
-          borderRadius: '30% 70% 70% 30% / 30% 30% 70% 70%',
-          zIndex: 0,
-        }}
-      />
-
-      <Container maxWidth="sm" sx={{ position: 'relative', zIndex: 1 }}>
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
+        <Paper
+          elevation={0}
+          sx={{
+            p: { xs: 4, sm: 6 },
+            borderRadius: 2,
+            background: '#FFFFFF',
+            border: '1px solid #E5E7EB',
+            maxWidth: 400,
+            width: '100%',
+          }}
         >
-          <Paper
-            elevation={24}
-            sx={{
-              p: { xs: 3, sm: 5 },
-              borderRadius: '24px',
-              background: 'rgba(255, 255, 255, 0.95)',
-              backdropFilter: 'blur(20px)',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
-              boxShadow: '0 40px 100px rgba(0, 0, 0, 0.2)',
-            }}
-          >
-            {/* Login Type Selector */}
-            <Box sx={{ mb: 4 }}>
-              <Stack direction="row" spacing={1} sx={{ mb: 3 }}>
-                <Button
-                  fullWidth
-                  variant={loginType === 'client' ? 'contained' : 'outlined'}
-                  onClick={() => setLoginType('client')}
-                  startIcon={<AccountCircle />}
-                  sx={{
-                    py: 1.5,
-                    borderRadius: '16px',
-                    textTransform: 'none',
-                    fontWeight: 600,
-                    ...(loginType === 'client' ? {
-                      // Use theme's glass effect for contained variant
-                    } : {
-                      borderColor: '#E5E7EB',
-                      color: '#6B7280',
-                      '&:hover': {
-                        borderColor: '#6366F1',
-                        background: 'rgba(99, 102, 241, 0.05)',
-                      },
-                    }),
-                  }}
-                >
-                  Client Login
-                </Button>
-                <Button
-                  fullWidth
-                  variant={loginType === 'employee' ? 'contained' : 'outlined'}
-                  onClick={() => setLoginType('employee')}
-                  startIcon={<Business />}
-                  sx={{
-                    py: 1.5,
-                    borderRadius: '12px',
-                    textTransform: 'none',
-                    fontWeight: 600,
-                    ...(loginType === 'employee' ? {
-                      background: 'linear-gradient(135deg, #10B981 0%, #34D399 100%)',
-                      boxShadow: '0 4px 16px rgba(16, 185, 129, 0.3)',
-                    } : {
-                      borderColor: '#E5E7EB',
-                      color: '#6B7280',
-                      '&:hover': {
-                        borderColor: '#10B981',
-                        background: 'rgba(16, 185, 129, 0.05)',
-                      },
-                    }),
-                  }}
-                >
-                  Employee Portal
-                </Button>
-              </Stack>
-            </Box>
-
+            {/* Header */}
             <Box sx={{ textAlign: 'center', mb: 4 }}>
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: 0.3, duration: 0.5, type: "spring" }}
-              >
-                <Box
-                  sx={{
-                    width: 80,
-                    height: 80,
-                    borderRadius: '50%',
-                    background: loginType === 'employee' 
-                      ? 'linear-gradient(135deg, #10B981 0%, #34D399 100%)'
-                      : 'linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    margin: '0 auto 24px',
-                    boxShadow: loginType === 'employee'
-                      ? '0 20px 40px rgba(16, 185, 129, 0.3)'
-                      : '0 20px 40px rgba(99, 102, 241, 0.3)',
-                    transition: 'all 0.3s ease',
-                  }}
-                >
-                  {loginType === 'employee' ? (
-                    <Business sx={{ fontSize: 40, color: 'white' }} />
-                  ) : (
-                    <LoginIcon sx={{ fontSize: 40, color: 'white' }} />
-                  )}
-                </Box>
-              </motion.div>
-              
               <Typography
-                variant="h3"
+                variant="h4"
                 sx={{
-                  fontWeight: 700,
+                  fontWeight: 600,
+                  color: '#1F2937',
                   mb: 1,
-                  background: loginType === 'employee'
-                    ? 'linear-gradient(135deg, #10B981 0%, #34D399 100%)'
-                    : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                  backgroundClip: 'text',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
+                  fontSize: { xs: '1.75rem', sm: '2rem' },
                 }}
               >
-                {loginType === 'employee' ? 'Employee Portal' : 'Welcome Back'}
+                Welcome Back
               </Typography>
-              
               <Typography
                 variant="body1"
                 sx={{
                   color: '#6B7280',
-                  fontWeight: 500,
+                  fontSize: '0.95rem',
                 }}
               >
-                {loginType === 'employee' 
-                  ? 'Access your tax preparer dashboard'
-                  : 'Sign in to your account to continue'
-                }
+                Sign in to your account
               </Typography>
             </Box>
 
-            <Box component="form" onSubmit={handleSubmit}>
-              {generalError && (
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <Alert 
-                    severity="error" 
-                    sx={{ 
-                      mb: 3,
-                      borderRadius: '12px',
+            {/* Error Alert */}
+            {generalError && (
+              <Alert 
+                severity="error" 
+                sx={{ 
+                  mb: 3,
+                  borderRadius: 1,
+                  '& .MuiAlert-message': {
+                    fontSize: '0.875rem',
+                  }
+                }}
+              >
+                {generalError}
+              </Alert>
+            )}
+
+            {/* Login Form */}
+            <Box component="form" onSubmit={handleSubmit} noValidate>
+              <Stack spacing={3}>
+                {/* Email Field */}
+                <TextField
+                  fullWidth
+                  name="email"
+                  label="Email Address"
+                  type="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  error={!!errors.email}
+                  helperText={errors.email}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Email sx={{ color: '#9CA3AF', fontSize: '1.25rem' }} />
+                      </InputAdornment>
+                    ),
+                  }}
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: 1.5,
+                      backgroundColor: '#F9FAFB',
+                      '& fieldset': {
+                        borderColor: '#E5E7EB',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: '#D1D5DB',
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: '#6366F1',
+                        borderWidth: 2,
+                      },
+                    },
+                    '& .MuiInputLabel-root': {
+                      color: '#6B7280',
+                      '&.Mui-focused': {
+                        color: '#6366F1',
+                      },
+                    },
+                  }}
+                />
+
+                {/* Password Field */}
+                <TextField
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type={showPassword ? 'text' : 'password'}
+                  value={formData.password}
+                  onChange={handleChange}
+                  error={!!errors.password}
+                  helperText={errors.password}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Lock sx={{ color: '#9CA3AF', fontSize: '1.25rem' }} />
+                      </InputAdornment>
+                    ),
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={togglePasswordVisibility}
+                          edge="end"
+                          sx={{ color: '#9CA3AF' }}
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: 1.5,
+                      backgroundColor: '#F9FAFB',
+                      '& fieldset': {
+                        borderColor: '#E5E7EB',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: '#D1D5DB',
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: '#6366F1',
+                        borderWidth: 2,
+                      },
+                    },
+                    '& .MuiInputLabel-root': {
+                      color: '#6B7280',
+                      '&.Mui-focused': {
+                        color: '#6366F1',
+                      },
+                    },
+                  }}
+                />
+
+                {/* Forgot Password Link */}
+                <Box sx={{ textAlign: 'right' }}>
+                  <Link
+                    component={RouterLink}
+                    to="/forgot-password"
+                    sx={{
+                      color: '#6366F1',
+                      textDecoration: 'none',
+                      fontSize: '0.875rem',
                       fontWeight: 500,
+                      '&:hover': {
+                        textDecoration: 'underline',
+                      },
                     }}
                   >
-                    {generalError}
-                  </Alert>
-                </motion.div>
-              )}
+                    Forgot your password?
+                  </Link>
+                </Box>
 
-              <TextField
-                fullWidth
-                label={loginType === 'employee' ? 'Employee ID' : 'Username'}
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
-                error={!!errors.username}
-                helperText={errors.username}
-                autoComplete="username"
-                autoFocus
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Person sx={{ 
-                        color: loginType === 'employee' ? '#10B981' : '#6366F1' 
-                      }} />
-                    </InputAdornment>
-                  ),
-                }}
-                sx={{
-                  mb: 3,
-                  '& .MuiOutlinedInput-root': {
-                    borderRadius: '12px',
-                  },
-                }}
-              />
-
-              <TextField
-                fullWidth
-                label="Password"
-                name="password"
-                type={showPassword ? 'text' : 'password'}
-                value={formData.password}
-                onChange={handleChange}
-                error={!!errors.password}
-                helperText={errors.password}
-                autoComplete="current-password"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Lock sx={{ 
-                        color: loginType === 'employee' ? '#10B981' : '#6366F1' 
-                      }} />
-                    </InputAdornment>
-                  ),
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={togglePasswordVisibility}
-                        edge="end"
-                        sx={{ 
-                          color: loginType === 'employee' ? '#10B981' : '#6366F1' 
-                        }}
-                      >
-                        {showPassword ? <VisibilityOff /> : <Visibility />}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-                sx={{
-                  mb: 2,
-                  '& .MuiOutlinedInput-root': {
-                    borderRadius: '12px',
-                  },
-                }}
-              />
-
-              <Box sx={{ textAlign: 'right', mb: 3 }}>
+                {/* Submit Button */}
                 <Button
-                  component={RouterLink}
-                  to="/forgot-password"
-                  variant="text"
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  size="small"
+                  disabled={isSubmitting}
+                  startIcon={isSubmitting ? <CircularProgress size={16} /> : <LoginIcon />}
                   sx={{
-                    color: '#6B7280',
+                    py: 1,
+                    borderRadius: 1.5,
+                    backgroundColor: '#1F2937',
+                    color: '#FFFFFF',
+                    fontWeight: 600,
+                    fontSize: '0.875rem',
                     textTransform: 'none',
-                    fontWeight: 500,
-                    fontSize: '0.9rem',
+                    boxShadow: 'none',
                     '&:hover': {
-                      background: 'rgba(99, 102, 241, 0.1)',
+                      backgroundColor: '#374151',
+                      boxShadow: '0 4px 12px rgba(31, 41, 55, 0.15)',
+                    },
+                    '&:disabled': {
+                      backgroundColor: '#9CA3AF',
+                      color: '#FFFFFF',
                     },
                   }}
                 >
-                  Forgot Password?
+                  {isSubmitting ? 'Signing In...' : 'Sign In'}
                 </Button>
-              </Box>
+              </Stack>
+            </Box>
 
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                disabled={isSubmitting}
-                startIcon={isSubmitting ? <CircularProgress size={20} /> : <LoginIcon />}
+            {/* Register Link */}
+            <Box sx={{ textAlign: 'center', mt: 4, pt: 3, borderTop: '1px solid #F3F4F6' }}>
+              <Typography variant="body2" sx={{ color: '#6B7280', mb: 1 }}>
+                Don't have an account?
+              </Typography>
+              <Link
+                component={RouterLink}
+                to="/register"
                 sx={{
-                  py: 2.5,
-                  mb: 3,
-                  borderRadius: '12px',
-                  background: loginType === 'employee'
-                    ? 'linear-gradient(135deg, #10B981 0%, #34D399 100%)'
-                    : 'linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)',
+                  color: '#6366F1',
+                  textDecoration: 'none',
                   fontWeight: 600,
-                  fontSize: '1.1rem',
-                  textTransform: 'none',
-                  boxShadow: loginType === 'employee'
-                    ? '0 8px 32px rgba(16, 185, 129, 0.3)'
-                    : '0 8px 32px rgba(99, 102, 241, 0.3)',
+                  fontSize: '0.875rem',
                   '&:hover': {
-                    background: loginType === 'employee'
-                      ? 'linear-gradient(135deg, #059669 0%, #10B981 100%)'
-                      : 'linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%)',
-                    transform: 'translateY(-2px)',
-                    boxShadow: loginType === 'employee'
-                      ? '0 12px 40px rgba(16, 185, 129, 0.4)'
-                      : '0 12px 40px rgba(99, 102, 241, 0.4)',
-                  },
-                  '&:disabled': {
-                    background: loginType === 'employee'
-                      ? 'rgba(16, 185, 129, 0.5)'
-                      : 'rgba(99, 102, 241, 0.5)',
-                    transform: 'none',
+                    textDecoration: 'underline',
                   },
                 }}
               >
-                {isSubmitting ? 'Signing In...' : 'Sign In'}
-              </Button>
-
-              {loginType === 'client' && (
-                <>
-                  <Divider sx={{ my: 3 }}>
-                    <Typography variant="body2" sx={{ color: '#9CA3AF' }}>
-                      New to our platform?
-                    </Typography>
-                  </Divider>
-
-                  <Box sx={{ textAlign: 'center' }}>
-                    <Button
-                      component={RouterLink}
-                      to="/register"
-                      variant="outlined"
-                      fullWidth
-                      sx={{
-                        py: 2,
-                        borderRadius: '12px',
-                        borderColor: '#E5E7EB',
-                        color: '#6B7280',
-                        textTransform: 'none',
-                        fontWeight: 600,
-                        '&:hover': {
-                          borderColor: '#6366F1',
-                          background: 'rgba(99, 102, 241, 0.05)',
-                          color: '#6366F1',
-                        },
-                      }}
-                    >
-                      Create New Account
-                    </Button>
-                  </Box>
-                </>
-              )}
+                Create an account
+              </Link>
             </Box>
           </Paper>
         </motion.div>
-      </Container>
     </Box>
   );
 }

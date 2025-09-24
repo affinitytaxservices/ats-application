@@ -11,6 +11,7 @@ import {
   Container,
   Paper,
   Stack,
+  Link,
 } from '@mui/material';
 import {
   Email,
@@ -66,6 +67,9 @@ function ForgotPassword() {
     if (errors.email) {
       setErrors({});
     }
+    if (generalError) {
+      setGeneralError('');
+    }
   };
 
   if (isEmailSent) {
@@ -73,7 +77,7 @@ function ForgotPassword() {
       <Box
         sx={{
           minHeight: '100vh',
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          background: '#FAFAFA',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -87,14 +91,15 @@ function ForgotPassword() {
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
             <Paper
-              elevation={24}
+              elevation={0}
               sx={{
-                p: { xs: 3, sm: 5 },
-                borderRadius: '24px',
-                background: 'rgba(255, 255, 255, 0.95)',
-                backdropFilter: 'blur(20px)',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
+                p: { xs: 4, sm: 6 },
+                borderRadius: 2,
+                background: '#FFFFFF',
+                border: '1px solid #E5E7EB',
                 textAlign: 'center',
+                maxWidth: 480,
+                mx: 'auto',
               }}
             >
               <motion.div
@@ -107,25 +112,12 @@ function ForgotPassword() {
                     width: 80,
                     height: 80,
                     borderRadius: '50%',
-                    background: 'rgba(16, 185, 129, 0.15)',
-                    backdropFilter: 'blur(20px)',
-                    border: '1px solid rgba(16, 185, 129, 0.3)',
+                    background: '#10B981',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     margin: '0 auto 24px',
-                    boxShadow: '0 20px 40px rgba(16, 185, 129, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
-                    '&::after': {
-                      content: '""',
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.8) 0%, rgba(52, 211, 153, 0.8) 100%)',
-                      borderRadius: '50%',
-                      zIndex: -1,
-                    },
+                    boxShadow: '0 4px 12px rgba(16, 185, 129, 0.25)',
                   }}
                 >
                   <CheckCircle sx={{ fontSize: 40, color: 'white' }} />
@@ -135,12 +127,10 @@ function ForgotPassword() {
               <Typography
                 variant="h4"
                 sx={{
-                  fontWeight: 700,
+                  fontWeight: 600,
                   mb: 2,
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                  backgroundClip: 'text',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
+                  color: '#1F2937',
+                  fontSize: { xs: '1.75rem', sm: '2rem' },
                 }}
               >
                 Check Your Email
@@ -152,6 +142,7 @@ function ForgotPassword() {
                   color: '#6B7280',
                   mb: 4,
                   lineHeight: 1.6,
+                  fontSize: '0.95rem',
                 }}
               >
                 We've sent a password reset link to <strong>{email}</strong>. 
@@ -164,10 +155,18 @@ function ForgotPassword() {
                   onClick={() => navigate('/login')}
                   startIcon={<ArrowBack />}
                   sx={{
-                    py: 2,
-                    borderRadius: '16px',
+                    py: 1.5,
+                    borderRadius: 1.5,
+                    backgroundColor: '#1F2937',
+                    color: '#FFFFFF',
                     fontWeight: 600,
+                    fontSize: '0.95rem',
                     textTransform: 'none',
+                    boxShadow: 'none',
+                    '&:hover': {
+                      backgroundColor: '#374151',
+                      boxShadow: '0 4px 12px rgba(31, 41, 55, 0.15)',
+                    },
                   }}
                 >
                   Back to Login
@@ -183,6 +182,10 @@ function ForgotPassword() {
                     color: '#6B7280',
                     textTransform: 'none',
                     fontWeight: 500,
+                    fontSize: '0.875rem',
+                    '&:hover': {
+                      backgroundColor: '#F3F4F6',
+                    },
                   }}
                 >
                   Try different email
@@ -199,77 +202,28 @@ function ForgotPassword() {
     <Box
       sx={{
         minHeight: '100vh',
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        background: '#FAFAFA',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         padding: 2,
-        position: 'relative',
-        overflow: 'hidden',
       }}
     >
-      {/* Animated background elements */}
-      <motion.div
-        animate={{
-          x: [0, 100, 0],
-          y: [0, -100, 0],
-          rotate: [0, 180, 360],
-        }}
-        transition={{
-          duration: 20,
-          repeat: Infinity,
-          ease: "linear"
-        }}
-        style={{
-          position: 'absolute',
-          top: '10%',
-          left: '10%',
-          width: '100px',
-          height: '100px',
-          background: 'rgba(255, 255, 255, 0.1)',
-          borderRadius: '50%',
-          zIndex: 0,
-        }}
-      />
-
-      <motion.div
-        animate={{
-          x: [0, -150, 0],
-          y: [0, 150, 0],
-          rotate: [0, -180, -360],
-        }}
-        transition={{
-          duration: 25,
-          repeat: Infinity,
-          ease: "linear"
-        }}
-        style={{
-          position: 'absolute',
-          bottom: '10%',
-          right: '10%',
-          width: '150px',
-          height: '150px',
-          background: 'rgba(255, 255, 255, 0.05)',
-          borderRadius: '30% 70% 70% 30% / 30% 30% 70% 70%',
-          zIndex: 0,
-        }}
-      />
-
-      <Container maxWidth="sm" sx={{ position: 'relative', zIndex: 1 }}>
+      <Container maxWidth="sm">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
           <Paper
-            elevation={24}
+            elevation={0}
             sx={{
-              p: { xs: 3, sm: 5 },
-              borderRadius: '24px',
-              background: 'rgba(255, 255, 255, 0.95)',
-              backdropFilter: 'blur(20px)',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
-              boxShadow: '0 40px 100px rgba(0, 0, 0, 0.2)',
+              p: { xs: 4, sm: 6 },
+              borderRadius: 2,
+              background: '#FFFFFF',
+              border: '1px solid #E5E7EB',
+              maxWidth: 480,
+              mx: 'auto',
             }}
           >
             {/* Header */}
@@ -284,26 +238,12 @@ function ForgotPassword() {
                     width: 80,
                     height: 80,
                     borderRadius: '50%',
-                    background: 'rgba(99, 102, 241, 0.15)',
-                    backdropFilter: 'blur(20px)',
-                    border: '1px solid rgba(99, 102, 241, 0.3)',
+                    background: '#6366F1',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     margin: '0 auto 24px',
-                    boxShadow: '0 20px 40px rgba(99, 102, 241, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
-                    position: 'relative',
-                    '&::after': {
-                      content: '""',
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.8) 0%, rgba(139, 92, 246, 0.8) 100%)',
-                      borderRadius: '50%',
-                      zIndex: -1,
-                    },
+                    boxShadow: '0 4px 12px rgba(99, 102, 241, 0.25)',
                   }}
                 >
                   <Email sx={{ fontSize: 40, color: 'white' }} />
@@ -311,14 +251,12 @@ function ForgotPassword() {
               </motion.div>
 
               <Typography
-                variant="h3"
+                variant="h4"
                 sx={{
-                  fontWeight: 700,
+                  fontWeight: 600,
                   mb: 1,
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                  backgroundClip: 'text',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
+                  color: '#1F2937',
+                  fontSize: { xs: '1.75rem', sm: '2rem' },
                 }}
               >
                 Forgot Password?
@@ -328,7 +266,7 @@ function ForgotPassword() {
                 variant="body1"
                 sx={{
                   color: '#6B7280',
-                  fontWeight: 500,
+                  fontSize: '0.95rem',
                 }}
               >
                 No worries! Enter your email and we'll send you reset instructions.
@@ -347,8 +285,10 @@ function ForgotPassword() {
                     severity="error" 
                     sx={{ 
                       mb: 3,
-                      borderRadius: '12px',
-                      fontWeight: 500,
+                      borderRadius: 1,
+                      '& .MuiAlert-message': {
+                        fontSize: '0.875rem',
+                      }
                     }}
                   >
                     {generalError}
@@ -370,14 +310,31 @@ function ForgotPassword() {
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <Email sx={{ color: '#6366F1' }} />
+                      <Email sx={{ color: '#9CA3AF', fontSize: '1.25rem' }} />
                     </InputAdornment>
                   ),
                 }}
                 sx={{
                   mb: 3,
                   '& .MuiOutlinedInput-root': {
-                    borderRadius: '12px',
+                    borderRadius: 1.5,
+                    backgroundColor: '#F9FAFB',
+                    '& fieldset': {
+                      borderColor: '#E5E7EB',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: '#D1D5DB',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#6366F1',
+                      borderWidth: 2,
+                    },
+                  },
+                  '& .MuiInputLabel-root': {
+                    color: '#6B7280',
+                    '&.Mui-focused': {
+                      color: '#6366F1',
+                    },
                   },
                 }}
               />
@@ -389,43 +346,48 @@ function ForgotPassword() {
                 disabled={isSubmitting}
                 startIcon={isSubmitting ? <CircularProgress size={20} /> : <Send />}
                 sx={{
-                  py: 2.5,
+                  py: 1.5,
                   mb: 3,
-                  borderRadius: '16px',
+                  borderRadius: 1.5,
+                  backgroundColor: '#1F2937',
+                  color: '#FFFFFF',
                   fontWeight: 600,
-                  fontSize: '1.1rem',
+                  fontSize: '0.95rem',
                   textTransform: 'none',
-                  boxShadow: '0 8px 32px rgba(99, 102, 241, 0.3)',
+                  boxShadow: 'none',
                   '&:hover': {
-                    background: 'linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%)',
-                    transform: 'translateY(-2px)',
-                    boxShadow: '0 12px 40px rgba(99, 102, 241, 0.4)',
+                    backgroundColor: '#374151',
+                    boxShadow: '0 4px 12px rgba(31, 41, 55, 0.15)',
                   },
                   '&:disabled': {
-                    background: 'rgba(99, 102, 241, 0.5)',
-                    transform: 'none',
+                    backgroundColor: '#9CA3AF',
+                    color: '#FFFFFF',
                   },
                 }}
               >
                 {isSubmitting ? 'Sending...' : 'Send Reset Link'}
               </Button>
 
-              <Box sx={{ textAlign: 'center' }}>
-                <Button
+              <Box sx={{ textAlign: 'center', pt: 2, borderTop: '1px solid #F3F4F6' }}>
+                <Link
                   component={RouterLink}
                   to="/login"
-                  startIcon={<ArrowBack />}
                   sx={{
-                    color: '#6B7280',
-                    textTransform: 'none',
-                    fontWeight: 500,
+                    color: '#6366F1',
+                    textDecoration: 'none',
+                    fontWeight: 600,
+                    fontSize: '0.875rem',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 0.5,
                     '&:hover': {
-                      background: 'rgba(99, 102, 241, 0.1)',
+                      textDecoration: 'underline',
                     },
                   }}
                 >
+                  <ArrowBack sx={{ fontSize: '1rem' }} />
                   Back to Login
-                </Button>
+                </Link>
               </Box>
             </Box>
           </Paper>

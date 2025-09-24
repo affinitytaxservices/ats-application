@@ -121,7 +121,7 @@ const metricsData = [
   {
     id: 1,
     icon: AttachMoneyIcon,
-    number: 250000 ,
+    number: 25000 ,
     suffix: '+',
     prefix: '$',
     label: 'Total Client Savings',

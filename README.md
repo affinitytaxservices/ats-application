@@ -1,7 +1,5 @@
 # ATS - Affinity Tax Services
 
-![ATS Logo](./Affinity%20Tax%20Services.png)
-
 A comprehensive web application for Affinity Tax Services, providing tax preparation, filing, and management services for individuals and businesses.
 
 ## 🚀 Features

@@ -35,8 +35,8 @@ const glow = keyframes`
 // Styled components with premium effects
 const QuoteContainer = styled(Box)(({ theme }) => ({
   position: 'relative',
-  padding: theme.spacing(6),
-  borderRadius: '32px',
+  padding: theme.spacing(4),
+  borderRadius: '24px',
   background: 'linear-gradient(145deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.9) 100%)',
   backdropFilter: 'blur(20px)',
   border: '1px solid rgba(99, 102, 241, 0.2)',
@@ -78,7 +78,7 @@ const QuoteContainer = styled(Box)(({ theme }) => ({
 const QuoteText = styled(Typography)(({ theme }) => ({
   fontFamily: '"Playfair Display", "Georgia", serif',
   fontStyle: 'italic',
-  fontSize: 'clamp(1.25rem, 3vw, 1.75rem)',
+  fontSize: 'clamp(1rem, 2.5vw, 1.4rem)',
   lineHeight: 1.6,
   color: '#1F2937',
   textAlign: 'center',
@@ -95,7 +95,7 @@ const QuoteText = styled(Typography)(({ theme }) => ({
 
 const AuthorText = styled(Typography)(({ theme: _theme }) => ({
   fontFamily: '"Inter", sans-serif',
-  fontSize: '1rem',
+  fontSize: '0.875rem',
   fontWeight: 600,
   color: '#6B7280',
   textAlign: 'center',
@@ -111,7 +111,7 @@ const QuoteIcon = styled(FormatQuoteIcon)(({ theme }) => ({
   position: 'absolute',
   top: theme.spacing(2),
   left: theme.spacing(2),
-  fontSize: '3rem',
+  fontSize: '2.5rem',
   color: 'rgba(99, 102, 241, 0.2)',
   transform: 'rotate(180deg)',
   zIndex: 1,
@@ -121,69 +121,167 @@ const RefreshButton = styled(IconButton)(({ theme }) => ({
   position: 'absolute',
   top: theme.spacing(2),
   right: theme.spacing(2),
-  background: 'rgba(99, 102, 241, 0.1)',
+  color: theme.palette.primary.main,
+  backgroundColor: 'rgba(255, 255, 255, 0.9)',
   backdropFilter: 'blur(10px)',
   border: '1px solid rgba(99, 102, 241, 0.2)',
-  color: '#6366F1',
-  zIndex: 3,
+  borderRadius: '50%',
+  width: '40px',
+  height: '40px',
   transition: 'all 0.3s ease',
-  
   '&:hover': {
-    background: 'rgba(99, 102, 241, 0.2)',
+    backgroundColor: theme.palette.primary.main,
+    color: 'white',
     transform: 'rotate(180deg) scale(1.1)',
-    boxShadow: '0 8px 25px rgba(99, 102, 241, 0.3)',
+    boxShadow: '0 8px 25px rgba(99, 102, 241, 0.4)',
   },
 }));
 
-// Inspirational quotes focused on financial success and tax efficiency
+const CategoryBadge = styled(Box)(({ theme, category }) => {
+  const getCategoryColor = (cat) => {
+    switch (cat) {
+      case 'financial_responsibility':
+        return {
+          bg: 'rgba(34, 197, 94, 0.1)',
+          border: 'rgba(34, 197, 94, 0.3)',
+          text: '#059669'
+        };
+      case 'civic_duty':
+        return {
+          bg: 'rgba(59, 130, 246, 0.1)',
+          border: 'rgba(59, 130, 246, 0.3)',
+          text: '#2563eb'
+        };
+      case 'economic_impact':
+        return {
+          bg: 'rgba(168, 85, 247, 0.1)',
+          border: 'rgba(168, 85, 247, 0.3)',
+          text: '#7c3aed'
+        };
+      default:
+        return {
+          bg: 'rgba(107, 114, 128, 0.1)',
+          border: 'rgba(107, 114, 128, 0.3)',
+          text: '#6b7280'
+        };
+    }
+  };
+
+  const colors = getCategoryColor(category);
+  
+  return {
+    display: 'inline-flex',
+    alignItems: 'center',
+    padding: '4px 12px',
+    borderRadius: '16px',
+    backgroundColor: colors.bg,
+    border: `1px solid ${colors.border}`,
+    color: colors.text,
+    fontSize: '0.75rem',
+    fontWeight: 600,
+    textTransform: 'capitalize',
+    marginBottom: theme.spacing(2),
+    backdropFilter: 'blur(5px)',
+    transition: 'all 0.3s ease',
+  };
+});
+
+// Enhanced inspirational quotes categorized by themes: Financial Responsibility, Civic Duty, Economic Impact
 const quotes = [
+  // Financial Responsibility Theme
   {
     text: "The art of taxation consists in so plucking the goose as to obtain the largest possible amount of feathers with the smallest possible amount of hissing.",
-    author: "Jean-Baptiste Colbert"
+    author: "Jean-Baptiste Colbert",
+    category: "financial_responsibility"
   },
   {
-    text: "In this world nothing can be said to be certain, except death and taxes. But with proper planning, taxes can be optimized.",
-    author: "Benjamin Franklin (adapted)"
+    text: "In this world nothing can be said to be certain, except death and taxes.",
+    author: "Benjamin Franklin",
+    category: "financial_responsibility"
   },
   {
-    text: "The hardest thing to understand in the world is the income tax. The smartest thing is to have an expert handle it.",
-    author: "Albert Einstein (adapted)"
-  },
-  {
-    text: "A penny saved is a penny earned, but a tax deduction found is money returned.",
-    author: "Modern Tax Wisdom"
-  },
-  {
-    text: "Financial peace isn't the acquisition of stuff. It's learning to live on less than you make, so you can give money back and have money to invest. Smart tax planning is part of that journey.",
-    author: "Dave Ramsey (adapted)"
-  },
-  {
-    text: "The real measure of your wealth is how much you'd be worth if you lost all your money. But keeping more of what you earn through smart tax strategies helps build that foundation.",
-    author: "Warren Buffett (adapted)"
-  },
-  {
-    text: "Don't let what you cannot do interfere with what you can do. You can't avoid taxes, but you can minimize them legally.",
-    author: "John Wooden (adapted)"
-  },
-  {
-    text: "The best time to plant a tree was 20 years ago. The second best time is now. The same applies to tax planning.",
-    author: "Chinese Proverb (adapted)"
-  },
-  {
-    text: "Success is not final, failure is not fatal: it is the courage to continue that counts. This includes facing your taxes with confidence.",
-    author: "Winston Churchill (adapted)"
-  },
-  {
-    text: "The difference between tax avoidance and tax evasion is the thickness of a prison wall. Choose professional guidance.",
-    author: "Denis Healey"
-  },
-  {
-    text: "Compound interest is the eighth wonder of the world. Tax efficiency is the ninth.",
-    author: "Modern Financial Wisdom"
+    text: "The hardest thing to understand in the world is the income tax.",
+    author: "Albert Einstein",
+    category: "financial_responsibility"
   },
   {
     text: "It's not how much money you make, but how much money you keep, how hard it works for you, and how many generations you keep it for.",
-    author: "Robert Kiyosaki"
+    author: "Robert Kiyosaki",
+    category: "financial_responsibility"
+  },
+  {
+    text: "Financial peace isn't the acquisition of stuff. It's learning to live on less than you make, so you can give money back and have money to invest.",
+    author: "Dave Ramsey",
+    category: "financial_responsibility"
+  },
+  {
+    text: "The difference between tax avoidance and tax evasion is the thickness of a prison wall.",
+    author: "Denis Healey",
+    category: "financial_responsibility"
+  },
+  
+  // Civic Duty Theme
+  {
+    text: "Taxes are what we pay for civilized society.",
+    author: "Oliver Wendell Holmes Jr.",
+    category: "civic_duty"
+  },
+  {
+    text: "The power to tax is the power to destroy, but also the power to keep alive.",
+    author: "John Marshall",
+    category: "civic_duty"
+  },
+  {
+    text: "Paying taxes is an honor and privilege. It means you're earning money and contributing to society.",
+    author: "Modern Civic Wisdom",
+    category: "civic_duty"
+  },
+  {
+    text: "A good citizen will pay his taxes cheerfully, but he will never pay more than the law demands.",
+    author: "Tax Professional Wisdom",
+    category: "civic_duty"
+  },
+  {
+    text: "The spirit of a people, its cultural level, its social structure, the deeds its policy may prepare—all this and more is written in its fiscal history.",
+    author: "Joseph Schumpeter",
+    category: "civic_duty"
+  },
+  
+  // Economic Impact Theme
+  {
+    text: "The best things in life are free, but sooner or later the government will find a way to tax them.",
+    author: "Anonymous",
+    category: "economic_impact"
+  },
+  {
+    text: "A tax loophole is something that benefits the other guy. If it benefits you, it is tax reform.",
+    author: "Russell B. Long",
+    category: "economic_impact"
+  },
+  {
+    text: "The income tax has made more liars out of the American people than golf has.",
+    author: "Will Rogers",
+    category: "economic_impact"
+  },
+  {
+    text: "There is no such thing as a good tax.",
+    author: "Winston Churchill",
+    category: "economic_impact"
+  },
+  {
+    text: "The point to remember is that what the government gives it must first take away.",
+    author: "John S. Coleman",
+    category: "economic_impact"
+  },
+  {
+    text: "Taxation without representation is tyranny.",
+    author: "James Otis",
+    category: "economic_impact"
+  },
+  {
+    text: "The taxpayer—that's someone who works for the federal government but doesn't have to take the civil service examination.",
+    author: "Ronald Reagan",
+    category: "economic_impact"
   }
 ];
 
@@ -216,6 +314,19 @@ const InspirationalQuotes = React.forwardRef(({ autoRotate = false, rotationInte
 
   const currentQuote = quotes[currentQuoteIndex];
 
+  const getCategoryLabel = (category) => {
+    switch (category) {
+      case 'financial_responsibility':
+        return 'Financial Responsibility';
+      case 'civic_duty':
+        return 'Civic Duty';
+      case 'economic_impact':
+        return 'Economic Impact';
+      default:
+        return 'General';
+    }
+  };
+
   return (
     <QuoteContainer ref={ref}>
       <QuoteIcon />
@@ -225,6 +336,9 @@ const InspirationalQuotes = React.forwardRef(({ autoRotate = false, rotationInte
       
       <Fade in={fadeIn} timeout={600}>
         <Box>
+          <CategoryBadge category={currentQuote.category}>
+            {getCategoryLabel(currentQuote.category)}
+          </CategoryBadge>
           <QuoteText>
             "{currentQuote.text}"
           </QuoteText>
