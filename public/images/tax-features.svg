@@ -1,0 +1,85 @@
+<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Elements -->
+  <circle cx="400" cy="300" r="250" fill="url(#gradient1)" opacity="0.1"/>
+  <circle cx="400" cy="300" r="200" fill="url(#gradient2)" opacity="0.15"/>
+  <circle cx="400" cy="300" r="150" fill="url(#gradient3)" opacity="0.2"/>
+  
+  <!-- Central Shield -->
+  <path d="M400 100 L500 150 V300 C500 350 450 400 400 450 C350 400 300 350 300 300 V150 Z" fill="url(#gradient4)" opacity="0.9" stroke="#10B981" stroke-width="3"/>
+  
+  <!-- Shield Inner -->
+  <path d="M400 130 L480 170 V290 C480 330 440 370 400 410 C360 370 320 330 320 290 V170 Z" fill="#1E3A8A" opacity="0.7"/>
+  
+  <!-- Shield Emblem -->
+  <path d="M400 180 L440 200 V270 C440 290 420 310 400 330 C380 310 360 290 360 270 V200 Z" fill="#10B981" opacity="0.9"/>
+  
+  <!-- Checkmark in Shield -->
+  <path d="M380 260 L395 275 L420 235" stroke="white" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Feature Icons -->
+  <!-- Expert Icon -->
+  <circle cx="200" cy="200" r="40" fill="#1E3A8A" opacity="0.8"/>
+  <path d="M200 170 L210 190 L230 190 L215 205 L220 225 L200 215 L180 225 L185 205 L170 190 L190 190 Z" fill="#10B981"/>
+  
+  <!-- Security Icon -->
+  <circle cx="600" cy="200" r="40" fill="#1E3A8A" opacity="0.8"/>
+  <rect x="580" y="190" width="40" height="30" rx="5" fill="#10B981"/>
+  <rect x="595" y="170" width="10" height="20" rx="5" fill="#10B981"/>
+  <circle cx="600" cy="200" r="5" fill="white"/>
+  <rect x="598" y="200" width="4" height="10" rx="2" fill="white"/>
+  
+  <!-- Personalized Icon -->
+  <circle cx="200" cy="400" r="40" fill="#1E3A8A" opacity="0.8"/>
+  <path d="M180 385 H220 M180 400 H220 M180 415 H220" stroke="#10B981" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="170" cy="385" r="5" fill="#10B981"/>
+  <circle cx="170" cy="415" r="5" fill="#10B981"/>
+  
+  <!-- Support Icon -->
+  <circle cx="600" cy="400" r="40" fill="#1E3A8A" opacity="0.8"/>
+  <path d="M585 390 Q600 370 615 390 M585 410 Q600 430 615 410" stroke="#10B981" stroke-width="4" stroke-linecap="round"/>
+  <circle cx="600" cy="400" r="5" fill="#10B981"/>
+  
+  <!-- Connection Lines -->
+  <path d="M240 200 L360 200" stroke="#10B981" stroke-width="2" stroke-dasharray="5 5"/>
+  <path d="M440 200 L560 200" stroke="#10B981" stroke-width="2" stroke-dasharray="5 5"/>
+  <path d="M240 400 L360 400" stroke="#10B981" stroke-width="2" stroke-dasharray="5 5"/>
+  <path d="M440 400 L560 400" stroke="#10B981" stroke-width="2" stroke-dasharray="5 5"/>
+  <path d="M200 240 L200 360" stroke="#10B981" stroke-width="2" stroke-dasharray="5 5"/>
+  <path d="M600 240 L600 360" stroke="#10B981" stroke-width="2" stroke-dasharray="5 5"/>
+  
+  <!-- Document with Checkmarks -->
+  <rect x="320" y="450" width="160" height="120" rx="5" fill="white" stroke="#E5E7EB" stroke-width="2"/>
+  <line x1="340" y1="480" x2="460" y2="480" stroke="#E5E7EB" stroke-width="2"/>
+  <line x1="340" y1="510" x2="460" y2="510" stroke="#E5E7EB" stroke-width="2"/>
+  <line x1="340" y1="540" x2="460" y2="540" stroke="#E5E7EB" stroke-width="2"/>
+  
+  <!-- Checkmarks on Document -->
+  <circle cx="350" cy="480" r="10" fill="#10B981"/>
+  <path d="M345 480 L350 485 L355 475" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <circle cx="350" cy="510" r="10" fill="#10B981"/>
+  <path d="M345 510 L350 515 L355 505" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <circle cx="350" cy="540" r="10" fill="#10B981"/>
+  <path d="M345 540 L350 545 L355 535" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Gradients -->
+  <defs>
+    <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A" />
+      <stop offset="100%" stop-color="#10B981" />
+    </linearGradient>
+    <linearGradient id="gradient2" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A" />
+      <stop offset="100%" stop-color="#10B981" />
+    </linearGradient>
+    <linearGradient id="gradient3" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#1E3A8A" />
+      <stop offset="100%" stop-color="#10B981" />
+    </linearGradient>
+    <linearGradient id="gradient4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A" />
+      <stop offset="100%" stop-color="#10B981" />
+    </linearGradient>
+  </defs>
+</svg>

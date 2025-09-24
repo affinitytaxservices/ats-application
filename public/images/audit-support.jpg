@@ -1,0 +1,50 @@
+<svg width="400" height="200" viewBox="0 0 400 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="400" height="200" fill="#0F172A"/>
+  
+  <!-- Decorative Elements -->
+  <circle cx="50" cy="50" r="80" fill="url(#audit-gradient1)" opacity="0.1"/>
+  <circle cx="350" cy="150" r="100" fill="url(#audit-gradient2)" opacity="0.1"/>
+  
+  <!-- Gavel/Hammer -->
+  <rect x="180" y="100" width="120" height="20" rx="5" fill="#1E3A8A"/>
+  <rect x="220" y="60" width="40" height="40" rx="5" fill="#1E3A8A"/>
+  <path d="M240 100 L240 120" stroke="#1E3A8A" stroke-width="4"/>
+  
+  <!-- Shield -->
+  <path d="M120 70 L150 80 V120 C150 135 135 150 120 160 C105 150 90 135 90 120 V80 Z" fill="#1E3A8A" opacity="0.8" stroke="#10B981" stroke-width="2"/>
+  <path d="M120 80 L140 87 V117 C140 127 130 137 120 145 C110 137 100 127 100 117 V87 Z" fill="#0F172A"/>
+  <path d="M120 90 L130 95 V115 C130 120 125 125 120 130 C115 125 110 120 110 115 V95 Z" fill="#10B981" opacity="0.8"/>
+  <path d="M115 115 L120 120 L125 110" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Document Stack -->
+  <rect x="280" y="80" width="60" height="80" rx="3" fill="#1E293B" stroke="#334155" stroke-width="1"/>
+  <rect x="285" y="75" width="60" height="80" rx="3" fill="#1E293B" stroke="#334155" stroke-width="1"/>
+  <rect x="290" y="70" width="60" height="80" rx="3" fill="white" stroke="#334155" stroke-width="1"/>
+  
+  <!-- Document Lines -->
+  <line x1="300" y1="85" x2="340" y2="85" stroke="#334155" stroke-width="1"/>
+  <line x1="300" y1="95" x2="340" y2="95" stroke="#334155" stroke-width="1"/>
+  <line x1="300" y1="105" x2="340" y2="105" stroke="#334155" stroke-width="1"/>
+  <line x1="300" y1="115" x2="330" y2="115" stroke="#334155" stroke-width="1"/>
+  
+  <!-- Magnifying Glass -->
+  <circle cx="70" cy="120" r="20" stroke="#1E3A8A" stroke-width="3" fill="none"/>
+  <line x1="85" y1="135" x2="100" y2="150" stroke="#1E3A8A" stroke-width="3" stroke-linecap="round"/>
+  
+  <!-- Stamp -->
+  <circle cx="320" cy="130" r="15" fill="#10B981" opacity="0.8"/>
+  <text x="320" y="135" font-family="Arial" font-size="10" font-weight="bold" fill="white" text-anchor="middle">AUDIT</text>
+  
+  <!-- Gradients -->
+  <defs>
+    <linearGradient id="audit-gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A" />
+      <stop offset="100%" stop-color="#10B981" />
+    </linearGradient>
+    <linearGradient id="audit-gradient2" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1E3A8A" />
+      <stop offset="100%" stop-color="#10B981" />
+    </linearGradient>
+  </defs>
+</svg>

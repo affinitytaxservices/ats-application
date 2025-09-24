@@ -1,0 +1,450 @@
+/* Enhanced Mobile & Accessibility Styles */
+
+/* ===== TESTIMONIAL SECTION MOBILE OPTIMIZATIONS ===== */
+
+/* Testimonial cards mobile improvements */
+@media (max-width: 599px) {
+  .testimonial-card {
+    margin: 8px 0 !important;
+    border-radius: 16px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08) !important;
+  }
+  
+  .testimonial-card .MuiCardContent-root {
+    padding: 24px !important;
+  }
+  
+  .testimonial-card .MuiCardContent-root:last-child {
+    padding-bottom: 24px !important;
+  }
+  
+  .testimonial-navigation {
+    gap: 12px !important;
+    margin-top: 24px !important;
+    margin-bottom: 16px !important;
+    padding: 0 16px !important;
+  }
+  
+  .testimonial-nav-button {
+    width: 48px !important;
+    height: 48px !important;
+    min-width: 48px !important;
+    min-height: 48px !important;
+  }
+  
+  .testimonial-nav-button .MuiSvgIcon-root {
+    font-size: 1.2rem !important;
+  }
+  
+  /* Success story modal mobile improvements */
+  .success-story-modal .MuiDialog-paper {
+    border-radius: 16px !important;
+    margin: 16px !important;
+    width: calc(100% - 32px) !important;
+    max-height: calc(100vh - 64px) !important;
+  }
+  
+  .success-story-modal .MuiDialogTitle-root {
+    padding: 16px 20px !important;
+    font-size: 1.25rem !important;
+  }
+  
+  .success-story-modal .client-header {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 16px !important;
+    padding: 16px !important;
+  }
+  
+  .success-story-modal .client-avatar {
+    width: 64px !important;
+    height: 64px !important;
+  }
+}
+
+/* Touch device optimizations for testimonials */
+@media (hover: none) and (pointer: coarse) {
+  .testimonial-card:hover {
+    transform: none !important;
+  }
+  
+  .testimonial-card:active {
+    transform: scale(0.98) !important;
+    transition: transform 0.1s ease !important;
+  }
+  
+  .testimonial-nav-button:hover {
+    transform: none !important;
+  }
+  
+  .testimonial-nav-button:active {
+    transform: scale(0.95) !important;
+    background: rgba(99, 102, 241, 0.3) !important;
+  }
+}
+
+/* ===== EXISTING MOBILE STYLES ===== */
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --primary-color: #000000;
+    --secondary-color: #ffffff;
+    --accent-color: #0066cc;
+    --error-color: #cc0000;
+    --success-color: #006600;
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .floating-element,
+  .pulse-animation,
+  .gradient-shift {
+    animation: none !important;
+  }
+}
+
+/* Focus management for keyboard navigation */
+*:focus-visible {
+  outline: 3px solid #10B981 !important;
+  outline-offset: 2px !important;
+  border-radius: 4px !important;
+}
+
+/* Skip to main content link */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 6px;
+  background: #10B981;
+  color: white;
+  padding: 8px;
+  text-decoration: none;
+  border-radius: 4px;
+  z-index: 9999;
+  font-weight: 600;
+}
+
+.skip-link:focus {
+  top: 6px;
+}
+
+/* Screen reader only content */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Base mobile optimizations */
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  font-size: clamp(14px, 2.5vw, 16px);
+}
+
+body {
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Touch optimization */
+* {
+  -webkit-tap-highlight-color: rgba(16, 185, 129, 0.2);
+  -webkit-touch-callout: none;
+}
+
+/* Prevent zoom on input focus (iOS Safari) */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="tel"],
+input[type="url"],
+input[type="search"],
+textarea,
+select {
+  font-size: 16px !important;
+  transform: translateZ(0);
+}
+
+/* ===== TOUCH TARGETS & INTERACTIONS ===== */
+
+/* Minimum touch target size (44px x 44px) */
+.touch-target,
+.MuiButton-root,
+.MuiIconButton-root,
+.MuiCheckbox-root,
+.MuiRadio-root {
+  min-height: 44px !important;
+  min-width: 44px !important;
+}
+
+/* Enhanced button interactions for touch devices */
+@media (hover: none) and (pointer: coarse) {
+  .MuiButton-root:hover {
+    transform: none !important;
+  }
+  
+  .MuiButton-root:active {
+    transform: scale(0.98) !important;
+    transition: transform 0.1s ease !important;
+  }
+  
+  .MuiCard-root:hover {
+    transform: none !important;
+  }
+  
+  .MuiCard-root:active {
+    transform: scale(0.99) !important;
+  }
+}
+
+/* ===== RESPONSIVE BREAKPOINTS ===== */
+
+/* Extra small devices (phones, 0-599px) */
+@media (max-width: 599px) {
+  .container {
+    padding: 12px !important;
+  }
+  
+  .MuiContainer-root {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+  
+  .MuiDialog-paper {
+    margin: 16px !important;
+    width: calc(100% - 32px) !important;
+    max-height: calc(100% - 64px) !important;
+  }
+  
+  .MuiAppBar-root {
+    padding: 0 8px !important;
+  }
+  
+  /* Typography scaling */
+  h1 { font-size: clamp(1.75rem, 6vw, 2.5rem) !important; }
+  h2 { font-size: clamp(1.5rem, 5vw, 2rem) !important; }
+  h3 { font-size: clamp(1.25rem, 4vw, 1.75rem) !important; }
+  h4 { font-size: clamp(1.125rem, 3.5vw, 1.5rem) !important; }
+  h5 { font-size: clamp(1rem, 3vw, 1.25rem) !important; }
+  h6 { font-size: clamp(0.875rem, 2.5vw, 1.125rem) !important; }
+}
+
+/* Small devices (tablets, 600-959px) */
+@media (min-width: 600px) and (max-width: 959px) {
+  .container {
+    padding: 20px !important;
+  }
+  
+  .MuiContainer-root {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+}
+
+/* Medium devices (small laptops, 960-1279px) */
+@media (min-width: 960px) and (max-width: 1279px) {
+  .container {
+    padding: 24px !important;
+  }
+}
+
+/* Large devices (desktops, 1280px and up) */
+@media (min-width: 1280px) {
+  .container {
+    padding: 32px !important;
+  }
+}
+
+/* ===== FORM ACCESSIBILITY ===== */
+
+/* Enhanced form field styling */
+.MuiTextField-root {
+  margin-bottom: 16px !important;
+}
+
+.MuiFormLabel-root {
+  font-weight: 600 !important;
+  color: #374151 !important;
+}
+
+.MuiFormHelperText-root {
+  font-size: 0.875rem !important;
+  margin-top: 4px !important;
+}
+
+.MuiFormHelperText-root.Mui-error {
+  background: rgba(239, 68, 68, 0.1) !important;
+  padding: 4px 8px !important;
+  border-radius: 4px !important;
+  border-left: 3px solid #EF4444 !important;
+}
+
+/* ===== LOADING STATES ===== */
+
+.loading-skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ===== PRINT STYLES ===== */
+
+@media print {
+  * {
+    background: white !important;
+    color: black !important;
+    box-shadow: none !important;
+  }
+  
+  .no-print {
+    display: none !important;
+  }
+  
+  .MuiAppBar-root,
+  .MuiFab-root,
+  .MuiSpeedDial-root {
+    display: none !important;
+  }
+  
+  a[href]:after {
+    content: " (" attr(href) ")";
+  }
+}
+
+/* ===== DARK MODE SUPPORT ===== */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --border-color: #334155;
+  }
+  
+  .auto-dark {
+    background-color: var(--bg-primary) !important;
+    color: var(--text-primary) !important;
+  }
+  
+  .auto-dark-secondary {
+    background-color: var(--bg-secondary) !important;
+    color: var(--text-secondary) !important;
+  }
+}
+
+/* ===== UTILITY CLASSES ===== */
+
+.mobile-only {
+  display: block !important;
+}
+
+.desktop-only {
+  display: none !important;
+}
+
+@media (min-width: 960px) {
+  .mobile-only {
+    display: none !important;
+  }
+  
+  .desktop-only {
+    display: block !important;
+  }
+}
+
+.full-width {
+  width: 100% !important;
+}
+
+.text-center {
+  text-align: center !important;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* ===== PERFORMANCE OPTIMIZATIONS ===== */
+
+.gpu-accelerated {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.smooth-scroll {
+  scroll-behavior: smooth;
+}
+
+/* Optimize images for mobile */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.lazy-image {
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.lazy-image.loaded {
+  opacity: 1;
+}
+
+/* ===== SAFE AREAS (iPhone X+) ===== */
+
+@supports (padding: max(0px)) {
+  .safe-area-inset-top {
+    padding-top: max(16px, env(safe-area-inset-top));
+  }
+  
+  .safe-area-inset-bottom {
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
+  }
+  
+  .safe-area-inset-left {
+    padding-left: max(16px, env(safe-area-inset-left));
+  }
+  
+  .safe-area-inset-right {
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+}
