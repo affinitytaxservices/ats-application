@@ -28,7 +28,6 @@ import {
   ArrowForward as ArrowForwardIcon,
   ExpandMore as ExpandMoreIcon,
   Security as SecurityIcon,
-  MonetizationOn as MonetizationOnIcon,
   Business as BusinessIcon,
   CalendarToday as CalendarIcon,
 } from '@mui/icons-material';
@@ -90,12 +89,6 @@ const services = [
     description: 'Advanced planning for wealth transfer and estate tax minimization strategies',
     icon: <SecurityIcon />,
     features: ['Estate tax planning', 'Succession strategies', 'Trust optimization', 'Gift tax planning']
-  },
-  {
-    title: 'Investment Tax Planning',
-    description: 'Optimize your investment portfolio for maximum after-tax returns and growth',
-    icon: <MonetizationOnIcon />,
-    features: ['Capital gains optimization', 'Tax-loss harvesting', 'Asset location strategies', 'Retirement account planning']
   },
 ];
 
@@ -473,7 +466,6 @@ const TaxPlanning = () => {
                 <option value="individual">Individual Tax Planning</option>
                 <option value="business">Business Tax Strategy</option>
                 <option value="estate">Estate & Succession Planning</option>
-                <option value="investment">Investment Tax Planning</option>
                 <option value="comprehensive">Comprehensive Planning</option>
               </TextField>
             </Grid>

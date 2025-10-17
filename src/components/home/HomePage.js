@@ -864,7 +864,7 @@ const HomePage = () => {
                 <Box 
                   component="img"
                   src="/images/tax-features.svg"
-                  alt="Tax Features Illustration"
+                  alt="Affinity Tax Services Features - Professional Tax Preparation and Planning Services Illustration"
                   sx={{
                     width: '100%',
                     maxWidth: 500,

@@ -194,7 +194,7 @@ const Footer = () => {
                 animation: `${slideUpFade} 0.6s ease-out`,
               }}
             >
-              © {currentYear} Premium Tax Services. All rights reserved.
+              © {currentYear} Affinity Tax Services. All rights reserved.
             </Typography>
             
             <Typography 
@@ -210,7 +210,7 @@ const Footer = () => {
                 gap: 0.5
               }}
             >
-              Engineered with 
+              Crafted with excellence 
               <Box 
                 component="span" 
                 sx={{ 
@@ -221,7 +221,7 @@ const Footer = () => {
               >
                 🚀
               </Box> 
-              by Tax Wizards 
+              by Affinity Tax Services
             </Typography>
           </Box>
         </Container>

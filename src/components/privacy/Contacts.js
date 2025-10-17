@@ -181,7 +181,7 @@ function Contacts() {
             <Box
               component="img"
               src="/images/office-background.jpg"
-              alt="Contact Us"
+              alt="Affinity Tax Services Office - Professional Tax Preparation and Planning Consultation Center"
               sx={{
                 width: '100%',
                 height: '100%',

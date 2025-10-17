@@ -15,7 +15,7 @@ import ForgotPassword from './components/auth/ForgotPassword';
 import EmployeeLogin from './components/auth/EmployeeLogin';
 import NewAdminDashboard from './components/dashboard/NewAdminDashboard';
 import NewClientDashboard from './components/dashboard/NewClientDashboard';
-import PreparerDashboard from './components/dashboard/PreparerDashboard';
+import PreparerDashboard from './components/PreparerDashboard';
 import RefundStatusFAB from './components/RefundStatusFAB';
 import RefundStatus from './components/RefundStatus';
 import TaxInformation from './components/tax/TaxInformation';
@@ -41,8 +41,12 @@ const ProtectedRoute = ({ children, requiredRole }) => {
     return <Navigate to="/login" />;
   }
   
-  if (requiredRole && user && user.role !== requiredRole) {
-    return <Navigate to="/" />;
+  if (requiredRole && user) {
+    // Handle both single role string and array of roles
+    const allowedRoles = Array.isArray(requiredRole) ? requiredRole : [requiredRole];
+    if (!allowedRoles.includes(user.role)) {
+      return <Navigate to="/" />;
+    }
   }
   
   return children;
@@ -63,6 +67,7 @@ const DashboardRoute = () => {
     case 'client':
       return <Navigate to="/client-dashboard" />;
     case 'preparer':
+    case 'tax_professional':
       return <Navigate to="/preparer-dashboard" />;
     case 'manager':
       return <Navigate to="/manager-dashboard" />;
@@ -130,7 +135,7 @@ function App() {
             <Route 
               path="/preparer-dashboard" 
               element={
-                <ProtectedRoute requiredRole="preparer">
+                <ProtectedRoute requiredRole={["preparer", "tax_professional", "admin"]}>
                   <PreparerDashboard />
                 </ProtectedRoute>
               } 

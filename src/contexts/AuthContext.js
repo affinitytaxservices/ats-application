@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { authAPI } from '../services/api';
 
 const AuthContext = createContext();
 
@@ -17,83 +18,101 @@ export const AuthProvider = ({ children }) => {
 
   // Check for existing authentication on app load
   useEffect(() => {
-    const token = localStorage.getItem('auth_token');
-    const userData = localStorage.getItem('user_data');
-    
-    if (token && userData) {
-      try {
-        const parsedUser = JSON.parse(userData);
-        setUser(parsedUser);
-        setIsAuthenticated(true);
-      } catch (error) {
-        console.error('Error parsing user data:', error);
-        localStorage.removeItem('authToken');
-        localStorage.removeItem('userData');
+    const initAuth = async () => {
+      const token = localStorage.getItem('auth_token');
+      const userData = localStorage.getItem('user_data');
+
+      // If we have a token, try to fetch the current user from backend
+      if (token) {
+        try {
+          const res = await authAPI.getCurrentUser();
+          if (res?.success && res.user) {
+            setUser(res.user);
+            setIsAuthenticated(true);
+            setLoading(false);
+            return;
+          }
+        } catch (error) {
+          // Fall back to localStorage if available
+          if (userData) {
+            try {
+              const parsedUser = JSON.parse(userData);
+              setUser(parsedUser);
+              setIsAuthenticated(true);
+            } catch (e) {
+              localStorage.removeItem('auth_token');
+              localStorage.removeItem('user_data');
+            }
+          } else {
+            localStorage.removeItem('auth_token');
+            localStorage.removeItem('user_data');
+          }
+        }
+      } else if (userData) {
+        // No token but have user data (likely mock mode)
+        try {
+          const parsedUser = JSON.parse(userData);
+          setUser(parsedUser);
+          setIsAuthenticated(true);
+        } catch (error) {
+          localStorage.removeItem('user_data');
+        }
       }
-    }
-    setLoading(false);
+
+      setLoading(false);
+    };
+
+    initAuth();
   }, []);
 
-  const login = async (email, _password) => {
+  const login = async (email, password) => {
     try {
-      // TODO: Implement actual password validation with: _password
-      // Simulate API call - replace with actual authentication
-      const mockUser = {
-        id: 1,
-        email: email,
-        firstName: 'Tony',
-        lastName: 'Stark',
-        role: email.includes('admin') ? 'admin' : 'client'
-      };
-      
-      const mockToken = 'mock-jwt-token-' + Date.now();
-      
-      // Store in localStorage
-      localStorage.setItem('auth_token', mockToken);
-      localStorage.setItem('user_data', JSON.stringify(mockUser));
-      localStorage.setItem('userRole', mockUser.role);
-      
-      setUser(mockUser);
-      setIsAuthenticated(true);
-      
-      return { success: true, user: mockUser };
+      const res = await authAPI.login(email, password);
+      if (res?.success && res.user) {
+        setUser(res.user);
+        setIsAuthenticated(true);
+        return true;
+      }
+      return false;
     } catch (error) {
       console.error('Login error:', error);
-      return { success: false, error: 'Login failed' };
+      return false;
     }
   };
 
-  const logout = () => {
-    localStorage.removeItem('auth_token');
-    localStorage.removeItem('user_data');
-    localStorage.removeItem('userRole');
-    setUser(null);
-    setIsAuthenticated(false);
+  const logout = async () => {
+    try {
+      await authAPI.logout();
+    } catch (e) {
+      // proceed with local cleanup even if API fails
+    } finally {
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('user_data');
+      localStorage.removeItem('userRole');
+      setUser(null);
+      setIsAuthenticated(false);
+    }
   };
 
   const register = async (userData) => {
     try {
-      // Simulate API call - replace with actual registration
-      const newUser = {
-        id: Date.now(),
-        ...userData,
-        role: 'client'
-      };
-      
-      const mockToken = 'mock-jwt-token-' + Date.now();
-      
-      // Store in localStorage
-      localStorage.setItem('auth_token', mockToken);
-      localStorage.setItem('user_data', JSON.stringify(newUser));
-      localStorage.setItem('userRole', newUser.role);
-      
-      setUser(newUser);
-      setIsAuthenticated(true);
-      
-      return { success: true, user: newUser };
+      const res = await authAPI.register(userData);
+      if (res?.success && res.user) {
+        // Ensure token and user are persisted if provided
+        if (res.token) {
+          localStorage.setItem('auth_token', res.token);
+        }
+        localStorage.setItem('user_data', JSON.stringify(res.user));
+        localStorage.setItem('userRole', res.user.role);
+
+        setUser(res.user);
+        setIsAuthenticated(true);
+        return true;
+      }
+      return false;
     } catch (error) {
       console.error('Registration error:', error);
-      return { success: false, error: 'Registration failed' };
+      return false;
     }
   };
 

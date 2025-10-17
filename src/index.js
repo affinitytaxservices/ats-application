@@ -7,6 +7,7 @@ import theme from './styles/theme';
 import App from './App';  // Import using correct case-sensitive filename
 import ErrorBoundary from './components/common/ErrorBoundary';
 import { AuthProvider } from './contexts/AuthContext';
+import { TaskManagementProvider } from './contexts/TaskManagementContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -16,7 +17,9 @@ root.render(
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <AuthProvider>
-            <App />
+            <TaskManagementProvider>
+              <App />
+            </TaskManagementProvider>
           </AuthProvider>
         </ThemeProvider>
       </BrowserRouter>

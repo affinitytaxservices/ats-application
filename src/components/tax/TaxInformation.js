@@ -143,7 +143,6 @@ const taxTopics = [
     content: [
       'Year-end tax planning tips',
       'Retirement account contributions',
-      'Investment tax strategies',
       'Business tax planning',
     ],
   },

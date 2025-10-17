@@ -1,7 +1,5 @@
--- Affinity Tax Services Database Setup Script
-
 -- Create users table
-USE affinitytaxservi_demo;
+USE ats_DB;
 
 CREATE TABLE IF NOT EXISTS `users` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,

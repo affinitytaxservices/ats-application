@@ -26,7 +26,7 @@ const LogoComponent = ({ variant = 'medium', showText = true }) => {
       <Box
         component="img"
         src="/logo.svg"
-        alt="Affinity Tax Services Logo"
+        alt="Affinity Tax Services Logo - Professional Tax Preparation and Planning"
         sx={{
           width: size.width,
           height: size.height,
