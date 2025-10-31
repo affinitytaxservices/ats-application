@@ -107,7 +107,7 @@ sudo setsebool -P httpd_can_network_connect 1
 
 ### DNS and SSL
 
-- DNS: In OVIPanel, add `api.affinitytaxservices.com` A record → VPS IP.
+- DNS: In OVIPanel, add `api.affinitytaxservices.com` A record → `195.250.21.159`.
 - SSL (Let's Encrypt for Nginx on CentOS):
   ```bash
   sudo dnf install -y certbot python3-certbot-nginx
