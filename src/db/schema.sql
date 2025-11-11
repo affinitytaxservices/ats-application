@@ -1,7 +1,7 @@
 -- Affinity Tax Services Database Schema
 
 -- Users Table
-USE affinitytaxservi_demo;
+USE ats_DB;
 
 CREATE TABLE IF NOT EXISTS users (
   id INT AUTO_INCREMENT PRIMARY KEY,

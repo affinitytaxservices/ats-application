@@ -1,7 +1,5 @@
 // API service for Affinity Tax Services
 import axios from 'axios';
-// Import mock data
-import { adminDashboardStats, systemHealth, revenueAnalytics, taskAnalytics, userActivity, users, tasks, clientDashboardData } from './mockData';
 
 // Base API configuration
 const API_URL = process.env.REACT_APP_API_URL || '/api';
@@ -54,26 +52,7 @@ export const authAPI = {
       }
       return response.data;
     } catch (error) {
-      console.warn('Using mock authentication due to API error:', error.message);
-      // Mock authentication for development
-      const mockUser = {
-        id: 1,
-        email: email,
-        firstName: 'Demo',
-        lastName: 'User',
-        role: email.includes('admin') ? 'admin' : 'client'
-      };
-      const mockToken = 'mock-jwt-token-' + Date.now();
-      
-      localStorage.setItem('auth_token', mockToken);
-      localStorage.setItem('user_data', JSON.stringify(mockUser));
-      
-      return {
-        success: true,
-        token: mockToken,
-        user: mockUser,
-        message: 'Login successful (mock mode)'
-      };
+      throw error.response?.data || error;
     }
   },
   
@@ -82,21 +61,7 @@ export const authAPI = {
       const response = await api.post('/auth/register', userData);
       return response.data;
     } catch (error) {
-      console.warn('Using mock registration due to API error:', error.message);
-      // Mock registration for development
-      const mockUser = {
-        id: Date.now(),
-        email: userData.email,
-        firstName: userData.firstName || 'Demo',
-        lastName: userData.lastName || 'User',
-        role: 'client'
-      };
-      
-      return {
-        success: true,
-        user: mockUser,
-        message: 'Registration successful (mock mode)'
-      };
+      throw error.response?.data || error;
     }
   },
   
@@ -169,8 +134,7 @@ export const userAPI = {
       });
       return response.data;
     } catch (error) {
-      console.warn('Using mock data for users due to API error:', error.message);
-      return { data: users };
+      throw error.response?.data || error;
     }
   },
 
@@ -605,19 +569,7 @@ export const clientAPI = {
       const response = await api.get('/client/dashboard');
       return response.data;
     } catch (error) {
-      console.warn('Using mock data for client dashboard due to API error:', error.message);
-      // Return mock data with the correct structure
-      return {
-        recentDocuments: clientDashboardData.recentDocuments || [],
-        notifications: clientDashboardData.notifications || [],
-        taxSummary: clientDashboardData.taxSummary || {
-          totalIncome: 0,
-          totalDeductions: 0,
-          estimatedTax: 0,
-          taxPaid: 0
-        },
-        upcomingAppointments: clientDashboardData.upcomingAppointments || []
-      };
+      throw error.response?.data || error;
     }
   },
 
@@ -626,8 +578,7 @@ export const clientAPI = {
       const response = await api.get('/client/documents');
       return response.data;
     } catch (error) {
-      console.warn('Using mock data for client documents due to API error:', error.message);
-      return { data: clientDashboardData.recentDocuments || [] };
+      throw error.response?.data || error;
     }
   },
 
@@ -636,8 +587,7 @@ export const clientAPI = {
       const response = await api.get('/client/notifications');
       return response.data;
     } catch (error) {
-      console.warn('Using mock data for client notifications due to API error:', error.message);
-      return { data: clientDashboardData.notifications || [] };
+      throw error.response?.data || error;
     }
   },
 
@@ -646,15 +596,7 @@ export const clientAPI = {
       const response = await api.get('/client/tax-summary');
       return response.data;
     } catch (error) {
-      console.warn('Using mock data for client tax summary due to API error:', error.message);
-      return {
-        data: clientDashboardData.taxSummary || {
-          totalIncome: 0,
-          totalDeductions: 0,
-          estimatedTax: 0,
-          taxPaid: 0
-        }
-      };
+      throw error.response?.data || error;
     }
   },
 
@@ -663,8 +605,7 @@ export const clientAPI = {
       const response = await api.get('/client/appointments');
       return response.data;
     } catch (error) {
-      console.warn('Using mock data for client appointments due to API error:', error.message);
-      return { data: clientDashboardData.upcomingAppointments || [] };
+      throw error.response?.data || error;
     }
   },
 };
@@ -676,8 +617,7 @@ export const adminAPI = {
       const response = await api.get('/admin/dashboard/stats');
       return response.data;
     } catch (error) {
-      console.warn('Using mock data for admin dashboard stats due to API error:', error.message);
-      return { data: adminDashboardStats };
+      throw error.response?.data || error;
     }
   },
 
@@ -686,8 +626,7 @@ export const adminAPI = {
       const response = await api.get('/admin/system-health');
       return response.data;
     } catch (error) {
-      console.warn('Using mock data for system health due to API error:', error.message);
-      return { data: systemHealth };
+      throw error.response?.data || error;
     }
   },
 
@@ -709,8 +648,7 @@ export const adminAPI = {
       });
       return response.data;
     } catch (error) {
-      console.warn('Using mock data for user activity due to API error:', error.message);
-      return { data: userActivity };
+      throw error.response?.data || error;
     }
   },
 
@@ -721,8 +659,7 @@ export const adminAPI = {
       });
       return response.data;
     } catch (error) {
-      console.warn('Using mock data for revenue analytics due to API error:', error.message);
-      return { data: revenueAnalytics };
+      throw error.response?.data || error;
     }
   },
 
@@ -731,8 +668,7 @@ export const adminAPI = {
       const response = await api.get('/admin/task-analytics');
       return response.data;
     } catch (error) {
-      console.warn('Using mock data for task analytics due to API error:', error.message);
-      return { data: taskAnalytics };
+      throw error.response?.data || error;
     }
   },
 
@@ -776,16 +712,7 @@ export const taskAPI = {
       });
       return response.data;
     } catch (error) {
-      console.warn('Backend API not available, using mock data for tasks:', error.message);
-      // Return mock data in the expected format
-      return { 
-        success: true,
-        data: tasks,
-        total: tasks.length,
-        page: page,
-        limit: limit,
-        message: 'Tasks retrieved successfully (mock data)'
-      };
+      throw error.response?.data || error;
     }
   },
 
@@ -803,25 +730,7 @@ export const taskAPI = {
       const response = await api.post('/tasks', taskData);
       return response.data;
     } catch (error) {
-      console.warn('Backend API not available, using mock data for task creation:', error.message);
-      // Create a mock task with the provided data
-      const newTask = {
-        id: Date.now().toString(),
-        ...taskData,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        status: taskData.status || 'pending',
-        progress: 0,
-        comments: [],
-        attachments: []
-      };
-      // Add to mock tasks array
-      tasks.push(newTask);
-      return {
-        success: true,
-        data: newTask,
-        message: 'Task created successfully (mock data)'
-      };
+      throw error.response?.data || error;
     }
   },
 
@@ -830,23 +739,7 @@ export const taskAPI = {
       const response = await api.put(`/tasks/${taskId}`, updates);
       return response.data;
     } catch (error) {
-      console.warn('Backend API not available, using mock data for task update:', error.message);
-      // Find and update the mock task
-      const taskIndex = tasks.findIndex(task => task.id === taskId);
-      if (taskIndex !== -1) {
-        tasks[taskIndex] = {
-          ...tasks[taskIndex],
-          ...updates,
-          updatedAt: new Date().toISOString()
-        };
-        return {
-          success: true,
-          data: tasks[taskIndex],
-          message: 'Task updated successfully (mock data)'
-        };
-      } else {
-        throw new Error('Task not found');
-      }
+      throw error.response?.data || error;
     }
   },
 
@@ -873,19 +766,7 @@ export const taskAPI = {
       const response = await api.delete(`/tasks/${taskId}`);
       return response.data;
     } catch (error) {
-      console.warn('Backend API not available, using mock data for task deletion:', error.message);
-      // Find and remove the mock task
-      const taskIndex = tasks.findIndex(task => task.id === taskId);
-      if (taskIndex !== -1) {
-        const deletedTask = tasks.splice(taskIndex, 1)[0];
-        return {
-          success: true,
-          data: deletedTask,
-          message: 'Task deleted successfully (mock data)'
-        };
-      } else {
-        throw new Error('Task not found');
-      }
+      throw error.response?.data || error;
     }
   }
 };

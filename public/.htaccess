@@ -1,11 +1,17 @@
+DirectoryIndex index.html
+
 <IfModule mod_rewrite.c>
   RewriteEngine On
+  RewriteBase /
 
   # Force HTTPS
   RewriteCond %{HTTPS} !=on
   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-  # Skip existing files and directories
+  # Do NOT rewrite API or control panel paths
+  RewriteRule ^(api|phpmyadmin|cpanel|webmail)/ - [L]
+
+  # Serve existing files and directories
   RewriteCond %{REQUEST_FILENAME} -f [OR]
   RewriteCond %{REQUEST_FILENAME} -d
   RewriteRule ^ - [L]

@@ -14,15 +14,13 @@ const taskAPI = axios.create({
 // Add request interceptor to include auth token
 taskAPI.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token') || localStorage.getItem('mock-jwt-token');
+    const token = localStorage.getItem('auth_token') || localStorage.getItem('token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
 // Add response interceptor for error handling
@@ -30,62 +28,15 @@ taskAPI.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // Handle unauthorized access
-      localStorage.removeItem('token');
-      localStorage.removeItem('mock-jwt-token');
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('user_data');
       window.location.href = '/login';
     }
     return Promise.reject(error);
   }
 );
 
-// Mock data for development (remove when backend is ready)
-const MOCK_TASKS = [
-  {
-    id: '1',
-    title: 'Review Client Tax Documents',
-    description: 'Review and validate tax documents for client John Smith',
-    assignedTo: 'emp1',
-    assignedBy: 'Admin User',
-    priority: 'high',
-    status: 'pending',
-    deadline: '2024-02-15T10:00:00Z',
-    createdAt: '2024-01-15T09:00:00Z',
-    updatedAt: '2024-01-15T09:00:00Z',
-    progress: 0,
-    comments: [],
-    attachments: []
-  },
-  {
-    id: '2',
-    title: 'Prepare Tax Return - Business',
-    description: 'Complete business tax return for ABC Corp',
-    assignedTo: 'emp2',
-    assignedBy: 'Admin User',
-    priority: 'medium',
-    status: 'in_progress',
-    deadline: '2024-02-20T17:00:00Z',
-    createdAt: '2024-01-10T08:00:00Z',
-    updatedAt: '2024-01-16T14:30:00Z',
-    progress: 45,
-    comments: [
-      {
-        id: 'c1',
-        text: 'Started working on the business expenses section',
-        author: 'Jane Smith',
-        timestamp: '2024-01-16T14:30:00Z'
-      }
-    ],
-    attachments: []
-  }
-];
-
-// Mock employees data
-const MOCK_EMPLOYEES = [
-  { id: 'emp1', name: 'John Doe', email: 'john@affinitytax.com', role: 'preparer' },
-  { id: 'emp2', name: 'Jane Smith', email: 'jane@affinitytax.com', role: 'preparer' },
-  { id: 'emp3', name: 'Mike Johnson', email: 'mike@affinitytax.com', role: 'senior_preparer' }
-];
+// Removed all local mock data. Service now relies solely on live API.
 
 // Task API functions
 export const taskService = {
@@ -95,13 +46,7 @@ export const taskService = {
       const response = await taskAPI.get('/');
       return response.data;
     } catch (error) {
-      console.warn('API not available, using mock data:', error.message);
-      // Return mock data if API is not available
-      return {
-        success: true,
-        data: MOCK_TASKS,
-        message: 'Tasks retrieved successfully (mock data)'
-      };
+      throw error.response?.data || error;
     }
   },
 
@@ -111,14 +56,7 @@ export const taskService = {
       const response = await taskAPI.get(`/employee/${employeeId}`);
       return response.data;
     } catch (error) {
-      console.warn('API not available, using mock data:', error.message);
-      // Filter mock tasks by employee
-      const employeeTasks = MOCK_TASKS.filter(task => task.assignedTo === employeeId);
-      return {
-        success: true,
-        data: employeeTasks,
-        message: 'Employee tasks retrieved successfully (mock data)'
-      };
+      throw error.response?.data || error;
     }
   },
 
@@ -128,23 +66,7 @@ export const taskService = {
       const response = await taskAPI.post('/', taskData);
       return response.data;
     } catch (error) {
-      console.warn('API not available, using mock response:', error.message);
-      // Mock task creation
-      const newTask = {
-        id: Date.now().toString(),
-        ...taskData,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        progress: 0,
-        comments: [],
-        attachments: []
-      };
-      MOCK_TASKS.push(newTask);
-      return {
-        success: true,
-        data: newTask,
-        message: 'Task created successfully (mock data)'
-      };
+      throw error.response?.data || error;
     }
   },
 
@@ -154,22 +76,7 @@ export const taskService = {
       const response = await taskAPI.put(`/${taskId}`, updateData);
       return response.data;
     } catch (error) {
-      console.warn('API not available, using mock response:', error.message);
-      // Mock task update
-      const taskIndex = MOCK_TASKS.findIndex(task => task.id === taskId);
-      if (taskIndex !== -1) {
-        MOCK_TASKS[taskIndex] = {
-          ...MOCK_TASKS[taskIndex],
-          ...updateData,
-          updatedAt: new Date().toISOString()
-        };
-        return {
-          success: true,
-          data: MOCK_TASKS[taskIndex],
-          message: 'Task updated successfully (mock data)'
-        };
-      }
-      throw new Error('Task not found');
+      throw error.response?.data || error;
     }
   },
 
@@ -179,8 +86,7 @@ export const taskService = {
       const response = await taskAPI.patch(`/${taskId}/status`, { status });
       return response.data;
     } catch (error) {
-      console.warn('API not available, using mock response:', error.message);
-      return this.updateTask(taskId, { status });
+      throw error.response?.data || error;
     }
   },
 
@@ -194,12 +100,7 @@ export const taskService = {
       });
       return response.data;
     } catch (error) {
-      console.warn('API not available, using mock response:', error.message);
-      return this.updateTask(taskId, { 
-        status: 'submitted',
-        submissionNotes,
-        submittedAt: new Date().toISOString()
-      });
+      throw error.response?.data || error;
     }
   },
 
@@ -209,17 +110,7 @@ export const taskService = {
       const response = await taskAPI.delete(`/${taskId}`);
       return response.data;
     } catch (error) {
-      console.warn('API not available, using mock response:', error.message);
-      // Mock task deletion
-      const taskIndex = MOCK_TASKS.findIndex(task => task.id === taskId);
-      if (taskIndex !== -1) {
-        MOCK_TASKS.splice(taskIndex, 1);
-        return {
-          success: true,
-          message: 'Task deleted successfully (mock data)'
-        };
-      }
-      throw new Error('Task not found');
+      throw error.response?.data || error;
     }
   },
 
@@ -232,24 +123,7 @@ export const taskService = {
       });
       return response.data;
     } catch (error) {
-      console.warn('API not available, using mock response:', error.message);
-      // Mock comment addition
-      const taskIndex = MOCK_TASKS.findIndex(task => task.id === taskId);
-      if (taskIndex !== -1) {
-        const newComment = {
-          id: Date.now().toString(),
-          text: commentText,
-          author: author || 'Current User',
-          timestamp: new Date().toISOString()
-        };
-        MOCK_TASKS[taskIndex].comments.push(newComment);
-        return {
-          success: true,
-          data: newComment,
-          message: 'Comment added successfully (mock data)'
-        };
-      }
-      throw new Error('Task not found');
+      throw error.response?.data || error;
     }
   },
 
@@ -259,21 +133,7 @@ export const taskService = {
       const response = await taskAPI.get('/statistics');
       return response.data;
     } catch (error) {
-      console.warn('API not available, using mock data:', error.message);
-      // Calculate mock statistics
-      const stats = {
-        total: MOCK_TASKS.length,
-        pending: MOCK_TASKS.filter(t => t.status === 'pending').length,
-        in_progress: MOCK_TASKS.filter(t => t.status === 'in_progress').length,
-        completed: MOCK_TASKS.filter(t => t.status === 'completed').length,
-        submitted: MOCK_TASKS.filter(t => t.status === 'submitted').length,
-        overdue: MOCK_TASKS.filter(t => new Date(t.deadline) < new Date() && t.status !== 'completed').length
-      };
-      return {
-        success: true,
-        data: stats,
-        message: 'Statistics retrieved successfully (mock data)'
-      };
+      throw error.response?.data || error;
     }
   },
 
@@ -283,12 +143,7 @@ export const taskService = {
       const response = await taskAPI.get('/employees');
       return response.data;
     } catch (error) {
-      console.warn('API not available, using mock data:', error.message);
-      return {
-        success: true,
-        data: MOCK_EMPLOYEES,
-        message: 'Employees retrieved successfully (mock data)'
-      };
+      throw error.response?.data || error;
     }
   },
 
@@ -298,8 +153,7 @@ export const taskService = {
       const response = await taskAPI.patch(`/${taskId}/assign`, { assignedTo: employeeId });
       return response.data;
     } catch (error) {
-      console.warn('API not available, using mock response:', error.message);
-      return this.updateTask(taskId, { assignedTo: employeeId });
+      throw error.response?.data || error;
     }
   },
 
@@ -316,27 +170,7 @@ export const taskService = {
       });
       return response.data;
     } catch (error) {
-      console.warn('API not available, using mock response:', error.message);
-      // Mock file upload
-      const attachment = {
-        id: Date.now().toString(),
-        filename: file.name,
-        size: file.size,
-        uploadedAt: new Date().toISOString(),
-        url: URL.createObjectURL(file) // Create temporary URL for mock
-      };
-      
-      const taskIndex = MOCK_TASKS.findIndex(task => task.id === taskId);
-      if (taskIndex !== -1) {
-        MOCK_TASKS[taskIndex].attachments = MOCK_TASKS[taskIndex].attachments || [];
-        MOCK_TASKS[taskIndex].attachments.push(attachment);
-      }
-      
-      return {
-        success: true,
-        data: attachment,
-        message: 'File uploaded successfully (mock data)'
-      };
+      throw error.response?.data || error;
     }
   },
 
@@ -346,16 +180,7 @@ export const taskService = {
       const response = await taskAPI.get(`/${taskId}`);
       return response.data;
     } catch (error) {
-      console.warn('API not available, using mock data:', error.message);
-      const task = MOCK_TASKS.find(task => task.id === taskId);
-      if (task) {
-        return {
-          success: true,
-          data: task,
-          message: 'Task retrieved successfully (mock data)'
-        };
-      }
-      throw new Error('Task not found');
+      throw error.response?.data || error;
     }
   }
 };
