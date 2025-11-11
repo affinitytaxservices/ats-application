@@ -9,6 +9,24 @@ import ErrorBoundary from './components/common/ErrorBoundary';
 import { AuthProvider } from './contexts/AuthContext';
 import { TaskManagementProvider } from './contexts/TaskManagementContext';
 
+// Dev-only: preload JWT token from env to localStorage for quick testing
+if (process.env.NODE_ENV !== 'production') {
+  const devToken = process.env.REACT_APP_DEV_AUTH_TOKEN;
+  if (devToken) {
+    try {
+      localStorage.setItem('auth_token', devToken);
+      // optional: store minimal user data so UI can render protected routes
+      const devUser = { id: 1, email: 'user@example.com', role: 'admin' };
+      localStorage.setItem('user_data', JSON.stringify(devUser));
+      // eslint-disable-next-line no-console
+      console.log('[Dev Auth] Preloaded auth_token from REACT_APP_DEV_AUTH_TOKEN');
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.warn('[Dev Auth] Failed to preload token:', e);
+    }
+  }
+}
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
