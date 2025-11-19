@@ -13,41 +13,40 @@ let baseTheme = createTheme({
   },
 });
 
-// Premium color palette with sophisticated gradients and enhanced accessibility
 const premiumPalette = {
   primary: {
-    main: '#A78BFA', // Light Purple
-    light: '#C4B5FD',
-    dark: '#8B5CF6',
+    main: '#2E5077',
+    light: '#4A6A8E',
+    dark: '#24405F',
     contrastText: '#FFFFFF',
   },
   secondary: {
-    main: '#6EE7B7', // Light Emerald
-    light: '#A7F3D0',
-    dark: '#34D399',
+    main: '#6C757D',
+    light: '#868E96',
+    dark: '#495057',
     contrastText: '#FFFFFF',
   },
   accent: {
-    purple: '#DDD6FE',
-    pink: '#F9A8D4',
-    orange: '#FDE68A',
-    cyan: '#A5F3FC',
-    gold: '#FEF3C7',
-    rose: '#FECACA',
+    purple: '#E5E7EB',
+    pink: '#F3E0E7',
+    orange: '#F8E9C8',
+    cyan: '#E6F3F7',
+    gold: '#F5F2E8',
+    rose: '#F8E4E4',
   },
   text: {
-    primary: '#374151',
-    secondary: '#6B7280',
-    disabled: '#D1D5DB',
-    hint: '#E5E7EB',
+    primary: '#1F2937',
+    secondary: '#4B5563',
+    disabled: '#9CA3AF',
+    hint: '#D1D5DB',
   },
   background: {
-    default: 'linear-gradient(135deg, #F3E8FF 0%, #E0E7FF 50%, #DBEAFE 100%)',
-    paper: 'rgba(255, 255, 255, 0.98)',
-    gradient: 'linear-gradient(135deg, #F3E8FF 0%, #E0E7FF 50%, #DBEAFE 100%)',
-    cardGradient: 'linear-gradient(145deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.95) 100%)',
-    heroGradient: 'linear-gradient(135deg, #F3E8FF 0%, #E0E7FF 50%, #DBEAFE 100%)',
-    premiumGradient: 'linear-gradient(135deg, #F3E8FF 0%, #E0E7FF 25%, #DBEAFE 50%, #F0F9FF 75%, #ECFDF5 100%)',
+    default: '#F7F9FC',
+    paper: '#FFFFFF',
+    gradient: 'linear-gradient(0deg, #F7F9FC, #F7F9FC)',
+    cardGradient: 'linear-gradient(0deg, #FFFFFF, #FFFFFF)',
+    heroGradient: 'linear-gradient(0deg, #F7F9FC, #F7F9FC)',
+    premiumGradient: 'linear-gradient(0deg, #F7F9FC, #F7F9FC)',
   },
   error: {
     main: '#F87171',
@@ -79,35 +78,28 @@ let theme = createTheme({
   typography: {
     fontFamily: '"Quicksand", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
     h1: {
-      fontFamily: '"Dancing Script", cursive',
+      fontFamily: '"Quicksand", sans-serif',
       fontWeight: 700,
-      fontSize: 'clamp(2.5rem, 5vw, 4rem)',
-      lineHeight: 1.1,
-      letterSpacing: '-0.025em',
-      background: 'linear-gradient(135deg, #A78BFA 0%, #8B5CF6 50%, #6366F1 100%)',
-      backgroundClip: 'text',
-      WebkitBackgroundClip: 'text',
-      WebkitTextFillColor: 'transparent',
-      textShadow: '0 4px 8px rgba(167, 139, 250, 0.3)',
+      fontSize: 'clamp(2.25rem, 5vw, 3.25rem)',
+      lineHeight: 1.2,
+      letterSpacing: '-0.01em',
+      color: '#2E5077',
     },
     h2: {
-      fontFamily: '"Dancing Script", cursive',
+      fontFamily: '"Quicksand", sans-serif',
       fontWeight: 600,
-      fontSize: 'clamp(2rem, 4vw, 3rem)',
-      lineHeight: 1.2,
-      letterSpacing: '-0.02em',
-      background: 'linear-gradient(135deg, #A78BFA 0%, #8B5CF6 100%)',
-      backgroundClip: 'text',
-      WebkitBackgroundClip: 'text',
-      WebkitTextFillColor: 'transparent',
+      fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
+      lineHeight: 1.3,
+      letterSpacing: '-0.01em',
+      color: '#2E5077',
     },
     h3: {
-      fontFamily: '"Comfortaa", cursive',
+      fontFamily: '"Quicksand", sans-serif',
       fontWeight: 600,
       fontSize: 'clamp(1.5rem, 3.5vw, 2.25rem)',
       lineHeight: 1.3,
       letterSpacing: '-0.01em',
-      color: '#6B7280',
+      color: '#4B5563',
     },
     h4: {
       fontFamily: '"Quicksand", sans-serif',
@@ -136,7 +128,7 @@ let theme = createTheme({
       fontSize: '1rem',
       lineHeight: 1.6,
       letterSpacing: '0.00938em',
-      color: '#6B7280',
+      color: '#4B5563',
     },
     body2: {
       fontFamily: '"Quicksand", sans-serif',
@@ -144,7 +136,7 @@ let theme = createTheme({
       fontSize: '0.875rem',
       lineHeight: 1.6,
       letterSpacing: '0.01071em',
-      color: '#6B7280',
+      color: '#4B5563',
     },
     button: {
       fontFamily: '"Quicksand", sans-serif',
@@ -187,28 +179,17 @@ let theme = createTheme({
     MuiCssBaseline: {
       styleOverrides: {
         body: {
-          background: 'linear-gradient(135deg, #F3E8FF 0%, #E0E7FF 50%, #DBEAFE 100%)',
-          backgroundAttachment: 'fixed',
+          background: '#F7F9FC',
+          backgroundAttachment: 'scroll',
           minHeight: '100vh',
           overflowX: 'hidden',
           position: 'relative',
-          '&::before': {
-            content: '""',
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: 'radial-gradient(circle at 20% 80%, rgba(167, 139, 250, 0.2) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(196, 181, 253, 0.2) 0%, transparent 50%), radial-gradient(circle at 40% 40%, rgba(219, 234, 254, 0.2) 0%, transparent 50%)',
-            zIndex: -1,
-            pointerEvents: 'none',
-          },
         },
         '*': {
           scrollBehavior: 'smooth',
         },
         '::selection': {
-          backgroundColor: 'rgba(99, 102, 241, 0.3)',
+          backgroundColor: 'rgba(46, 80, 119, 0.2)',
           color: '#FFFFFF',
         },
       },
@@ -252,80 +233,61 @@ let theme = createTheme({
           },
         },
         containedPrimary: {
-          background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.9) 0%, rgba(139, 92, 246, 0.9) 100%)',
-          backdropFilter: 'blur(20px)',
-          border: '1px solid rgba(99, 102, 241, 0.3)',
+          background: '#2E5077',
+          border: '1px solid rgba(46, 80, 119, 0.3)',
           color: '#FFFFFF',
-          boxShadow: '0 12px 40px rgba(99, 102, 241, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
-          '&::after': {
-            background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.95) 0%, rgba(139, 92, 246, 0.95) 100%)',
-          },
+          boxShadow: '0 6px 20px rgba(46, 80, 119, 0.3)',
           '&:hover': {
-            background: 'linear-gradient(135deg, rgba(79, 70, 229, 0.95) 0%, rgba(124, 58, 237, 0.95) 100%)',
-            border: '1px solid rgba(99, 102, 241, 0.5)',
-            boxShadow: '0 20px 60px rgba(99, 102, 241, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.3)',
-            transform: 'translateY(-3px) scale(1.02)',
-            '&::after': {
-              background: 'linear-gradient(135deg, rgba(79, 70, 229, 1) 0%, rgba(124, 58, 237, 1) 100%)',
-            },
+            background: '#24405F',
+            border: '1px solid rgba(46, 80, 119, 0.5)',
+            boxShadow: '0 10px 30px rgba(46, 80, 119, 0.4)',
+            transform: 'translateY(-2px)',
           },
           '&:active': {
-            boxShadow: '0 8px 25px rgba(99, 102, 241, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
-            transform: 'translateY(-1px) scale(1.01)',
+            boxShadow: '0 4px 15px rgba(46, 80, 119, 0.3)',
+            transform: 'translateY(0)',
           },
         },
         containedSecondary: {
-          background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.9) 0%, rgba(6, 182, 212, 0.9) 100%)',
-          backdropFilter: 'blur(20px)',
-          border: '1px solid rgba(16, 185, 129, 0.3)',
+          background: '#6C757D',
+          border: '1px solid rgba(108, 117, 125, 0.3)',
           color: '#FFFFFF',
-          boxShadow: '0 12px 40px rgba(16, 185, 129, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
-          '&::after': {
-            background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.95) 0%, rgba(6, 182, 212, 0.95) 100%)',
-          },
+          boxShadow: '0 6px 20px rgba(108, 117, 125, 0.3)',
           '&:hover': {
-            background: 'linear-gradient(135deg, rgba(5, 150, 105, 0.95) 0%, rgba(8, 145, 178, 0.95) 100%)',
-            border: '1px solid rgba(16, 185, 129, 0.5)',
-            boxShadow: '0 20px 60px rgba(16, 185, 129, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.3)',
-            transform: 'translateY(-3px) scale(1.02)',
-            '&::after': {
-              background: 'linear-gradient(135deg, rgba(5, 150, 105, 1) 0%, rgba(8, 145, 178, 1) 100%)',
-            },
+            background: '#495057',
+            border: '1px solid rgba(108, 117, 125, 0.5)',
+            boxShadow: '0 10px 30px rgba(108, 117, 125, 0.4)',
+            transform: 'translateY(-2px)',
           },
           '&:active': {
-            boxShadow: '0 8px 25px rgba(16, 185, 129, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
-            transform: 'translateY(-1px) scale(1.01)',
+            boxShadow: '0 4px 15px rgba(108, 117, 125, 0.3)',
+            transform: 'translateY(0)',
           },
         },
         outlined: {
           borderWidth: '2px',
-          borderColor: 'rgba(99, 102, 241, 0.4)',
-          color: '#6366F1',
-          background: 'rgba(255, 255, 255, 0.1)',
-          backdropFilter: 'blur(20px)',
-          boxShadow: '0 8px 32px rgba(99, 102, 241, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+          borderColor: 'rgba(46, 80, 119, 0.3)',
+          color: '#2E5077',
+          background: 'transparent',
+          boxShadow: 'none',
           '&:hover': {
-            borderColor: 'rgba(99, 102, 241, 0.8)',
-            background: 'rgba(99, 102, 241, 0.1)',
-            color: '#4F46E5',
-            boxShadow: '0 12px 40px rgba(99, 102, 241, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
-            transform: 'translateY(-3px) scale(1.02)',
+            borderColor: 'rgba(46, 80, 119, 0.5)',
+            background: 'rgba(46, 80, 119, 0.06)',
+            color: '#24405F',
+            transform: 'translateY(-2px)',
           },
           '&:active': {
-            boxShadow: '0 6px 20px rgba(99, 102, 241, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
-            transform: 'translateY(-1px) scale(1.01)',
+            transform: 'translateY(0)',
           },
         },
         text: {
-          color: '#6366F1',
-          background: 'rgba(255, 255, 255, 0.08)',
-          backdropFilter: 'blur(15px)',
-          border: '1px solid rgba(255, 255, 255, 0.1)',
+          color: '#2E5077',
+          background: 'transparent',
+          border: '1px solid transparent',
           '&:hover': {
-            background: 'rgba(99, 102, 241, 0.15)',
-            border: '1px solid rgba(99, 102, 241, 0.3)',
-            boxShadow: '0 8px 25px rgba(99, 102, 241, 0.25)',
-            transform: 'translateY(-2px)',
+            background: 'rgba(46, 80, 119, 0.06)',
+            border: '1px solid rgba(46, 80, 119, 0.15)',
+            transform: 'translateY(-1px)',
           },
         },
       },
@@ -339,20 +301,20 @@ let theme = createTheme({
             backdropFilter: 'blur(20px)',
             transition: 'all 0.3s ease',
             '& fieldset': {
-              borderColor: 'rgba(99, 102, 241, 0.3)',
+              borderColor: 'rgba(46, 80, 119, 0.25)',
               borderWidth: '2px',
             },
             '&:hover': {
               background: 'rgba(255, 255, 255, 1)',
               '& fieldset': {
-                borderColor: 'rgba(99, 102, 241, 0.5)',
+                borderColor: 'rgba(46, 80, 119, 0.4)',
               },
             },
             '&.Mui-focused': {
               background: 'rgba(255, 255, 255, 1)',
               '& fieldset': {
-                borderColor: '#6366F1',
-                boxShadow: '0 0 0 4px rgba(99, 102, 241, 0.15)',
+                borderColor: '#2E5077',
+                boxShadow: '0 0 0 4px rgba(46, 80, 119, 0.15)',
               },
             },
             '&.Mui-error': {
@@ -365,7 +327,7 @@ let theme = createTheme({
             color: '#475569',
             fontWeight: 500,
             '&.Mui-focused': {
-              color: '#6366F1',
+              color: '#2E5077',
             },
             '&.Mui-error': {
               color: '#EF4444',
@@ -471,10 +433,10 @@ let theme = createTheme({
         root: {
           borderRadius: '12px',
           height: '10px',
-          background: 'rgba(99, 102, 241, 0.15)',
+          background: 'rgba(46, 80, 119, 0.12)',
           '& .MuiLinearProgress-bar': {
             borderRadius: '12px',
-            background: 'linear-gradient(90deg, #6366F1, #8B5CF6, #EC4899)',
+            background: '#2E5077',
           },
         },
       },
@@ -492,7 +454,7 @@ let theme = createTheme({
         root: {
           fontSize: '2rem',
           '&.Mui-active': {
-            color: '#6366F1',
+            color: '#2E5077',
           },
           '&.Mui-completed': {
             color: '#10B981',
@@ -506,7 +468,7 @@ let theme = createTheme({
           fontSize: '1rem',
           fontWeight: 500,
           '&.Mui-active': {
-            color: '#6366F1',
+            color: '#2E5077',
             fontWeight: 600,
           },
           '&.Mui-completed': {
@@ -524,9 +486,9 @@ let theme = createTheme({
           backdropFilter: 'blur(10px)',
           border: '1px solid rgba(255, 255, 255, 0.2)',
           '&:hover': {
-            background: 'rgba(99, 102, 241, 0.2)',
-            border: '1px solid rgba(99, 102, 241, 0.3)',
-            boxShadow: '0 8px 25px rgba(99, 102, 241, 0.3)',
+            background: 'rgba(46, 80, 119, 0.12)',
+            border: '1px solid rgba(46, 80, 119, 0.2)',
+            boxShadow: '0 8px 25px rgba(46, 80, 119, 0.15)',
             transform: 'translateY(-2px) scale(1.05)',
           },
         },
@@ -537,10 +499,10 @@ let theme = createTheme({
         root: {
           color: '#6B7280',
           '&.Mui-checked': {
-            color: '#6366F1',
+            color: '#2E5077',
           },
           '&:hover': {
-            background: 'rgba(99, 102, 241, 0.1)',
+            background: 'rgba(46, 80, 119, 0.08)',
           },
         },
       },
@@ -557,9 +519,9 @@ let theme = createTheme({
     MuiDivider: {
       styleOverrides: {
         root: {
-          borderColor: 'rgba(99, 102, 241, 0.2)',
+          borderColor: 'rgba(46, 80, 119, 0.15)',
           '&::before, &::after': {
-            borderColor: 'rgba(99, 102, 241, 0.2)',
+            borderColor: 'rgba(46, 80, 119, 0.15)',
           },
         },
       },
@@ -569,14 +531,14 @@ let theme = createTheme({
         root: {
           borderRadius: '16px',
           fontWeight: 500,
-          background: 'rgba(99, 102, 241, 0.15)',
-          color: '#6366F1',
-          border: '1px solid rgba(99, 102, 241, 0.3)',
+          background: 'rgba(46, 80, 119, 0.12)',
+          color: '#2E5077',
+          border: '1px solid rgba(46, 80, 119, 0.25)',
           backdropFilter: 'blur(10px)',
           '&:hover': {
-            background: 'rgba(99, 102, 241, 0.25)',
+            background: 'rgba(46, 80, 119, 0.18)',
             transform: 'translateY(-1px)',
-            boxShadow: '0 4px 12px rgba(99, 102, 241, 0.3)',
+            boxShadow: '0 4px 12px rgba(46, 80, 119, 0.2)',
           },
         },
       },

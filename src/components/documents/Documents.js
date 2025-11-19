@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Container,
   Typography,
@@ -37,6 +37,7 @@ import {
   Visibility,
   Share,
 } from '@mui/icons-material';
+import { clientAPI, documentAPI, apiUtils } from '../../services/api';
 
 function TabPanel({ children, value, index, ...other }) {
   return (
@@ -57,44 +58,7 @@ function Documents() {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   
   const [tabValue, setTabValue] = useState(0);
-  const [documents, setDocuments] = useState([
-    {
-      id: 1,
-      name: 'W-2 Form 2025.pdf',
-      type: 'W-2',
-      category: 'tax-documents',
-      status: 'verified',
-      uploadDate: '2025-01-15',
-      size: '245 KB',
-    },
-    {
-      id: 2,
-      name: '1099-INT Bank Interest.pdf',
-      type: '1099-INT',
-      category: 'tax-documents',
-      status: 'pending',
-      uploadDate: '2025-01-20',
-      size: '156 KB',
-    },
-    {
-      id: 3,
-      name: 'Medical Expenses Receipt.pdf',
-      type: 'Receipt',
-      category: 'receipts',
-      status: 'verified',
-      uploadDate: '2025-01-25',
-      size: '89 KB',
-    },
-    {
-      id: 4,
-      name: 'Tax Return 2024.pdf',
-      type: 'Tax Return',
-      category: 'completed-returns',
-      status: 'completed',
-      uploadDate: '2025-04-10',
-      size: '1.2 MB',
-    },
-  ]);
+  const [documents, setDocuments] = useState([]);
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
@@ -112,30 +76,40 @@ function Documents() {
     }
   };
 
-  const handleUpload = () => {
-    if (selectedFile) {
-      const newDocument = {
-        id: documents.length + 1,
-        name: selectedFile.name,
-        type: 'Document',
-        category: 'tax-documents',
-        status: 'pending',
-        uploadDate: new Date().toISOString().split('T')[0],
-        size: `${Math.round(selectedFile.size / 1024)} KB`,
-      };
-
-      setDocuments([...documents, newDocument]);
+  const handleUpload = async () => {
+    if (!selectedFile) return;
+    try {
+      const formData = new FormData();
+      formData.append('file', selectedFile);
+      formData.append('documentType', 'Other');
+      formData.append('taxYear', new Date().getFullYear().toString());
+      await documentAPI.uploadDocument(formData);
       setUploadStatus('success');
+      const res = await clientAPI.getDocuments();
+      setDocuments(res.data || []);
       setTimeout(() => {
         setOpenDialog(false);
         setSelectedFile(null);
         setUploadStatus('');
-      }, 2000);
+      }, 1500);
+    } catch (e) {
+      setUploadStatus('error');
     }
   };
 
-  const handleDelete = (id) => {
-    setDocuments(documents.filter((doc) => doc.id !== id));
+  const handleDelete = async (id) => {
+    try {
+      await documentAPI.deleteDocument(id);
+      const res = await clientAPI.getDocuments();
+      setDocuments(res.data || []);
+    } catch (e) {}
+  };
+
+  const handleDownload = async (id, name) => {
+    try {
+      const blob = await documentAPI.downloadDocument(id);
+      apiUtils.downloadFile(blob, name || 'document');
+    } catch (e) {}
   };
 
   const getStatusChip = (status) => {
@@ -157,9 +131,15 @@ function Documents() {
     );
   };
 
-  const filterDocumentsByCategory = (category) => {
-    return documents.filter(doc => doc.category === category);
-  };
+  useEffect(() => {
+    let mounted = true;
+    clientAPI.getDocuments()
+      .then((res) => {
+        if (mounted) setDocuments(res.data || []);
+      })
+      .catch(() => {})
+    return () => { mounted = false };
+  }, []);
 
   const DocumentList = ({ documents, title }) => (
     <Card sx={{ mb: 2 }}>
@@ -197,7 +177,7 @@ function Documents() {
                   <IconButton edge="end" aria-label="view" size="small">
                     <Visibility />
                   </IconButton>
-                  <IconButton edge="end" aria-label="download" size="small">
+                  <IconButton edge="end" aria-label="download" size="small" onClick={() => handleDownload(doc.id, doc.name)}>
                     <Download />
                   </IconButton>
                   <IconButton edge="end" aria-label="share" size="small">
@@ -278,35 +258,13 @@ function Documents() {
               sx={{ borderBottom: 1, borderColor: 'divider' }}
             >
               <Tab label="All Documents" />
-              <Tab label="Tax Documents" />
-              <Tab label="Receipts" />
-              <Tab label="Completed Returns" />
             </Tabs>
 
             <TabPanel value={tabValue} index={0}>
               <DocumentList documents={documents} title="All Documents" />
             </TabPanel>
 
-            <TabPanel value={tabValue} index={1}>
-              <DocumentList 
-                documents={filterDocumentsByCategory('tax-documents')} 
-                title="Tax Documents" 
-              />
-            </TabPanel>
-
-            <TabPanel value={tabValue} index={2}>
-              <DocumentList 
-                documents={filterDocumentsByCategory('receipts')} 
-                title="Receipts & Deductions" 
-              />
-            </TabPanel>
-
-            <TabPanel value={tabValue} index={3}>
-              <DocumentList 
-                documents={filterDocumentsByCategory('completed-returns')} 
-                title="Completed Tax Returns" 
-              />
-            </TabPanel>
+            
           </Paper>
 
           {/* Document Statistics */}
@@ -325,7 +283,7 @@ function Documents() {
               <Card>
                 <CardContent sx={{ textAlign: 'center' }}>
                   <Typography variant="h4" color="success.main" gutterBottom>
-                    {documents.filter(doc => doc.status === 'verified').length}
+                    {documents.filter(doc => (doc.status || '').toLowerCase() === 'verified').length}
                   </Typography>
                   <Typography variant="body1">Verified</Typography>
                 </CardContent>
@@ -335,7 +293,7 @@ function Documents() {
               <Card>
                 <CardContent sx={{ textAlign: 'center' }}>
                   <Typography variant="h4" color="warning.main" gutterBottom>
-                    {documents.filter(doc => doc.status === 'pending').length}
+                    {documents.filter(doc => (doc.status || '').toLowerCase() === 'pending').length}
                   </Typography>
                   <Typography variant="body1">Pending Review</Typography>
                 </CardContent>

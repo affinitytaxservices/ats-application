@@ -218,4 +218,271 @@ router.put('/settings', authMiddleware, requireAdmin, async (req, res) => {
   }
 });
 
+// WhatsApp admin endpoints
+// GET /api/admin/whatsapp/conversations
+router.get('/whatsapp/conversations', authMiddleware, requireAdmin, async (req, res) => {
+  try {
+    const page = Math.max(parseInt(req.query.page || '1', 10), 1);
+    const limit = Math.max(parseInt(req.query.limit || '20', 10), 1);
+    const offset = (page - 1) * limit;
+    const search = req.query.search || '';
+
+    let sql = `
+      SELECT wc.*, 
+             COUNT(wm.id) as message_count,
+             MAX(wm.created_at) as last_message_at
+      FROM whatsapp_conversations wc
+      LEFT JOIN whatsapp_messages wm ON wc.phone_number = wm.phone_number
+    `;
+    
+    const params = [];
+    if (search) {
+      sql += ' WHERE wc.phone_number LIKE ?';
+      params.push(`%${search}%`);
+    }
+    
+    sql += ' GROUP BY wc.phone_number ORDER BY wc.updated_at DESC LIMIT ? OFFSET ?';
+    params.push(limit, offset);
+
+    const [rows] = await pool.query(sql, params);
+    
+    const [[{ total }]] = await pool.query(
+      'SELECT COUNT(DISTINCT phone_number) as total FROM whatsapp_conversations' +
+      (search ? ' WHERE phone_number LIKE ?' : ''),
+      search ? [`%${search}%`] : []
+    );
+
+    return res.json({ data: rows, page, limit, total });
+  } catch (err) {
+    console.error('WhatsApp conversations error:', err);
+    return res.status(500).json({ error: 'Failed to fetch WhatsApp conversations' });
+  }
+});
+
+// GET /api/admin/whatsapp/messages/:phone
+router.get('/whatsapp/messages/:phone', authMiddleware, requireAdmin, async (req, res) => {
+  try {
+    const phone = req.params.phone.replace(/\D/g, '');
+    const limit = Math.max(parseInt(req.query.limit || '50', 10), 1);
+    
+    const [rows] = await pool.query(
+      `SELECT * FROM whatsapp_messages 
+       WHERE phone_number = ? 
+       ORDER BY created_at DESC 
+       LIMIT ?`,
+      [phone, limit]
+    );
+    
+    return res.json({ data: rows });
+  } catch (err) {
+    console.error('WhatsApp messages error:', err);
+    return res.status(500).json({ error: 'Failed to fetch WhatsApp messages' });
+  }
+});
+
+// GET /api/admin/whatsapp/appointments
+router.get('/whatsapp/appointments', authMiddleware, requireAdmin, async (req, res) => {
+  try {
+    const page = Math.max(parseInt(req.query.page || '1', 10), 1);
+    const limit = Math.max(parseInt(req.query.limit || '20', 10), 1);
+    const offset = (page - 1) * limit;
+    const status = req.query.status;
+    const date = req.query.date;
+
+    let sql = 'SELECT * FROM appointments WHERE 1=1';
+    const params = [];
+
+    if (status) {
+      sql += ' AND status = ?';
+      params.push(status);
+    }
+
+    if (date) {
+      sql += ' AND appointment_date = ?';
+      params.push(date);
+    }
+
+    sql += ' ORDER BY appointment_date ASC, appointment_time ASC LIMIT ? OFFSET ?';
+    params.push(limit, offset);
+
+    const [rows] = await pool.query(sql, params);
+    
+    let countSql = 'SELECT COUNT(*) as total FROM appointments WHERE 1=1';
+    const countParams = [];
+    
+    if (status) {
+      countSql += ' AND status = ?';
+      countParams.push(status);
+    }
+    
+    if (date) {
+      countSql += ' AND appointment_date = ?';
+      countParams.push(date);
+    }
+
+    const [[{ total }]] = await pool.query(countSql, countParams);
+
+    return res.json({ data: rows, page, limit, total });
+  } catch (err) {
+    console.error('WhatsApp appointments error:', err);
+    return res.status(500).json({ error: 'Failed to fetch WhatsApp appointments' });
+  }
+});
+
+// PUT /api/admin/whatsapp/appointments/:id/status
+router.put('/whatsapp/appointments/:id/status', authMiddleware, requireAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+    
+    if (!['scheduled', 'completed', 'cancelled', 'no_show'].includes(status)) {
+      return res.status(400).json({ error: 'Invalid status' });
+    }
+
+    const [result] = await pool.query(
+      'UPDATE appointments SET status = ?, updated_at = NOW() WHERE id = ?',
+      [status, id]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Appointment not found' });
+    }
+
+    return res.json({ success: true });
+  } catch (err) {
+    console.error('Update appointment status error:', err);
+    return res.status(500).json({ error: 'Failed to update appointment status' });
+  }
+});
+
+// GET /api/admin/whatsapp/support-tickets
+router.get('/whatsapp/support-tickets', authMiddleware, requireAdmin, async (req, res) => {
+  try {
+    const page = Math.max(parseInt(req.query.page || '1', 10), 1);
+    const limit = Math.max(parseInt(req.query.limit || '20', 10), 1);
+    const offset = (page - 1) * limit;
+    const status = req.query.status;
+
+    let sql = `
+      SELECT st.*, u.name as assigned_to_name, u.email as assigned_to_email
+      FROM support_tickets st
+      LEFT JOIN users u ON st.assigned_to = u.id
+      WHERE 1=1
+    `;
+    const params = [];
+
+    if (status) {
+      sql += ' AND st.status = ?';
+      params.push(status);
+    }
+
+    sql += ' ORDER BY st.created_at DESC LIMIT ? OFFSET ?';
+    params.push(limit, offset);
+
+    const [rows] = await pool.query(sql, params);
+    
+    let countSql = 'SELECT COUNT(*) as total FROM support_tickets WHERE 1=1';
+    const countParams = [];
+    
+    if (status) {
+      countSql += ' AND status = ?';
+      countParams.push(status);
+    }
+
+    const [[{ total }]] = await pool.query(countSql, countParams);
+
+    return res.json({ data: rows, page, limit, total });
+  } catch (err) {
+    console.error('Support tickets error:', err);
+    return res.status(500).json({ error: 'Failed to fetch support tickets' });
+  }
+});
+
+// PUT /api/admin/whatsapp/support-tickets/:id/assign
+router.put('/whatsapp/support-tickets/:id/assign', authMiddleware, requireAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { assigned_to } = req.body;
+
+    const [result] = await pool.query(
+      'UPDATE support_tickets SET assigned_to = ?, status = "in_progress", updated_at = NOW() WHERE id = ?',
+      [assigned_to, id]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Support ticket not found' });
+    }
+
+    return res.json({ success: true });
+  } catch (err) {
+    console.error('Assign support ticket error:', err);
+    return res.status(500).json({ error: 'Failed to assign support ticket' });
+  }
+});
+
+// PUT /api/admin/whatsapp/support-tickets/:id/response
+router.put('/whatsapp/support-tickets/:id/response', authMiddleware, requireAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { response } = req.body;
+
+    const [result] = await pool.query(
+      'UPDATE support_tickets SET response = ?, status = "resolved", resolved_at = NOW(), updated_at = NOW() WHERE id = ?',
+      [response, id]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Support ticket not found' });
+    }
+
+    // Send response via WhatsApp
+    const [ticket] = await pool.query('SELECT phone_number FROM support_tickets WHERE id = ?', [id]);
+    if (ticket.length > 0) {
+      const { sendTextMessage } = require('../services/whatsappClient');
+      await sendTextMessage(ticket[0].phone_number, `🎫 Support Response:\n\n${response}\n\nSend "menu" to return to main menu.`);
+    }
+
+    return res.json({ success: true });
+  } catch (err) {
+    console.error('Respond to support ticket error:', err);
+    return res.status(500).json({ error: 'Failed to respond to support ticket' });
+  }
+});
+
+// POST /api/admin/whatsapp/send-text
+router.post('/whatsapp/send-text', authMiddleware, requireAdmin, async (req, res) => {
+  try {
+    const { to, text } = req.body;
+    if (!to || !text) {
+      return res.status(400).json({ error: 'Missing to or text parameters' });
+    }
+
+    const { sendTextMessage } = require('../services/whatsappClient');
+    const messageId = await sendTextMessage(to, text);
+    
+    return res.json({ success: true, messageId });
+  } catch (err) {
+    console.error('Send WhatsApp text error:', err);
+    return res.status(500).json({ error: 'Failed to send WhatsApp message' });
+  }
+});
+
+// POST /api/admin/whatsapp/send-template
+router.post('/whatsapp/send-template', authMiddleware, requireAdmin, async (req, res) => {
+  try {
+    const { to, template, language = 'en_US', components = [] } = req.body;
+    if (!to || !template) {
+      return res.status(400).json({ error: 'Missing to or template parameters' });
+    }
+
+    const { sendTemplateMessage } = require('../services/whatsappClient');
+    const messageId = await sendTemplateMessage(to, template, language, components);
+    
+    return res.json({ success: true, messageId });
+  } catch (err) {
+    console.error('Send WhatsApp template error:', err);
+    return res.status(500).json({ error: 'Failed to send WhatsApp template' });
+  }
+});
+
 module.exports = router;

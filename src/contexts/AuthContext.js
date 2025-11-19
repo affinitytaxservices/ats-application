@@ -20,7 +20,6 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const initAuth = async () => {
       const token = localStorage.getItem('auth_token');
-      const userData = localStorage.getItem('user_data');
 
       // If we have a token, try to fetch the current user from backend
       if (token) {
@@ -33,30 +32,11 @@ export const AuthProvider = ({ children }) => {
             return;
           }
         } catch (error) {
-          // Fall back to localStorage if available
-          if (userData) {
-            try {
-              const parsedUser = JSON.parse(userData);
-              setUser(parsedUser);
-              setIsAuthenticated(true);
-            } catch (e) {
-              localStorage.removeItem('auth_token');
-              localStorage.removeItem('user_data');
-            }
-          } else {
-            localStorage.removeItem('auth_token');
-            localStorage.removeItem('user_data');
-          }
-        }
-      } else if (userData) {
-        // No token but have user data (likely mock mode)
-        try {
-          const parsedUser = JSON.parse(userData);
-          setUser(parsedUser);
-          setIsAuthenticated(true);
-        } catch (error) {
+          localStorage.removeItem('auth_token');
           localStorage.removeItem('user_data');
         }
+      } else {
+        localStorage.removeItem('user_data');
       }
 
       setLoading(false);

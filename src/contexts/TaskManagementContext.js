@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { taskAPI } from '../services/api';
+import { taskAPI, userAPI } from '../services/api';
 
 const TaskManagementContext = createContext();
 
@@ -40,17 +40,16 @@ export const TaskManagementProvider = ({ children }) => {
 
   // Initialize data
   useEffect(() => {
-    // Mock employees data - in real app this would come from API
-    const mockEmployees = [
-      { id: 1, name: 'Steve Rogers', email: 'steve.rogers@affinitytax.com', role: 'tax_professional', department: 'Tax Preparation' },
-      { id: 2, name: 'Natasha Romanoff', email: 'natasha.romanoff@affinitytax.com', role: 'tax_professional', department: 'Tax Preparation' },
-      { id: 3, name: 'Bruce Banner', email: 'bruce.banner@affinitytax.com', role: 'tax_professional', department: 'Audit Support' },
-      { id: 4, name: 'Tony Stark', email: 'tony.stark@affinitytax.com', role: 'manager', department: 'Management' },
-      { id: 5, name: 'Wanda Maximoff', email: 'wanda.maximoff@affinitytax.com', role: 'admin', department: 'Administration' }
-    ];
-    
-    setEmployees(mockEmployees);
-    fetchTasks();
+    let mounted = true;
+    userAPI.getAllUsers(1, 100)
+      .then((res) => {
+        const rows = res.data || [];
+        const staff = rows.filter(u => ['admin','manager','tax_professional'].includes(u.role)).map(u => ({ id: u.id, name: `${u.firstName} ${u.lastName}`.trim(), email: u.email, role: u.role, department: u.department || '' }));
+        if (mounted) setEmployees(staff);
+      })
+      .catch(() => { if (mounted) setEmployees([]); })
+      .finally(() => { fetchTasks(); });
+    return () => { mounted = false };
   }, [fetchTasks]);
 
   // Create new task

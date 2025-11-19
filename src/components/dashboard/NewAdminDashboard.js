@@ -63,6 +63,10 @@ import {
   TrendingUp,
   Visibility,
   VisibilityOff,
+  WhatsApp,
+  Message,
+  Schedule,
+  Support
 
 } from '@mui/icons-material';
 import { adminAPI, userAPI, taskAPI } from '../../services/api';
@@ -81,6 +85,12 @@ function NewAdminDashboard() {
   const [systemAlerts, setSystemAlerts] = useState([]);
   const [revenueData, setRevenueData] = useState([]);
   const [taskStatusData, setTaskStatusData] = useState([]);
+  
+  // WhatsApp state
+  const [whatsappConversations, setWhatsAppConversations] = useState([]);
+  const [whatsappAppointments, setWhatsAppAppointments] = useState([]);
+  const [whatsappSupportTickets, setWhatsAppSupportTickets] = useState([]);
+  const [showWhatsAppSection, setShowWhatsAppSection] = useState(false);
 
   const [refreshing, setRefreshing] = useState(false);
   
@@ -141,11 +151,15 @@ function NewAdminDashboard() {
         adminAPI.getSystemHealth(),
         adminAPI.getRevenueAnalytics(),
         adminAPI.getTaskAnalytics(),
-        adminAPI.getUserActivity()
+        adminAPI.getUserActivity(),
+        // WhatsApp data
+        adminAPI.getWhatsAppConversations(1, 10),
+        adminAPI.getWhatsAppAppointments(1, 10),
+        adminAPI.getWhatsAppSupportTickets(1, 10)
       ]);
       
       // Process results with individual error handling
-      const [statsResult, usersResult, tasksResult, alertsResult, revenueResult, taskAnalyticsResult, userActivityResult] = results;
+      const [statsResult, usersResult, tasksResult, alertsResult, revenueResult, taskAnalyticsResult, userActivityResult, whatsappConvResult, whatsappApptResult, whatsappTicketResult] = results;
       
       if (statsResult.status === 'fulfilled') {
         setAdminStats(statsResult.value.data || {
@@ -206,6 +220,25 @@ function NewAdminDashboard() {
         console.log('User activity data:', userActivityResult.value.data);
       } else {
         console.error('Error fetching user activity:', userActivityResult.reason);
+      }
+      
+      // Process WhatsApp data
+      if (whatsappConvResult.status === 'fulfilled') {
+        setWhatsAppConversations(whatsappConvResult.value.data || []);
+      } else {
+        console.warn('Failed to fetch WhatsApp conversations:', whatsappConvResult.reason);
+      }
+      
+      if (whatsappApptResult.status === 'fulfilled') {
+        setWhatsAppAppointments(whatsappApptResult.value.data || []);
+      } else {
+        console.warn('Failed to fetch WhatsApp appointments:', whatsappApptResult.reason);
+      }
+      
+      if (whatsappTicketResult.status === 'fulfilled') {
+        setWhatsAppSupportTickets(whatsappTicketResult.value.data || []);
+      } else {
+        console.warn('Failed to fetch WhatsApp support tickets:', whatsappTicketResult.reason);
       }
       
       // Check if any requests failed
@@ -594,8 +627,68 @@ function NewAdminDashboard() {
           </Typography>
         </Fade>
         
-        <Tooltip title="Refresh Dashboard">
-          <IconButton onClick={handleRefresh} color="primary" sx={{ ml: 2 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Button
+            variant="outlined"
+            startIcon={<WhatsApp />}
+            onClick={() => setShowWhatsAppSection(!showWhatsAppSection)}
+            sx={{ 
+              borderRadius: 8,
+              borderColor: '#25D366',
+              color: '#25D366',
+              '&:hover': {
+                borderColor: '#128C7E',
+                backgroundColor: 'rgba(37, 211, 102, 0.08)'
+              }
+            }}
+          >
+            {showWhatsAppSection ? 'Hide WhatsApp' : 'Show WhatsApp'}
+          </Button>
+          
+          <Tooltip title="Refresh Dashboard">
+            <IconButton onClick={handleRefresh} color="primary">
+              <Refresh sx={{ animation: refreshing ? 'spin 1s linear infinite' : 'none', '@keyframes spin': { '0%': { transform: 'rotate(0deg)' }, '100%': { transform: 'rotate(360deg)' } } }} />
+            </IconButton>
+          </Tooltip>
+        </Box>
+      </Box>
+        <Fade in={true} timeout={800}>
+          <Typography 
+            variant="h4" 
+            sx={{ 
+              fontSize: { xs: '1.8rem', sm: '2.125rem' }, 
+              fontWeight: 'bold',
+              fontFamily: 'Montserrat, sans-serif',
+              background: `linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              letterSpacing: '0.5px'
+            }}
+          >
+            Admin Dashboard
+          </Typography>
+        </Fade>
+        
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <Button
+            variant="outlined"
+            startIcon={<WhatsApp />}
+            onClick={() => setShowWhatsAppSection(!showWhatsAppSection)}
+            sx={{ 
+              borderRadius: 8,
+              borderColor: '#25D366',
+              color: '#25D366',
+              '&:hover': {
+                borderColor: '#128C7E',
+                backgroundColor: 'rgba(37, 211, 102, 0.08)'
+              }
+            }}
+          >
+            {showWhatsAppSection ? 'Hide WhatsApp' : 'Show WhatsApp'}
+          </Button>
+          
+          <Tooltip title="Refresh Dashboard">
+            <IconButton onClick={handleRefresh} color="primary">
             <Refresh sx={{ animation: refreshing ? 'spin 1s linear infinite' : 'none', '@keyframes spin': { '0%': { transform: 'rotate(0deg)' }, '100%': { transform: 'rotate(360deg)' } } }} />
           </IconButton>
         </Tooltip>
@@ -760,6 +853,165 @@ function NewAdminDashboard() {
           </Zoom>
         </Grid>
       </Grid>
+      
+      {/* WhatsApp Business Section */}
+      {showWhatsAppSection && (
+        <Grid container spacing={3} sx={{ mt: 2 }}>
+          <Grid item xs={12}>
+            <Paper
+              elevation={0}
+              sx={{
+                p: { xs: 2, sm: 3 },
+                borderRadius: 2,
+                boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.15)',
+                backdropFilter: 'blur(8px)',
+                WebkitBackdropFilter: 'blur(8px)',
+                border: '1px solid rgba(255, 255, 255, 0.18)',
+                overflow: 'hidden',
+                position: 'relative',
+                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                '&:hover': {
+                  transform: 'translateY(-5px)',
+                  boxShadow: '0 12px 40px 0 rgba(31, 38, 135, 0.25)',
+                },
+                '&::after': {
+                  content: '""',
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '4px',
+                  background: `linear-gradient(90deg, #25D366 0%, #128C7E 100%)`
+                }
+              }}
+            >
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <WhatsApp sx={{ color: '#25D366', mr: 1 }} />
+                  <Typography 
+                    variant="h6" 
+                    sx={{ 
+                      fontWeight: 'bold',
+                      fontFamily: 'Montserrat, sans-serif',
+                      background: 'linear-gradient(90deg, #25D366 0%, #128C7E 100%)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      letterSpacing: '0.5px'
+                    }}
+                  >
+                    WhatsApp Business
+                  </Typography>
+                </Box>
+                <Button
+                  variant="outlined"
+                  size="small"
+                  onClick={() => setShowWhatsAppSection(false)}
+                  sx={{ borderRadius: 8 }}
+                >
+                  Hide
+                </Button>
+              </Box>
+              
+              <Grid container spacing={3}>
+                {/* WhatsApp Conversations */}
+                <Grid item xs={12} md={4}>
+                  <Paper elevation={1} sx={{ p: 2, borderRadius: 2 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                      <Message sx={{ color: 'primary.main', mr: 1 }} />
+                      <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
+                        Conversations ({whatsappConversations.length})
+                      </Typography>
+                    </Box>
+                    {whatsappConversations.slice(0, 5).map((conv) => (
+                      <Box key={conv.phone_number} sx={{ mb: 1, p: 1, bgcolor: 'grey.50', borderRadius: 1 }}>
+                        <Typography variant="body2" sx={{ fontWeight: 'medium' }}>
+                          {conv.phone_number}
+                        </Typography>
+                        <Typography variant="caption" color="text.secondary">
+                          {conv.state} • {new Date(conv.updated_at).toLocaleDateString()}
+                        </Typography>
+                      </Box>
+                    ))}
+                  </Paper>
+                </Grid>
+                
+                {/* WhatsApp Appointments */}
+                <Grid item xs={12} md={4}>
+                  <Paper elevation={1} sx={{ p: 2, borderRadius: 2 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                      <Schedule sx={{ color: 'success.main', mr: 1 }} />
+                      <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
+                        Appointments ({whatsappAppointments.length})
+                      </Typography>
+                    </Box>
+                    {whatsappAppointments.slice(0, 5).map((appt) => (
+                      <Box key={appt.id} sx={{ mb: 1, p: 1, bgcolor: 'grey.50', borderRadius: 1 }}>
+                        <Typography variant="body2" sx={{ fontWeight: 'medium' }}>
+                          {appt.phone_number}
+                        </Typography>
+                        <Typography variant="caption" color="text.secondary">
+                          {new Date(appt.appointment_date).toLocaleDateString()} at {appt.appointment_time}
+                        </Typography>
+                        <Chip 
+                          label={appt.status} 
+                          size="small" 
+                          sx={{ ml: 1 }}
+                          color={appt.status === 'scheduled' ? 'primary' : 'success'}
+                        />
+                      </Box>
+                    ))}
+                  </Paper>
+                </Grid>
+                
+                {/* WhatsApp Support Tickets */}
+                <Grid item xs={12} md={4}>
+                  <Paper elevation={1} sx={{ p: 2, borderRadius: 2 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                      <Support sx={{ color: 'warning.main', mr: 1 }} />
+                      <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
+                        Support Tickets ({whatsappSupportTickets.length})
+                      </Typography>
+                    </Box>
+                    {whatsappSupportTickets.slice(0, 5).map((ticket) => (
+                      <Box key={ticket.id} sx={{ mb: 1, p: 1, bgcolor: 'grey.50', borderRadius: 1 }}>
+                        <Typography variant="body2" sx={{ fontWeight: 'medium' }}>
+                          {ticket.phone_number}
+                        </Typography>
+                        <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
+                          {ticket.message.substring(0, 50)}...
+                        </Typography>
+                        <Chip 
+                          label={ticket.status} 
+                          size="small" 
+                          sx={{ mt: 0.5 }}
+                          color={ticket.status === 'open' ? 'warning' : 'info'}
+                        />
+                      </Box>
+                    ))}
+                  </Paper>
+                </Grid>
+              </Grid>
+              
+              <Box sx={{ mt: 3, textAlign: 'center' }}>
+                <Button
+                  variant="contained"
+                  startIcon={<WhatsApp />}
+                  onClick={() => window.open('/admin/whatsapp', '_blank')}
+                  sx={{
+                    background: 'linear-gradient(90deg, #25D366 0%, #128C7E 100%)',
+                    borderRadius: 8,
+                    '&:hover': {
+                      background: 'linear-gradient(90deg, #128C7E 0%, #075E54 100%)',
+                    }
+                  }}
+                >
+                  Open WhatsApp Admin Panel
+                </Button>
+              </Box>
+            </Paper>
+          </Grid>
+        </Grid>
+      )}
       
       <Grid container spacing={isMobile ? 2 : 3}>
         {/* Task Management Section */}

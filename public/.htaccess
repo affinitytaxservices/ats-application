@@ -4,9 +4,9 @@ DirectoryIndex index.html
   RewriteEngine On
   RewriteBase /
 
-  # Force HTTPS
-  RewriteCond %{HTTPS} !=on
-  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+  RewriteCond %{HTTPS} !=on [OR]
+  RewriteCond %{HTTP_HOST} !^www\.affinitytaxservices\.com$ [NC]
+  RewriteRule ^ https://www.affinitytaxservices.com%{REQUEST_URI} [L,R=301]
 
   # Do NOT rewrite API or control panel paths
   RewriteRule ^(api|phpmyadmin|cpanel|webmail)/ - [L]

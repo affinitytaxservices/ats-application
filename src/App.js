@@ -30,6 +30,8 @@ import Notifications from './components/notifications/Notifications';
 import Contacts from './components/privacy/Contacts';
 import PrivacyPolicy from './components/privacy/PrivacyPolicy';
 import Terms from './components/privacy/Terms';
+import WhatsAppAdmin from './components/admin/WhatsAppAdmin';
+import WhatsAppWidget from './components/common/WhatsAppWidget';
 
 
 
@@ -125,6 +127,14 @@ function App() {
               } 
             />
             <Route 
+              path="/admin/whatsapp" 
+              element={
+                <ProtectedRoute requiredRole="admin">
+                  <WhatsAppAdmin />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
               path="/client-dashboard" 
               element={
                 <ProtectedRoute requiredRole="client">
@@ -158,6 +168,7 @@ function App() {
             />
         </Routes>
       </main>
+      <WhatsAppWidget />
       <RefundStatusFAB />
       <Footer />
     </div>

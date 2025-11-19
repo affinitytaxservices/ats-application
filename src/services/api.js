@@ -81,16 +81,7 @@ export const authAPI = {
       const response = await api.get('/auth/me');
       return response.data;
     } catch (error) {
-      console.warn('Using mock current user due to API error:', error.message);
-      // Return user from localStorage if available
-      const userData = localStorage.getItem('user_data');
-      if (userData) {
-        return {
-          success: true,
-          user: JSON.parse(userData)
-        };
-      }
-      throw new Error('No user data available');
+      throw error.response?.data || error;
     }
   },
 
@@ -696,6 +687,87 @@ export const adminAPI = {
   updateSystemSettings: async (settings) => {
     try {
       const response = await api.put('/admin/settings', settings);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error;
+    }
+  },
+
+  // WhatsApp Admin API methods
+  getWhatsAppConversations: async (page = 1, limit = 20, search = '') => {
+    try {
+      const response = await api.get('/admin/whatsapp/conversations', {
+        params: { page, limit, search }
+      });
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error;
+    }
+  },
+
+  getWhatsAppMessages: async (phone, limit = 50) => {
+    try {
+      const response = await api.get(`/admin/whatsapp/messages/${phone}`, {
+        params: { limit }
+      });
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error;
+    }
+  },
+
+  sendWhatsAppTextMessage: async (to, text) => {
+    try {
+      const response = await api.post('/admin/whatsapp/send-text', { to, text });
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error;
+    }
+  },
+
+  getWhatsAppAppointments: async (page = 1, limit = 20, status = '') => {
+    try {
+      const response = await api.get('/admin/whatsapp/appointments', {
+        params: { page, limit, status }
+      });
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error;
+    }
+  },
+
+  updateWhatsAppAppointmentStatus: async (id, status) => {
+    try {
+      const response = await api.put(`/admin/whatsapp/appointments/${id}/status`, { status });
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error;
+    }
+  },
+
+  getWhatsAppSupportTickets: async (page = 1, limit = 20, status = '') => {
+    try {
+      const response = await api.get('/admin/whatsapp/support-tickets', {
+        params: { page, limit, status }
+      });
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error;
+    }
+  },
+
+  assignWhatsAppSupportTicket: async (id, assigned_to) => {
+    try {
+      const response = await api.put(`/admin/whatsapp/support-tickets/${id}/assign`, { assigned_to });
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error;
+    }
+  },
+
+  respondToWhatsAppSupportTicket: async (id, responseText) => {
+    try {
+      const response = await api.put(`/admin/whatsapp/support-tickets/${id}/response`, { response: responseText });
       return response.data;
     } catch (error) {
       throw error.response?.data || error;

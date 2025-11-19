@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Container,
   Typography,
@@ -27,31 +27,10 @@ import {
   CheckCircle,
   Warning,
 } from '@mui/icons-material';
+import { clientAPI, documentAPI, apiUtils } from '../../services/api';
 
 function DocumentUpload() {
-  const [documents, setDocuments] = useState([
-    {
-      id: 1,
-      name: 'W-2 Form.pdf',
-      type: 'W-2',
-      status: 'verified',
-      uploadDate: '2024-01-15',
-    },
-    {
-      id: 2,
-      name: '1099-INT.pdf',
-      type: '1099',
-      status: 'pending',
-      uploadDate: '2024-01-20',
-    },
-    {
-      id: 3,
-      name: 'Deductions.pdf',
-      type: 'Receipt',
-      status: 'verified',
-      uploadDate: '2024-01-25',
-    },
-  ]);
+  const [documents, setDocuments] = useState([]);
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
@@ -65,41 +44,63 @@ function DocumentUpload() {
     }
   };
 
-  const handleUpload = () => {
-    if (selectedFile) {
-      // Mock upload - replace with actual API call
-      const newDocument = {
-        id: documents.length + 1,
-        name: selectedFile.name,
-        type: 'Unknown',
-        status: 'pending',
-        uploadDate: new Date().toISOString().split('T')[0],
-      };
-
-      setDocuments([...documents, newDocument]);
+  const handleUpload = async () => {
+    if (!selectedFile) return;
+    try {
+      const formData = new FormData();
+      formData.append('file', selectedFile);
+      formData.append('documentType', 'Other');
+      formData.append('taxYear', new Date().getFullYear().toString());
+      await documentAPI.uploadDocument(formData);
       setUploadStatus('success');
+      const res = await clientAPI.getDocuments();
+      setDocuments(res.data || []);
       setTimeout(() => {
         setOpenDialog(false);
         setSelectedFile(null);
         setUploadStatus('');
-      }, 2000);
+      }, 1500);
+    } catch (e) {
+      setUploadStatus('error');
     }
   };
 
-  const handleDelete = (id) => {
-    setDocuments(documents.filter((doc) => doc.id !== id));
+  const handleDelete = async (id) => {
+    try {
+      await documentAPI.deleteDocument(id);
+      const res = await clientAPI.getDocuments();
+      setDocuments(res.data || []);
+    } catch (e) {}
+  };
+
+  const handleDownload = async (id, name) => {
+    try {
+      const blob = await documentAPI.downloadDocument(id);
+      apiUtils.downloadFile(blob, name || 'document');
+    } catch (e) {}
   };
 
   const getStatusChip = (status) => {
+    const s = (status || '').toLowerCase();
     return (
       <Chip
-        label={status.charAt(0).toUpperCase() + status.slice(1)}
-        color={status === 'verified' ? 'success' : 'warning'}
-        icon={status === 'verified' ? <CheckCircle /> : <Warning />}
+        label={s ? s.charAt(0).toUpperCase() + s.slice(1) : 'Unknown'}
+        color={s === 'verified' ? 'success' : s === 'pending' ? 'warning' : 'default'}
+        icon={s === 'verified' ? <CheckCircle /> : <Warning />}
         size="small"
       />
     );
   };
+
+  useEffect(() => {
+    let mounted = true;
+    clientAPI.getDocuments()
+      .then((res) => {
+        if (mounted) setDocuments(res.data || []);
+      })
+      .catch(() => {})
+    return () => { mounted = false };
+  }, []);
 
   return (
     <Container maxWidth="md">
@@ -163,7 +164,7 @@ function DocumentUpload() {
                     }
                   />
                   <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="download" sx={{ mr: 1 }}>
+                    <IconButton edge="end" aria-label="download" sx={{ mr: 1 }} onClick={() => handleDownload(doc.id, doc.name)}>
                       <Download />
                     </IconButton>
                     <IconButton
