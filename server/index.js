@@ -12,6 +12,8 @@ const allowedOrigins = [
   'https://www.affinitytaxservices.com',
   'https://affinitytaxservices.com',
   'https://api.affinitytaxservices.com',
+  'http://195.250.21.159',
+  'https://195.250.21.159',
   'http://localhost:3000',
   'http://localhost:5000',
   ...(process.env.NODE_ENV !== 'production' ? ['http://localhost:3000'] : [])
