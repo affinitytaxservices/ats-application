@@ -77,14 +77,6 @@ async function setupWhatsAppTables() {
 
     console.log('✅ WhatsApp tables created successfully!');
     
-    // Grant permissions
-    await pool.query('GRANT ALL PRIVILEGES ON whatsapp_conversations TO \'ats_user\'@\'%\'');
-    await pool.query('GRANT ALL PRIVILEGES ON whatsapp_messages TO \'ats_user\'@\'%\'');
-    await pool.query('GRANT ALL PRIVILEGES ON support_tickets TO \'ats_user\'@\'%\'');
-    await pool.query('GRANT ALL PRIVILEGES ON appointments TO \'ats_user\'@\'%\'');
-    
-    console.log('✅ Permissions granted successfully!');
-    
   } catch (error) {
     console.error('❌ Error setting up WhatsApp tables:', error);
     throw error;

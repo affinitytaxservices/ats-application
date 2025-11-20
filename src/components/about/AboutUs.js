@@ -71,13 +71,13 @@ const teamMembers = [
     specialties: ['Business Tax Strategy', 'Tax Planning', 'IRS Representation'],
   },
   {
-    name: 'ARVIND ',
+    name: 'Arvind Reddy EA',
     role: 'Senior Tax Consultant',
     experience: 'X years in individual and corporate taxation',
     specialties: ['Individual Tax Returns', 'Tax Compliance'],
   },
   {
-    name: 'Nithya M',
+    name: 'Sri Nithya EA',
     role: 'Tax Planning Specialist',
     experience: 'X years in strategic tax planning',      
     specialties: ['Estate Planning', 'Business Formation', 'Tax Optimization'],

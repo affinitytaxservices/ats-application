@@ -171,8 +171,6 @@ App port: `5000`
 
 Database:
 - Name: `ats_DB`
-- User: `ats_user`
-- Password: `<secure_password>` (store only in environment; do not commit)
 
 ### 1) Server Preparation
 
@@ -184,9 +182,8 @@ Database:
 - Create dedicated MySQL DB and user:
   - `sudo mysql -u root`
   - `CREATE DATABASE ats_DB;`
-  - `CREATE USER 'ats_user'@'localhost' IDENTIFIED BY '<secure_password>';`
-  - `GRANT ALL PRIVILEGES ON ats_DB.* TO 'ats_user'@'localhost';`
-  - `FLUSH PRIVILEGES;`
+  - Create a user and grant privileges using your chosen username and a strong password.
+  - Flush privileges when done.
 
 ### 2) Project Setup
 
@@ -224,8 +221,6 @@ NODE_ENV=production
 PORT=5000
 JWT_SECRET=<secure_random_value>
 DB_HOST=localhost
-DB_USER=ats_user
-DB_PASSWORD=<secure_password>
 DB_NAME=ats_DB
 REACT_APP_API_URL=https://api.affinitytaxservices.com/api
 WHATSAPP_ACCESS_TOKEN=<optional_if_used>

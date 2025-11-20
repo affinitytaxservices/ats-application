@@ -51,10 +51,7 @@ ALTER TABLE appointments
 ADD COLUMN IF NOT EXISTS phone_number VARCHAR(20) DEFAULT NULL,
 ADD INDEX IF NOT EXISTS idx_phone_number (phone_number);
 
--- Grant permissions (replace 'ats_user' with your actual database user)
-GRANT ALL PRIVILEGES ON whatsapp_conversations TO 'ats_user'@'%';
-GRANT ALL PRIVILEGES ON whatsapp_messages TO 'ats_user'@'%';
-GRANT ALL PRIVILEGES ON support_tickets TO 'ats_user'@'%';
+-- Manage privileges for your chosen database user outside of this script.
 
 -- Sample data for testing (optional)
 INSERT INTO whatsapp_conversations (phone_number, state, data) VALUES 

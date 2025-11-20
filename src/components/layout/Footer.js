@@ -187,7 +187,7 @@ const Footer = () => {
             <Typography 
               variant="body2" 
               sx={{
-                color: '#9CA3AF',
+                color: '#4B5563',
                 fontFamily: '"Inter", sans-serif',
                 fontSize: { xs: '0.8rem', sm: '0.75rem' },
                 textAlign: isMobile ? 'center' : 'left',
@@ -200,7 +200,7 @@ const Footer = () => {
             <Typography 
               variant="body2" 
               sx={{
-                color: '#9CA3AF',
+                color: '#4B5563',
                 fontFamily: '"Inter", sans-serif',
                 fontSize: { xs: '0.8rem', sm: '0.75rem' },
                 textAlign: isMobile ? 'center' : 'right',
@@ -210,18 +210,17 @@ const Footer = () => {
                 gap: 0.5
               }}
             >
-              Crafted with excellence 
+              Made by Affinity Tax Services with
               <Box 
                 component="span" 
                 sx={{ 
-                  color: '#8B5CF6',
+                  color: '#DC2626',
                   animation: `${heartBeat} 2s ease-in-out infinite`,
                   display: 'inline-block'
                 }}
               >
-                🚀
-              </Box> 
-              by Affinity Tax Services
+                ❤️
+              </Box>
             </Typography>
           </Box>
         </Container>

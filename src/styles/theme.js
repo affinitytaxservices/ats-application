@@ -35,10 +35,10 @@ const premiumPalette = {
     rose: '#F8E4E4',
   },
   text: {
-    primary: '#1F2937',
-    secondary: '#4B5563',
-    disabled: '#9CA3AF',
-    hint: '#D1D5DB',
+    primary: '#111827',
+    secondary: '#1F2937',
+    disabled: '#6B7280',
+    hint: '#9CA3AF',
   },
   background: {
     default: '#F7F9FC',
@@ -99,7 +99,7 @@ let theme = createTheme({
       fontSize: 'clamp(1.5rem, 3.5vw, 2.25rem)',
       lineHeight: 1.3,
       letterSpacing: '-0.01em',
-      color: '#4B5563',
+      color: '#1F2937',
     },
     h4: {
       fontFamily: '"Quicksand", sans-serif',
@@ -128,7 +128,7 @@ let theme = createTheme({
       fontSize: '1rem',
       lineHeight: 1.6,
       letterSpacing: '0.00938em',
-      color: '#4B5563',
+      color: '#1F2937',
     },
     body2: {
       fontFamily: '"Quicksand", sans-serif',
@@ -136,7 +136,7 @@ let theme = createTheme({
       fontSize: '0.875rem',
       lineHeight: 1.6,
       letterSpacing: '0.01071em',
-      color: '#4B5563',
+      color: '#1F2937',
     },
     button: {
       fontFamily: '"Quicksand", sans-serif',
@@ -296,31 +296,21 @@ let theme = createTheme({
       styleOverrides: {
         root: {
           '& .MuiOutlinedInput-root': {
-            borderRadius: '16px',
-            background: 'rgba(255, 255, 255, 0.95)',
-            backdropFilter: 'blur(20px)',
-            transition: 'all 0.3s ease',
-            '& fieldset': {
-              borderColor: 'rgba(46, 80, 119, 0.25)',
-              borderWidth: '2px',
+            borderRadius: '12px',
+            background: 'transparent',
+            transition: 'border-color 0.2s ease',
+            '& .MuiOutlinedInput-notchedOutline': {
+              borderColor: 'rgba(46, 80, 119, 0.3)',
+              borderWidth: '1px',
             },
-            '&:hover': {
-              background: 'rgba(255, 255, 255, 1)',
-              '& fieldset': {
-                borderColor: 'rgba(46, 80, 119, 0.4)',
-              },
+            '&:hover .MuiOutlinedInput-notchedOutline': {
+              borderColor: 'rgba(46, 80, 119, 0.5)',
             },
-            '&.Mui-focused': {
-              background: 'rgba(255, 255, 255, 1)',
-              '& fieldset': {
-                borderColor: '#2E5077',
-                boxShadow: '0 0 0 4px rgba(46, 80, 119, 0.15)',
-              },
+            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+              borderColor: '#2E5077',
             },
-            '&.Mui-error': {
-              '& fieldset': {
-                borderColor: '#EF4444',
-              },
+            '&.Mui-error .MuiOutlinedInput-notchedOutline': {
+              borderColor: '#EF4444',
             },
           },
           '& .MuiInputLabel-root': {
@@ -339,10 +329,6 @@ let theme = createTheme({
             fontWeight: 500,
             '&.Mui-error': {
               color: '#EF4444',
-              background: 'rgba(239, 68, 68, 0.1)',
-              padding: '4px 8px',
-              borderRadius: '8px',
-              marginTop: '8px',
             },
           },
         },
@@ -523,6 +509,14 @@ let theme = createTheme({
           '&::before, &::after': {
             borderColor: 'rgba(46, 80, 119, 0.15)',
           },
+        },
+      },
+    },
+    MuiListItemText: {
+      styleOverrides: {
+        root: {
+          '& .MuiListItemText-primary': { color: '#111827' },
+          '& .MuiListItemText-secondary': { color: '#1F2937' },
         },
       },
     },
