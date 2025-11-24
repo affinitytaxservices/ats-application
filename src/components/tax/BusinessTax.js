@@ -1,4 +1,5 @@
 import React from 'react';
+import SEOHelmet from '../common/SEOHelmet';
 import {
   Box,
   Container,
@@ -81,6 +82,36 @@ const benefits = [
 
 function BusinessTax() {
   return (
+    <>
+      <SEOHelmet
+        title="Business Tax Services - Expert Corporate Tax Preparation | Affinity Tax"
+        description="Professional business tax preparation services for corporations, partnerships, LLCs, and small businesses. IRS-compliant corporate tax filing with certified CPAs and tax advisors."
+        keywords="business tax services, corporate tax preparation, business tax filing, LLC tax services, partnership tax, corporate tax returns, business tax advisors, certified business tax preparer, IRS business tax, small business tax services"
+        canonical="/business-tax"
+        image="/og-business-tax.jpg"
+        structuredData={{
+          '@context': 'https://schema.org',
+          '@type': 'Service',
+          name: 'Business Tax Services',
+          description: 'Professional business tax preparation services for corporations, partnerships, LLCs, and small businesses.',
+          provider: {
+            '@type': 'ProfessionalService',
+            name: 'Affinity Tax Services',
+            url: 'https://www.affinitytaxservices.com',
+            telephone: '+1-234-567-8900',
+            email: 'info@affinitytaxservices.com'
+          },
+          areaServed: 'United States',
+          serviceType: 'Business Tax Preparation Service',
+          offers: {
+            '@type': 'Offer',
+            name: 'Business Tax Preparation',
+            description: 'Comprehensive business tax preparation for corporations, partnerships, and LLCs',
+            priceRange: '$$$',
+            availability: 'InStock'
+          }
+        }}
+      />
     <Container maxWidth="lg">
       <Box sx={{ my: 6 }}>
         <Fade in timeout={800}>
@@ -191,6 +222,7 @@ function BusinessTax() {
         </Box>
       </Box>
     </Container>
+    </>
   );
 }
 

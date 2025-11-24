@@ -25,6 +25,7 @@ import SendIcon from '@mui/icons-material/Send';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { fadeIn, slideUp } from '../../styles/animations';
+import SEOHelmet from '../common/SEOHelmet';
 
 function Contacts() {
   const theme = useTheme();
@@ -123,11 +124,54 @@ function Contacts() {
   };
   
   return (
-    <Box sx={{ 
-      background: 'linear-gradient(180deg, rgba(241,245,249,0.8) 0%, rgba(248,250,252,1) 100%)',
-      py: 8,
-      minHeight: '100vh'
-    }}>
+    <>
+      <SEOHelmet
+        title="Contact Affinity Tax Services - Expert Tax Help & Consultation"
+        description="Contact Affinity Tax Services for professional tax preparation, planning, and consultation. Multiple ways to reach us - phone, email, or visit our office."
+        keywords="contact tax services, tax consultation, tax help, contact tax preparer, tax office, tax services contact, tax advisor contact, tax consultation services"
+        canonical="/contact"
+        image="/og-contact.jpg"
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "ContactPage",
+          "name": "Contact Affinity Tax Services",
+          "description": "Contact information for Affinity Tax Services including phone, email, address, and business hours",
+          "url": "https://affinitytaxservices.com/contact",
+          "mainEntity": {
+            "@type": "ProfessionalService",
+            "name": "Affinity Tax Services",
+            "telephone": "+1-123-456-7890",
+            "email": "info@affinitytaxservices.com",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "123 Tax Street, Suite 456",
+              "addressLocality": "Financial District",
+              "addressRegion": "NY",
+              "postalCode": "10001",
+              "addressCountry": "US"
+            },
+            "openingHoursSpecification": [
+              {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+                "opens": "09:00",
+                "closes": "17:00"
+              },
+              {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": "Saturday",
+                "opens": "10:00",
+                "closes": "14:00"
+              }
+            ]
+          }
+        }}
+      />
+      <Box sx={{ 
+        background: 'linear-gradient(180deg, rgba(241,245,249,0.8) 0%, rgba(248,250,252,1) 100%)',
+        py: 8,
+        minHeight: '100vh'
+      }}>
       <Container maxWidth="lg">
         <Box sx={{ 
           textAlign: 'center', 
@@ -710,6 +754,7 @@ function Contacts() {
       </Snackbar>
     </Container>
     </Box>
+    </>
   );
 }
 

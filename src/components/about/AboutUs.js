@@ -1,4 +1,5 @@
 import React from 'react';
+import SEOHelmet from '../common/SEOHelmet';
 import { Box, Container, Typography, Grid, Card, CardContent, Avatar, Fade, Divider } from '@mui/material';
 import {
   Business as BusinessIcon,
@@ -86,6 +87,39 @@ const teamMembers = [
 
 const AboutUs = () => {
   return (
+    <>
+      <SEOHelmet
+        title="About Affinity Tax Services - Trusted Tax Professionals Since 2010"
+        description="Learn about Affinity Tax Services' mission, vision, and expert team. Trusted tax professionals providing comprehensive tax solutions with integrity and excellence since 2010."
+        keywords="about affinity tax services, tax professionals, certified tax preparers, tax consultants, tax experts, trusted tax company, tax service history, experienced tax team"
+        canonical="/about"
+        image="/og-about.jpg"
+        structuredData={{
+          '@context': 'https://schema.org',
+          '@type': 'AboutPage',
+          name: 'About Affinity Tax Services',
+          url: 'https://www.affinitytaxservices.com/about',
+          description: 'Learn about Affinity Tax Services mission, vision, and expert team of certified tax professionals.',
+          mainEntity: {
+            '@type': 'ProfessionalService',
+            name: 'Affinity Tax Services',
+            description: 'Trusted tax professionals providing comprehensive tax solutions with integrity and excellence since 2010.',
+            foundingDate: '2010',
+            address: {
+              '@type': 'PostalAddress',
+              streetAddress: '123 Tax Street, Suite 456',
+              addressLocality: 'Financial District',
+              addressRegion: 'NY',
+              postalCode: '10001',
+              addressCountry: 'US'
+            },
+            telephone: '+1-234-567-8900',
+            email: 'info@affinitytaxservices.com',
+            areaServed: 'United States',
+            serviceType: ['Tax Preparation', 'Tax Planning', 'Business Tax Services', 'Individual Tax Services', 'Tax Consultation', 'Estate Planning']
+          }
+        }}
+      />
     <Box sx={{ 
       minHeight: '100vh', 
       background: 'rgba(248, 250, 252, 0.95)',
@@ -277,6 +311,7 @@ const AboutUs = () => {
         </Fade>
       </Container>
     </Box>
+    </>
   );
 };
 

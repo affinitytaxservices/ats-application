@@ -14,6 +14,18 @@ router.post('/login', async (req, res) => {
   }
 
   try {
+    // Dev shortcut login without DB
+    if (process.env.NODE_ENV !== 'production') {
+      const devEmail = process.env.DEV_LOGIN_EMAIL || 'dev@local';
+      const devPassword = process.env.DEV_LOGIN_PASSWORD || 'admin123';
+      if (email === devEmail && password === devPassword) {
+        const user = { id: 1, email: devEmail, firstName: 'Dev', lastName: 'Admin', role: 'admin', phone: null };
+        const payload = { id: user.id, email: user.email, role: user.role };
+        const token = jwt.sign(payload, process.env.JWT_SECRET || 'dev-secret', { expiresIn: '12h' });
+        return res.json({ success: true, token, user });
+      }
+    }
+
     const [rows] = await pool.query(
       'SELECT id, email, password, firstName, lastName, role, phone FROM users WHERE email = ? LIMIT 1',
       [email]

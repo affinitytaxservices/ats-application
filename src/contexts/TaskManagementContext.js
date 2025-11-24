@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { taskAPI, userAPI } from '../services/api';
+import { taskAPI, userAPI, apiUtils } from '../services/api';
 
 const TaskManagementContext = createContext();
 
@@ -28,6 +28,10 @@ export const TaskManagementProvider = ({ children }) => {
     setLoading(true);
     setError(null);
     try {
+      if (!apiUtils.isAuthenticated()) {
+        setTasks([]);
+        return;
+      }
       const response = await taskAPI.getAllTasks(1, 100);
       setTasks(response.data || []);
     } catch (err) {
@@ -41,6 +45,11 @@ export const TaskManagementProvider = ({ children }) => {
   // Initialize data
   useEffect(() => {
     let mounted = true;
+    if (!apiUtils.isAuthenticated()) {
+      setEmployees([]);
+      fetchTasks();
+      return () => { mounted = false };
+    }
     userAPI.getAllUsers(1, 100)
       .then((res) => {
         const rows = res.data || [];

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import SEOHelmet from '../common/SEOHelmet';
 import { 
   Container, 
   Typography, 
@@ -420,7 +421,87 @@ const HomePage = () => {
   }, []);
 
   return (
-    <Box sx={{ position: 'relative', overflow: 'hidden' }}>
+    <>
+      <SEOHelmet
+        title="Affinity Tax Services - Expert Tax Preparation & Planning in the US"
+        description="Top-rated tax preparation, planning, and consultation services for individuals and businesses across the United States. Maximize refunds, minimize liability with personalized strategies from certified professionals."
+        keywords="tax preparation, tax planning, business tax services, individual tax services, tax consultation, estate planning, affinity tax services, professional tax preparation, tax strategies, IRS help, tax filing, tax returns, certified tax preparer, tax advisor"
+        canonical="/"
+        image="/og-home.jpg"
+        structuredData={{
+          '@context': 'https://schema.org',
+          '@type': 'ProfessionalService',
+          name: 'Affinity Tax Services',
+          url: 'https://www.affinitytaxservices.com',
+          logo: 'https://www.affinitytaxservices.com/logo.svg',
+          image: 'https://www.affinitytaxservices.com/og-home.jpg',
+          description: 'Expert tax preparation, planning, and consultation services for individuals and businesses across the United States.',
+          serviceType: ['Tax Preparation', 'Tax Planning', 'Business Tax Services', 'Individual Tax Services', 'Tax Consultation', 'Estate Planning'],
+          areaServed: 'United States',
+          telephone: '+1-234-567-8900',
+          email: 'info@affinitytaxservices.com',
+          address: {
+            '@type': 'PostalAddress',
+            streetAddress: '123 Tax Street, Suite 456',
+            addressLocality: 'Financial District',
+            addressRegion: 'NY',
+            postalCode: '10001',
+            addressCountry: 'US'
+          },
+          geo: {
+            '@type': 'GeoCoordinates',
+            latitude: 40.7128,
+            longitude: -74.0060
+          },
+          openingHoursSpecification: [
+            {
+              '@type': 'OpeningHoursSpecification',
+              dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+              opens: '09:00',
+              closes: '17:00'
+            }
+          ],
+          priceRange: '$$',
+          aggregateRating: {
+            '@type': 'AggregateRating',
+            ratingValue: '4.9',
+            reviewCount: '247',
+            bestRating: '5',
+            worstRating: '1'
+          },
+          hasOfferCatalog: {
+            '@type': 'OfferCatalog',
+            name: 'Professional Tax Services',
+            itemListElement: [
+              {
+                '@type': 'Offer',
+                itemOffered: {
+                  '@type': 'Service',
+                  name: 'Individual Tax Preparation',
+                  description: 'Comprehensive tax preparation services for individuals and families'
+                }
+              },
+              {
+                '@type': 'Offer',
+                itemOffered: {
+                  '@type': 'Service',
+                  name: 'Business Tax Services',
+                  description: 'Professional tax services for businesses of all sizes'
+                }
+              },
+              {
+                '@type': 'Offer',
+                itemOffered: {
+                  '@type': 'Service',
+                  name: 'Tax Planning & Strategy',
+                  description: 'Strategic tax planning services to minimize liability and maximize savings'
+                }
+              }
+            ]
+          }
+        }}
+      />
+      <Box sx={{ position: 'relative', overflow: 'hidden' }}>
       {/* Floating Particles Background */}
       <FloatingParticles particleCount={30} />
       
@@ -966,6 +1047,7 @@ const HomePage = () => {
         </PremiumSection>
       </Container>
     </Box>
+    </>
   );
 };
 

@@ -32,6 +32,7 @@ import {
   CalendarToday as CalendarIcon,
 } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
+import SEOHelmet from '../common/SEOHelmet';
 
 // Styled components
 const StyledCard = styled(Card)(() => ({
@@ -179,7 +180,42 @@ const TaxPlanning = () => {
   };
 
   return (
-    <Box sx={{ minHeight: '100vh', background: 'linear-gradient(135deg, #1E3A8A 0%, #10B981 100%)' }}>
+    <>
+      <SEOHelmet
+        title="Tax Planning Services - Strategic Tax Strategy & Financial Planning | Affinity Tax"
+        description="Expert tax planning services to minimize liability and maximize savings. Strategic tax strategies for individuals and businesses including retirement, estate, and business tax planning."
+        keywords="tax planning services, strategic tax planning, tax strategy, tax minimization, tax savings, retirement tax planning, estate tax planning, business tax strategy, tax optimization, financial tax planning"
+        canonical="/tax-planning"
+        image="/og-tax-planning.jpg"
+        structuredData={{
+          "@context": "https://schema.org",
+          "@type": "Service",
+          "name": "Tax Planning Services",
+          "description": "Strategic tax planning to minimize liability and maximize savings through expert guidance and proven strategies",
+          "provider": {
+            "@type": "ProfessionalService",
+            "name": "Affinity Tax Services",
+            "url": "https://affinitytaxservices.com",
+            "telephone": "+1-555-TAX-HELP",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Your City",
+              "addressRegion": "Your State",
+              "addressCountry": "US"
+            }
+          },
+          "areaServed": "United States",
+          "serviceType": "Tax Planning and Strategy",
+          "offers": {
+            "@type": "Offer",
+            "price": "500",
+            "priceCurrency": "USD",
+            "priceRange": "$500-$2000",
+            "availability": "https://schema.org/InStock"
+          }
+        }}
+      />
+      <Box sx={{ minHeight: '100vh', background: 'linear-gradient(135deg, #1E3A8A 0%, #10B981 100%)' }}>
       <Container maxWidth="lg" sx={{ py: 8 }}>
         {/* Header Section */}
         <Fade in timeout={1000}>
@@ -504,7 +540,8 @@ const TaxPlanning = () => {
           </Button>
         </DialogActions>
       </Dialog>
-    </Box>
+      </Box>
+    </>
   );
 };
 

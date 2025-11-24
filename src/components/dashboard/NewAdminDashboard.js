@@ -69,7 +69,7 @@ import {
   Support
 
 } from '@mui/icons-material';
-import { adminAPI, userAPI, taskAPI } from '../../services/api';
+import { adminAPI, userAPI, taskAPI, apiUtils } from '../../services/api';
 import { PieChart, Pie, Cell, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer } from 'recharts';
 
 function NewAdminDashboard() {
@@ -138,6 +138,9 @@ function NewAdminDashboard() {
   
   // Fetch all data on component mount
   const fetchDashboardData = useCallback(async () => {
+    if (!apiUtils.isAuthenticated()) {
+      return;
+    }
     setLoading(true);
     setError(null);
     setRefreshing(true);
@@ -262,6 +265,7 @@ function NewAdminDashboard() {
   }, [fetchDashboardData]);
   
   const handleRefresh = () => {
+    if (!apiUtils.isAuthenticated()) return;
     fetchDashboardData();
   };
   

@@ -1,22 +1,65 @@
+# Robots.txt for Affinity Tax Services
+# https://affinitytaxservices.com
+
 User-agent: *
 Allow: /
 
-# Disallow admin and private areas
-Disallow: /admin/
-Disallow: /private/
-Disallow: /api/
+# Sitemap location
+Sitemap: https://affinitytaxservices.com/sitemap.xml
 
-# Allow important pages for SEO
-Allow: /
+# Allow crawling of all pages
 Allow: /about
-Allow: /services
-Allow: /contact
-Allow: /tax-planning
 Allow: /individual-tax
 Allow: /business-tax
+Allow: /tax-planning
+Allow: /contact
+Allow: /privacy-policy
+Allow: /terms-of-service
 
-# Crawl delay for better server performance
+# Block admin and internal pages
+Disallow: /admin
+Disallow: /api
+Disallow: /internal
+Disallow: /private
+Disallow: /temp
+Disallow: /test
+
+# Block specific file types
+Disallow: /*.pdf$
+Disallow: /*.doc$
+Disallow: /*.docx$
+
+# Crawl delay for respectful crawling
 Crawl-delay: 1
 
-# Sitemap location
-Sitemap: https://www.affinitytaxservices.com/sitemap.xml
+# Specific bot instructions
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+User-agent: YandexBot
+Allow: /
+
+# Block bad bots
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: dotbot
+Disallow: /

@@ -15,6 +15,7 @@ const allowedOrigins = [
   'http://195.250.21.159',
   'https://195.250.21.159',
   'http://localhost:3000',
+  'http://localhost:3001',
   'http://localhost:5000',
   ...(process.env.NODE_ENV !== 'production' ? ['http://localhost:3000'] : [])
 ];
@@ -47,6 +48,8 @@ const adminRoutes = require('./routes/admin');
 app.use('/api/admin', adminRoutes);
 const whatsappRoutes = require('./routes/whatsapp');
 app.use('/api/whatsapp', whatsappRoutes);
+const taskRoutes = require('./routes/tasks');
+app.use('/api/tasks', taskRoutes);
 
 // TODO: Add more routes incrementally to replace mocks
 // const userRoutes = require('./routes/users');
@@ -61,6 +64,13 @@ app.use('/api/whatsapp', whatsappRoutes);
 // Serve React production build
 const buildPath = path.join(__dirname, '..', 'build');
 app.use(express.static(buildPath));
+
+// Favicon compatibility: serve SVG for /favicon.ico requests
+app.get('/favicon.ico', (_req, res) => {
+  const svgPath = path.join(__dirname, '..', 'public', 'favicon.svg');
+  res.type('image/svg+xml');
+  res.sendFile(svgPath);
+});
 
 // SPA fallback for client-side routes
 app.use((req, res) => {
