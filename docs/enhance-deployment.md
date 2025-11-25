@@ -51,7 +51,7 @@ You can deploy as:
 2) Split frontend and API
 - Static site for `www` serving only the contents of `build/`.
 - Separate Node app for API on `api` subdomain.
-- Frontend built with `REACT_APP_API_URL=https://api.yourdomain.com/api`.
+- Frontend built with `REACT_APP_API_URL=https://api.affinitytaxservices.com/api`.
 
 ## Configure Database
 
@@ -119,6 +119,60 @@ API (Node app):
 2. Upload server code and the `build/` (if you also want server to serve SPA fallback).
 3. Set environment variables.
 4. Start with `npm run start:server`.
+
+## Enhance UI Steps — Upload From Local (No Git)
+
+If you prefer to deploy without connecting a Git repository, use the Enhance File Manager or SFTP to upload artifacts from your local machine.
+
+1) Prepare locally
+- Set frontend API base before building: add `.env` with `REACT_APP_API_URL=https://api.affinitytaxservices.com/api` (or `/api` if proxying via the same domain).
+- Build the frontend: `npm run build` (or `npm run build:prod`). This creates `build/`.
+- Zip frontend `build/` and the backend project (server code and `package.json`).
+
+2) Upload frontend
+- Enhance → Websites → Your site (e.g., `www.affinitytaxservices.com`) → File Manager.
+- Upload `build.zip` to the web root and Extract. Set web root to the extracted `build/` contents if required.
+- SPA routing: enable “fallback to index.html” (static site option) so client routes work.
+
+3) Upload backend API
+- Enhance → Applications → Add Node.js app (e.g., `api.yourdomain.com`).
+- Upload your backend zip to the app directory and Extract so `package.json` is at the root.
+- Environment variables (Application → Environment):
+  - `NODE_ENV=production`
+  - `PORT=5000`
+  - `DB_HOST`, `DB_USER`, `DB_PASSWORD`, `DB_NAME=ats_DB`
+  - `JWT_SECRET=<strong_random_value>`
+  - Optional WhatsApp variables if used
+- Start commands:
+  - Pre‑start: `npm install --production`
+  - Start: `npm run start:server` (runs `node server/index.js`)
+
+4) Routing options
+- Split domains: point `api.affinitytaxservices.com` to the Node app; set frontend `REACT_APP_API_URL=https://api.affinitytaxservices.com/api`.
+- Single domain with proxy: configure the site to proxy `/api` to `http://localhost:5000/api`; then build frontend with `REACT_APP_API_URL=/api`.
+- CORS: ensure your domains are present in `allowedOrigins` (`server/index.js:11–20`). Add any new domains and redeploy.
+
+5) Database setup (no git)
+- Enhance → Databases → Create MySQL DB `ats_DB` and a user.
+- Import schema using the panel’s SQL import: upload `setup_database.sql`.
+- Record DB host, user, pass; set them in API environment variables above.
+
+6) Verify
+- Frontend: visit `https://www.affinitytaxservices.com/` and navigate between pages.
+- API health: `https://api.affinitytaxservices.com/health` (or `/api/health` on the same domain) should return `{ status: 'ok' }`.
+- Auth: login via `POST /api/auth/login` and use the app; protected endpoints should work with the JWT.
+
+7) Update cycle (no git)
+- Rebuild locally if you change frontend env or UI: `npm run build`.
+- Re‑upload changed files (File Manager or SFTP) to the web root for frontend.
+- For backend changes, re‑upload project files and restart the Node app in Enhance.
+- Re‑verify health and core flows.
+
+Troubleshooting (no git)
+- Frontend calling `localhost`: rebuild with correct `REACT_APP_API_URL` or set it in Enhance before building server‑side.
+- 401 Unauthorized: ensure you are logging in and `JWT_SECRET` is set.
+- CORS errors: add your domain to `allowedOrigins` (`server/index.js:11–20`).
+- API unreachable: confirm Node app is running on `PORT=5000` and proxy rules are correct.
 
 ## WhatsApp Webhook (Optional)
 
