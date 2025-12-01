@@ -16,10 +16,17 @@ router.post('/login', async (req, res) => {
   try {
     // Dev shortcut login without DB
     if (process.env.NODE_ENV !== 'production') {
-      const devEmail = process.env.DEV_LOGIN_EMAIL || 'dev@local';
-      const devPassword = process.env.DEV_LOGIN_PASSWORD || 'admin123';
-      if (email === devEmail && password === devPassword) {
-        const user = { id: 1, email: devEmail, firstName: 'Dev', lastName: 'Admin', role: 'admin', phone: null };
+      const devUsers = [
+        { email: process.env.DEV_LOGIN_EMAIL || 'dev@local.test', password: process.env.DEV_LOGIN_PASSWORD || 'admin123', role: 'admin', firstName: 'Dev', lastName: 'Admin' },
+        { email: 'admin@demo.test', password: 'Admin123!', role: 'admin', firstName: 'Demo', lastName: 'Admin' },
+        { email: 'client@demo.test', password: 'Client123!', role: 'client', firstName: 'Demo', lastName: 'Client' },
+        { email: 'preparer@demo.test', password: 'Preparer123!', role: 'tax_professional', firstName: 'Demo', lastName: 'Preparer' },
+        { email: 'manager@demo.test', password: 'Manager123!', role: 'manager', firstName: 'Demo', lastName: 'Manager' },
+        { email: 'employee@demo.test', password: 'Employee123!', role: 'employee', firstName: 'Demo', lastName: 'Employee' }
+      ];
+      const matched = devUsers.find(u => u.email === email && u.password === password);
+      if (matched) {
+        const user = { id: 1, email: matched.email, firstName: matched.firstName, lastName: matched.lastName, role: matched.role, phone: null };
         const payload = { id: user.id, email: user.email, role: user.role };
         const token = jwt.sign(payload, process.env.JWT_SECRET || 'dev-secret', { expiresIn: '12h' });
         return res.json({ success: true, token, user });

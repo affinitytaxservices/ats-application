@@ -72,7 +72,7 @@ Add these in Enhance (Application → Environment or Secrets):
 - `DB_PASSWORD`
 - `DB_NAME`
 - `JWT_SECRET` (strong value)
-- `REACT_APP_API_URL` (e.g., `https://api.yourdomain.com/api`)
+- `REACT_APP_API_URL` (e.g., `https://api.affinitytaxservices.com/api`)
 - Optional (WhatsApp):
   - `WHATSAPP_ACCESS_TOKEN`
   - `WHATSAPP_PHONE_NUMBER_ID`
@@ -135,7 +135,7 @@ If you prefer to deploy without connecting a Git repository, use the Enhance Fil
 - SPA routing: enable “fallback to index.html” (static site option) so client routes work.
 
 3) Upload backend API
-- Enhance → Applications → Add Node.js app (e.g., `api.yourdomain.com`).
+- Enhance → Applications → Add Node.js app (e.g., `api.affinitytaxservices.com`).
 - Upload your backend zip to the app directory and Extract so `package.json` is at the root.
 - Environment variables (Application → Environment):
   - `NODE_ENV=production`
@@ -174,6 +174,63 @@ Troubleshooting (no git)
 - CORS errors: add your domain to `allowedOrigins` (`server/index.js:11–20`).
 - API unreachable: confirm Node app is running on `PORT=5000` and proxy rules are correct.
 
+## Backend API Setup — affinitytaxservices.com
+
+Use this step‑by‑step to bring the Node/Express API online alongside your already uploaded frontend.
+
+1) Create the API app in Enhance
+- Applications → Add Node.js app
+- Domain: `api.affinitytaxservices.com` (recommended) or keep it on the main domain if you will proxy `/api`
+- Runtime: Node.js v18+
+
+2) Upload backend files (no git)
+- Upload a zip of your project to the app directory and Extract so `package.json` is at the app root
+- Alternatively use SFTP to place files under `/var/www/ats-application`
+
+3) Configure environment
+- Applications → Environment:
+  - `NODE_ENV=production`
+  - `PORT=5000`
+  - `JWT_SECRET=<strong_random_value>`
+  - `DB_HOST=<your_mysql_host>`
+  - `DB_USER=<your_mysql_user>`
+  - `DB_PASSWORD=<your_mysql_password>`
+  - `DB_NAME=ats_DB`
+  - Optional WhatsApp keys if you enable those features
+- Ensure CORS includes your domains (`server/index.js:11–20` already lists `https://www.affinitytaxservices.com` and `https://api.affinitytaxservices.com`)
+
+4) Install and start
+- Pre‑start command: `npm install --production`
+- Start command: `npm run start:server`
+- The API listens on `http://localhost:5000` and serves health at `/health`
+
+5) Routing options
+- Subdomain model (recommended):
+  - Point `api.affinitytaxservices.com` to the Node app
+  - Frontend should be built with `REACT_APP_API_URL=https://api.affinitytaxservices.com/api`
+- Single domain proxy:
+  - Configure your main site to proxy `/api` → `http://localhost:5000/api`
+  - Build frontend with `REACT_APP_API_URL=/api`
+
+6) Database setup
+- Enhance → Databases → Create MySQL database `ats_DB` and a user
+- Import schema with the panel’s SQL import (`setup_database.sql`)
+- Use the DB credentials in the API environment above
+
+7) Verify API
+- Health: `https://api.affinitytaxservices.com/health` returns `{ status: 'ok' }`
+- Auth: `POST https://api.affinitytaxservices.com/api/auth/login` returns token and user
+- Tasks: `GET https://api.affinitytaxservices.com/api/tasks` returns data when authenticated
+
+8) Align frontend → API
+- If you used the subdomain, confirm your deployed frontend was built with `REACT_APP_API_URL=https://api.affinitytaxservices.com/api`
+- If you used the proxy, confirm `/api/*` routes on `www.affinitytaxservices.com` reach the backend
+
+9) Troubleshooting
+- 401 Unauthorized: login first; token is saved by the frontend and sent on subsequent requests
+- CORS blocked: add domains to `allowedOrigins` and restart the app
+- ECONNREFUSED from proxy: ensure the Node app is running on port `5000`
+
 ## WhatsApp Webhook (Optional)
 
 1. Endpoint: `https://api.affinitytaxservices.com/api/whatsapp/webhook` (see `server/routes/whatsapp.js`).     
@@ -208,155 +265,3 @@ Troubleshooting (no git)
 2. If changing frontend env, rebuild (`npm run build`).
 3. Restart the Node app in Enhance.
 4. Verify `GET /health` and key flows.
-
-## Ubuntu 24 Deployment (Node.js + MySQL 8.1)
-
-Server: `195.250.21.159`
-
-Domain: `www.affinitytaxservices.com`
-
-Project name: `ats-application`
-
-App name (PM2/Nginx): `ats-application`
-
-Entry file: `server/index.js`
-
-App port: `5000`
-
-Database:
-- Name: `ats_DB`
-
-### 1) Server Preparation
-
-- Verify Node.js installation:
-  - `node -v`
-  - `npm -v`
-- Confirm MySQL 8.1 is running:
-  - `sudo systemctl status mysql`
-- Create dedicated MySQL DB and user:
-  - `sudo mysql -u root`
-  - `CREATE DATABASE ats_DB;`
-  - Create a user and grant privileges using your chosen username and a strong password.
-  - Flush privileges when done.
-
-### 2) Project Setup
-
-- Clone or upload to `/var/www/ats-application`:
-  - `sudo mkdir -p /var/www/ats-application`
-  - `sudo chown -R $USER:$USER /var/www/ats-application`
-  - Upload repo contents into that directory or clone:
-    - `cd /var/www/ats-application`
-    - `git clone <repo-url> .` (or SFTP upload)
-- Install dependencies:
-  - `npm install --production`
-- Build frontend:
-  - Ensure `REACT_APP_API_URL=https://api.affinitytaxservices.com/api` (or your API domain)
-  - `npm run build`
-
-### 3) MySQL Configuration
-
-- Database config file (if desired for reference): `config/database.js`
-```
-module.exports = {
-  host: 'localhost',
-  user: 'ats_user',
-  password: '<secure_password>',
-  database: 'ats_DB',
-  port: 3306
-}
-```
-- Note: the application reads DB settings from environment variables via `server/db.js`, prefer setting env variables rather than committing secrets in files.
-
-### 4) Environment Configuration
-
-- Create `.env` in project root (do not commit):
-```
-NODE_ENV=production
-PORT=5000
-JWT_SECRET=<secure_random_value>
-DB_HOST=localhost
-DB_NAME=ats_DB
-REACT_APP_API_URL=https://api.affinitytaxservices.com/api
-WHATSAPP_ACCESS_TOKEN=<optional_if_used>
-WHATSAPP_PHONE_NUMBER_ID=<optional_if_used>
-WHATSAPP_VERIFY_TOKEN=<optional_if_used>
-WHATSAPP_APP_SECRET=<optional_if_used>
-```
-
-### 5) Process Management (PM2)
-
-- Install PM2:
-  - `sudo npm install -g pm2`
-- Start application:
-  - `cd /var/www/ats-application`
-  - `pm2 start server/index.js --name "ats-application"`
-- Generate startup script:
-  - `pm2 startup ubuntu`
-  - Follow the printed command (e.g., `sudo env PATH=$PATH:/usr/bin pm2 startup ubuntu -u <user> --hp /home/<user>`)
-- Save process list:
-  - `pm2 save`
-
-### 6) Nginx Reverse Proxy
-
-- Install Nginx:
-  - `sudo apt install nginx`
-- Create site config at `/etc/nginx/sites-available/ats-application`:
-```
-server {
-  listen 80;
-  server_name www.affinitytaxservices.com affinitytaxservices.com;
-
-  location / {
-    proxy_pass http://127.0.0.1:5000;
-    proxy_http_version 1.1;
-    proxy_set_header Upgrade $http_upgrade;
-    proxy_set_header Connection 'upgrade';
-    proxy_set_header Host $host;
-    proxy_cache_bypass $http_upgrade;
-  }
-}
-```
-- Enable site:
-  - `sudo ln -s /etc/nginx/sites-available/ats-application /etc/nginx/sites-enabled/`
-- Test and restart:
-  - `sudo nginx -t && sudo systemctl restart nginx`
-- Optional: set up HTTPS via Let’s Encrypt (recommended).
-
-### 7) Security
-
-- Firewall:
-  - `sudo ufw allow 80`
-  - `sudo ufw allow 443`
-  - If exposing app port directly (not typical behind Nginx): `sudo ufw allow 5000`
-- Automatic security updates:
-  - `sudo apt install unattended-upgrades`
-  - `sudo dpkg-reconfigure --priority=low unattended-upgrades`
-- Fail2ban:
-  - `sudo apt install fail2ban`
-  - Basic SSH jail is enabled by default; customize `/etc/fail2ban/jail.local` as needed and restart: `sudo systemctl restart fail2ban`
-
-### 8) Monitoring
-
-- Log rotation for PM2 logs: create `/etc/logrotate.d/pm2`:
-```
-/home/*/.pm2/pm2.log /home/*/.pm2/logs/*.log {
-  daily
-  missingok
-  rotate 14
-  compress
-  delaycompress
-  notifempty
-  copytruncate
-}
-```
-- PM2 monitoring:
-  - `pm2 monit`
-- System monitoring:
-  - `sudo apt install htop`
-
-### Verification
-
-- Navigate to `http://www.affinitytaxservices.com` and verify the app renders.
-- Health check: `http://www.affinitytaxservices.com/health` should return `{ status: 'ok' }`.
-- API auth: `POST https://www.affinitytaxservices.com/api/auth/login` works with valid credentials.
-- CORS: ensure domains are in `allowedOrigins` in `server/index.js:11–18` if you add others.

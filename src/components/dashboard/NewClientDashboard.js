@@ -47,7 +47,7 @@ import {
   Add
 } from '@mui/icons-material';
 import { useAuth } from '../../contexts/AuthContext';
-import { clientAPI, documentAPI, taxReturnAPI, notificationAPI, appointmentAPI } from '../../services/api';
+import { clientAPI, documentAPI, appointmentAPI } from '../../services/api';
 import { useNavigate } from 'react-router-dom';
 
 function NewClientDashboard() {
@@ -108,10 +108,10 @@ function NewClientDashboard() {
       
       // Fallback: Fetch data in parallel with individual error handling
       const results = await Promise.allSettled([
-        documentAPI.getAllDocuments(1, 3),
-        notificationAPI.getNotifications(1, 5),
-        taxReturnAPI.getReturnByYear(new Date().getFullYear().toString()),
-        appointmentAPI.getAllAppointments(1, 3, { status: 'scheduled' })
+        clientAPI.getDocuments(),
+        clientAPI.getNotifications(),
+        clientAPI.getTaxSummary(),
+        clientAPI.getAppointments()
       ]);
       
       // Process results with individual error handling

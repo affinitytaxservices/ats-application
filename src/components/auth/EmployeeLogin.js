@@ -35,7 +35,7 @@ import { useAuth } from '../../contexts/AuthContext';
 
 function EmployeeLogin() {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, user } = useAuth();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -113,28 +113,17 @@ function EmployeeLogin() {
     setIsSubmitting(true);
 
     try {
-      // Add employee-specific login logic here
-      const loginData = {
-        ...formData,
-        userType: 'employee',
-        role: formData.employeeType,
-      };
-
-      const success = await login(loginData);
+      const success = await login(formData.email, formData.password);
       if (success) {
-        // Navigate based on employee type
-        switch (formData.employeeType) {
-          case 'admin':
-            navigate('/admin');
-            break;
-          case 'manager':
-            navigate('/manager-dashboard');
-            break;
-          case 'preparer':
-            navigate('/preparer-dashboard');
-            break;
-          default:
-            navigate('/employee-dashboard');
+        const role = user?.role || formData.employeeType;
+        if (role === 'admin') {
+          navigate('/admin');
+        } else if (role === 'manager') {
+          navigate('/manager-dashboard');
+        } else if (role === 'tax_professional' || role === 'preparer') {
+          navigate('/preparer-dashboard');
+        } else {
+          navigate('/employee-dashboard');
         }
       } else {
         setGeneralError('Invalid credentials. Please check your information and try again.');

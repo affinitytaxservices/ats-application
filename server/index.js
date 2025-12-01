@@ -51,9 +51,9 @@ app.use('/api/whatsapp', whatsappRoutes);
 const taskRoutes = require('./routes/tasks');
 app.use('/api/tasks', taskRoutes);
 
-// TODO: Add more routes incrementally to replace mocks
-// const userRoutes = require('./routes/users');
-// app.use('/api/users', userRoutes);
+// Users API
+const userRoutes = require('./routes/users');
+app.use('/api/users', userRoutes);
 // const documentRoutes = require('./routes/documents');
 // app.use('/api/documents', documentRoutes);
 // const taxReturnRoutes = require('./routes/taxReturns');

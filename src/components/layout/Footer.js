@@ -12,25 +12,42 @@ const Footer = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const currentYear = new Date().getFullYear();
 
-  // Animation keyframes for the footer text
   const slideUpFade = keyframes`
-    0% {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
   `;
 
   const heartBeat = keyframes`
-    0%, 100% {
-      transform: scale(1);
-    }
-    50% {
-      transform: scale(1.2);
-    }
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+  `;
+
+  const colorShift = keyframes`
+    0% { color: #4B5563; }
+    50% { color: #1E3A8A; }
+    100% { color: #10B981; }
+  `;
+
+  const floatAnim = keyframes`
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+    100% { transform: translateY(0); }
+  `;
+
+  const typing = keyframes`
+    0% { width: 0ch; }
+    100% { width: 36ch; }
+  `;
+
+  const blinkCaret = keyframes`
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+  `;
+
+  const particleBurst = keyframes`
+    0% { opacity: 0; transform: scale(0.6); }
+    10% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(1.6); }
   `;
 
   const socialLinks = [
@@ -197,31 +214,63 @@ const Footer = () => {
               © {currentYear} Affinity Tax Services. All rights reserved.
             </Typography>
             
-            <Typography 
-              variant="body2" 
-              sx={{
-                color: '#4B5563',
-                fontFamily: '"Inter", sans-serif',
-                fontSize: { xs: '0.8rem', sm: '0.75rem' },
-                textAlign: isMobile ? 'center' : 'right',
-                animation: `${slideUpFade} 0.8s ease-out`,
-                display: 'flex',
-                alignItems: 'center',
-                gap: 0.5
-              }}
-            >
-              Made by Affinity Tax Services with
-              <Box 
-                component="span" 
-                sx={{ 
-                  color: '#DC2626',
-                  animation: `${heartBeat} 2s ease-in-out infinite`,
-                  display: 'inline-block'
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, justifyContent: isMobile ? 'center' : 'flex-end', width: '100%' }}>
+              <Box
+                sx={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  animation: `${slideUpFade} 0.6s ease-out`,
                 }}
               >
-                ❤️
+                <Typography
+                  variant="body2"
+                  sx={{
+                    fontFamily: '"Inter", sans-serif',
+                    fontSize: { xs: '0.8rem', sm: '0.75rem' },
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    color: '#4B5563',
+                    animation: `${typing} 3.2s steps(36, end) 0.3s both, ${colorShift} 2.5s ease-in-out 0.6s both`,
+                  }}
+                >
+                  Made by Affinity Tax Services with
+                </Typography>
+                <Box
+                  sx={{
+                    width: '0.1ch',
+                    height: '1em',
+                    ml: 0.25,
+                    borderLeft: '2px solid #4B5563',
+                    animation: `${blinkCaret} 1s steps(1, end) infinite`,
+                  }}
+                />
               </Box>
-            </Typography>
+              <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 0.5, animation: `${floatAnim} 2.8s ease-in-out 3.1s infinite` }}>
+                <Box
+                  sx={{
+                    position: 'relative',
+                    display: 'inline-block',
+                    color: '#DC2626',
+                    animation: `${heartBeat} 1.8s ease-in-out infinite`,
+                  }}
+                >
+                  ❤️
+                  <Box
+                    sx={{
+                      position: 'absolute',
+                      top: '50%',
+                      left: '50%',
+                      width: 10,
+                      height: 10,
+                      borderRadius: '50%',
+                      background: 'rgba(220, 38, 38, 0.4)',
+                      transform: 'translate(-50%, -50%)',
+                      animation: `${particleBurst} 3s ease-out 0.4s infinite`,
+                    }}
+                  />
+                </Box>
+              </Box>
+            </Box>
           </Box>
         </Container>
       </AppBar>

@@ -70,11 +70,13 @@ import {
 
 } from '@mui/icons-material';
 import { adminAPI, userAPI, taskAPI, apiUtils } from '../../services/api';
+import { trackError } from '../../services/errorTracking';
 import { PieChart, Pie, Cell, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer } from 'recharts';
 
 function NewAdminDashboard() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const currentUser = apiUtils.getCurrentUser();
   
   // State for data
   const [loading, setLoading] = useState(true);
@@ -85,6 +87,7 @@ function NewAdminDashboard() {
   const [systemAlerts, setSystemAlerts] = useState([]);
   const [revenueData, setRevenueData] = useState([]);
   const [taskStatusData, setTaskStatusData] = useState([]);
+  const [_lastUpdated, setLastUpdated] = useState(null);
   
   // WhatsApp state
   const [whatsappConversations, setWhatsAppConversations] = useState([]);
@@ -154,7 +157,7 @@ function NewAdminDashboard() {
         adminAPI.getSystemHealth(),
         adminAPI.getRevenueAnalytics(),
         adminAPI.getTaskAnalytics(),
-        adminAPI.getUserActivity(),
+        adminAPI.getUserActivity(currentUser?.id || 1),
         // WhatsApp data
         adminAPI.getWhatsAppConversations(1, 10),
         adminAPI.getWhatsAppAppointments(1, 10),
@@ -253,12 +256,14 @@ function NewAdminDashboard() {
       }
     } catch (err) {
       console.error('Error fetching dashboard data:', err);
+      trackError('AdminDashboard', err, { step: 'aggregateFetch' });
       setError('Failed to load dashboard data. Please try again later.');
     } finally {
       setLoading(false);
       setTimeout(() => setRefreshing(false), 500);
+      setLastUpdated(new Date().toISOString());
     }
-  }, []);
+  }, [currentUser?.id]);
 
   useEffect(() => {
     fetchDashboardData();

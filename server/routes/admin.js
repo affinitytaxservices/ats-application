@@ -33,6 +33,18 @@ router.get('/dashboard/stats', authMiddleware, requireAdmin, async (req, res) =>
     });
   } catch (err) {
     console.error('Admin dashboard stats error:', err);
+    if (process.env.NODE_ENV !== 'production') {
+      return res.json({
+        data: {
+          totalUsers: 5,
+          totalClients: 3,
+          totalAppointments: 2,
+          totalReturnsFiled: 1,
+          totalReturnsRejected: 0,
+          totalRevenue: 0
+        }
+      });
+    }
     return res.status(500).json({ error: 'Failed to fetch dashboard stats' });
   }
 });
@@ -44,6 +56,14 @@ router.get('/system-health', authMiddleware, requireAdmin, async (req, res) => {
     return res.json({ data: rows });
   } catch (err) {
     console.error('System health error:', err);
+    if (process.env.NODE_ENV !== 'production') {
+      return res.json({
+        data: [
+          { id: 1, status: 'ok', service: 'api', lastChecked: new Date(), message: 'Healthy' },
+          { id: 2, status: 'warning', service: 'db', lastChecked: new Date(), message: 'Dev database not available' }
+        ]
+      });
+    }
     return res.status(500).json({ error: 'Failed to fetch system health' });
   }
 });
@@ -89,6 +109,9 @@ router.get('/users/:userId/activity', authMiddleware, requireAdmin, async (req, 
     return res.json({ data: rows });
   } catch (err) {
     console.error('User activity error:', err);
+    if (process.env.NODE_ENV !== 'production') {
+      return res.json({ data: [] });
+    }
     return res.status(500).json({ error: 'Failed to fetch user activity' });
   }
 });
@@ -116,6 +139,16 @@ router.get('/analytics/revenue', authMiddleware, requireAdmin, async (req, res) 
     }
   } catch (err) {
     console.error('Revenue analytics error:', err);
+    if (process.env.NODE_ENV !== 'production') {
+      const now = new Date();
+      const rows = Array.from({ length: 6 }).map((_, i) => {
+        const d = new Date(now);
+        d.setMonth(d.getMonth() - i);
+        const period = d.toISOString().slice(0, 10);
+        return { period, revenue: 0, expenses: 0, profit: 0 };
+      });
+      return res.json({ data: rows });
+    }
     return res.status(500).json({ error: 'Failed to fetch revenue analytics' });
   }
 });
@@ -133,6 +166,9 @@ router.get('/task-analytics', authMiddleware, requireAdmin, async (req, res) => 
     return res.json({ data: { byStatus: statusRows, byPriority: priorityRows, total } });
   } catch (err) {
     console.error('Task analytics error:', err);
+    if (process.env.NODE_ENV !== 'production') {
+      return res.json({ data: { byStatus: [ { status: 'open', count: 3 }, { status: 'in_progress', count: 2 }, { status: 'completed', count: 1 } ], byPriority: [ { priority: 'high', count: 2 }, { priority: 'medium', count: 3 }, { priority: 'low', count: 1 } ], total: 6 } });
+    }
     return res.status(500).json({ error: 'Failed to fetch task analytics' });
   }
 });
@@ -255,6 +291,11 @@ router.get('/whatsapp/conversations', authMiddleware, requireAdmin, async (req, 
     return res.json({ data: rows, page, limit, total });
   } catch (err) {
     console.error('WhatsApp conversations error:', err);
+    if (process.env.NODE_ENV !== 'production') {
+      return res.json({ data: [
+        { id: 1, phone_number: '15551234567', state: 'MENU', data: null, updated_at: new Date().toISOString(), message_count: 3, last_message_at: new Date().toISOString() }
+      ], page: 1, limit: 20, total: 1 });
+    }
     return res.status(500).json({ error: 'Failed to fetch WhatsApp conversations' });
   }
 });
@@ -276,6 +317,12 @@ router.get('/whatsapp/messages/:phone', authMiddleware, requireAdmin, async (req
     return res.json({ data: rows });
   } catch (err) {
     console.error('WhatsApp messages error:', err);
+    if (process.env.NODE_ENV !== 'production') {
+      return res.json({ data: [
+        { id: 1, phone_number: req.params.phone.replace(/\D/g, ''), message_id: 'demo1', message: 'Hello', direction: 'inbound', message_type: 'text', created_at: new Date().toISOString() },
+        { id: 2, phone_number: req.params.phone.replace(/\D/g, ''), message_id: 'demo2', message: 'Hi there!', direction: 'outbound', message_type: 'text', created_at: new Date().toISOString() }
+      ] });
+    }
     return res.status(500).json({ error: 'Failed to fetch WhatsApp messages' });
   }
 });
@@ -325,6 +372,11 @@ router.get('/whatsapp/appointments', authMiddleware, requireAdmin, async (req, r
     return res.json({ data: rows, page, limit, total });
   } catch (err) {
     console.error('WhatsApp appointments error:', err);
+    if (process.env.NODE_ENV !== 'production') {
+      return res.json({ data: [
+        { id: 1, phone_number: '15551234567', appointment_date: new Date().toISOString().slice(0,10), appointment_time: '14:30', status: 'scheduled' }
+      ], page: 1, limit: 20, total: 1 });
+    }
     return res.status(500).json({ error: 'Failed to fetch WhatsApp appointments' });
   }
 });
@@ -394,6 +446,11 @@ router.get('/whatsapp/support-tickets', authMiddleware, requireAdmin, async (req
     return res.json({ data: rows, page, limit, total });
   } catch (err) {
     console.error('Support tickets error:', err);
+    if (process.env.NODE_ENV !== 'production') {
+      return res.json({ data: [
+        { id: 1, phone_number: '15551234567', message: 'Need help', response: null, status: 'open', created_at: new Date().toISOString() }
+      ], page: 1, limit: 20, total: 1 });
+    }
     return res.status(500).json({ error: 'Failed to fetch support tickets' });
   }
 });
