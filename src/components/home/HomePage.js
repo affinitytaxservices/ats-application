@@ -1,4 +1,4 @@
-  import React, { useMemo, useState, useEffect } from 'react';
+  import React, { useState, useEffect } from 'react';
 import SEOHelmet from '../common/SEOHelmet';
 import { 
   Container, 
@@ -17,7 +17,7 @@ import {
   Slide,
   Zoom
 } from '@mui/material';
-import { TextField, InputAdornment, IconButton, Stack } from '@mui/material';
+ 
 import { styled } from '@mui/material/styles';
 import { Link as RouterLink } from 'react-router-dom';
 import CheckIcon from '@mui/icons-material/Check';
@@ -187,43 +187,7 @@ const GradientButton = styled(Button)(({ theme: _theme }) => ({
   },
 }));
 
-const OutlinedButton = styled(Button)(({ theme: _theme }) => ({
-  borderRadius: '16px',
-  padding: '14px 36px',
-  fontSize: '1.1rem',
-  fontWeight: 600,
-  textTransform: 'none',
-  border: '2px solid transparent',
-  background: 'linear-gradient(white, white) padding-box, linear-gradient(135deg, #3B82F6, #10B981) border-box',
-  color: '#3B82F6',
-  position: 'relative',
-  overflow: 'hidden',
-  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-  '&::before': {
-    content: '""',
-    position: 'absolute',
-    top: 0,
-    left: '-100%',
-    width: '100%',
-    height: '100%',
-    background: 'linear-gradient(135deg, #3B82F6, #10B981)',
-    transition: 'left 0.6s',
-    zIndex: -1,
-  },
-  '&:hover': {
-    transform: 'translateY(-3px) scale(1.05)',
-    boxShadow: '0 15px 35px rgba(59, 130, 246, 0.3)',
-    color: 'white',
-    '&::before': {
-      left: '0',
-    },
-  },
-  [_theme.breakpoints.down('sm')]: {
-    width: '100%',
-    maxWidth: '280px',
-    margin: '0 auto',
-  },
-}));
+ 
 
 const UpdateCard = styled(Paper)(({ theme: _theme }) => ({
   padding: _theme.spacing(4),
@@ -301,30 +265,11 @@ const PremiumSection = styled(Box)(({ theme: _theme }) => ({
   },
 }));
 
-const Hero = styled(Box)(({ theme: _theme }) => ({
-  minHeight: '70vh',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  textAlign: 'center',
-  paddingTop: _theme.spacing(8),
-  paddingBottom: _theme.spacing(8),
-  background: 'linear-gradient(135deg, #0F172A 0%, #111827 40%, #1E3A8A 70%, #10B981 100%)',
-  color: '#FFFFFF'
-}));
+ 
 
  
 
-const TimeCard = styled(Box)(({ theme: _theme }) => ({
-  minWidth: 90,
-  padding: _theme.spacing(2),
-  borderRadius: 16,
-  background: 'rgba(255, 255, 255, 0.08)',
-  border: '1px solid rgba(255, 255, 255, 0.15)',
-  backdropFilter: 'blur(8px)',
-  transition: 'transform 300ms ease',
-  willChange: 'transform'
-}));
+ 
 
  
 
