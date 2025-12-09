@@ -71,7 +71,7 @@ const RefundStatus = () => {
     }}>
       <Container maxWidth="lg" sx={{ py: 8 }}>
         <Typography variant="h3" gutterBottom sx={{ 
-          color: '#1E293B', // Updated to text.primary color
+          color: '#0F172A',
           position: 'relative',
           display: 'inline-block',
           paddingBottom: '10px',
@@ -83,7 +83,7 @@ const RefundStatus = () => {
             left: 0,
             width: '80px',
             height: '4px',
-            background: 'linear-gradient(90deg, #1E3A8A 0%, #10B981 100%)' // Updated to primary and secondary colors
+            background: 'linear-gradient(90deg, #2563EB 0%, #3B82F6 100%)'
           }
         }}>
           Tax Refund Status Check
@@ -94,12 +94,12 @@ const RefundStatus = () => {
             position: 'relative',
             overflow: 'hidden',
             transition: 'all 0.3s ease',
-            background: 'rgba(16, 185, 129, 0.1)', // Updated background color
-            border: '1px solid rgba(16, 185, 129, 0.2)', // Added border
+            background: 'rgba(37, 99, 235, 0.08)',
+            border: '1px solid rgba(37, 99, 235, 0.2)',
             '&:hover': {
               transform: 'translateY(-4px)',
-              boxShadow: '0 12px 20px rgba(16, 185, 129, 0.2)', // Updated shadow color
-              background: 'rgba(16, 185, 129, 0.15)', // Slightly darker on hover
+              boxShadow: '0 12px 20px rgba(37, 99, 235, 0.2)',
+              background: 'rgba(37, 99, 235, 0.12)',
             },
             '&::after': {
               content: '""',
@@ -108,7 +108,7 @@ const RefundStatus = () => {
               right: 0,
               width: '30%',
               height: '5px',
-              background: 'linear-gradient(90deg, rgba(16, 185, 129, 0) 0%, #1E3A8A 100%)' // Updated gradient colors
+              background: 'linear-gradient(90deg, rgba(37, 99, 235, 0) 0%, #3B82F6 100%)'
             }
           }}>
             <CardContent sx={{ textAlign: 'left' }}>  {/* Changed alignment */}
@@ -121,9 +121,9 @@ const RefundStatus = () => {
                 onClick={() => window.open(stateRefundLinks.federal.url, '_blank', 'noopener,noreferrer')}
                 sx={{ 
                   justifyContent: 'flex-start',
-                  backgroundColor: '#1E3A8A', // Updated to primary color
+                  backgroundColor: '#2563EB',
                   '&:hover': {
-                    backgroundColor: '#142C6F' // Darker shade of primary
+                    backgroundColor: '#1D4ED8'
                   }
                 }}  // Updated button color
               >
@@ -135,7 +135,7 @@ const RefundStatus = () => {
 
         <Typography variant="h5" gutterBottom sx={{ 
           textAlign: 'left', 
-          color: '#1E293B', // Updated to text.primary color
+          color: '#0F172A',
           position: 'relative',
           display: 'inline-block',
           paddingBottom: '8px',
@@ -147,7 +147,7 @@ const RefundStatus = () => {
             left: 0,
             width: '60px',
             height: '3px',
-            background: 'linear-gradient(90deg, #1E3A8A 0%, #10B981 100%)' // Updated to primary and secondary colors
+            background: 'linear-gradient(90deg, #2563EB 0%, #3B82F6 100%)'
           }
         }}>
           State Refund Status
@@ -158,11 +158,11 @@ const RefundStatus = () => {
             <Card key={state.name} sx={{ 
               minWidth: 275, 
               flex: '1 1 300px',
-              background: 'rgba(16, 185, 129, 0.1)', // Updated to use secondary color with transparency
+              background: 'rgba(37, 99, 235, 0.08)',
               backdropFilter: 'blur(8px)',
-              border: '1px solid rgba(16, 185, 129, 0.2)', // Updated border color
+              border: '1px solid rgba(37, 99, 235, 0.2)',
               transition: 'all 0.3s ease',
-              borderLeft: '4px solid #1E3A8A', // Updated to primary color
+              borderLeft: '4px solid #2563EB',
               position: 'relative',
               overflow: 'hidden',
               '&::before': {
@@ -172,14 +172,14 @@ const RefundStatus = () => {
                 left: 0,
                 width: '100%',
                 height: '100%',
-                background: 'linear-gradient(135deg, rgba(30, 58, 138, 0.1) 0%, rgba(16, 185, 129, 0) 50%)', // Updated gradient colors
+                background: 'linear-gradient(135deg, rgba(37, 99, 235, 0.1) 0%, rgba(59, 130, 246, 0) 50%)',
                 zIndex: 0
               },
               '&:hover': {
                 transform: 'translateY(-4px)',
-                background: 'rgba(16, 185, 129, 0.15)', // Slightly darker on hover
-                boxShadow: '0 8px 32px rgba(16, 185, 129, 0.15)', // Updated shadow color
-                borderLeft: '4px solid #10B981' // Updated to secondary color
+                background: 'rgba(37, 99, 235, 0.12)',
+                boxShadow: '0 8px 32px rgba(37, 99, 235, 0.15)',
+                borderLeft: '4px solid #3B82F6'
               }
             }}>
               <CardContent sx={{ 
@@ -192,13 +192,13 @@ const RefundStatus = () => {
                 zIndex: 1
               }}>
                 <div>
-                  <Typography variant="h6" gutterBottom sx={{ color: '#1E293B' }}>
+                  <Typography variant="h6" gutterBottom sx={{ color: '#0F172A' }}>
                     {state.name}
                   </Typography>
                 </div>
                 <div>
                   {state.url === "No state income tax" || state.url === "Limited state income tax" ? (
-                    <Typography sx={{ color: 'rgba(16, 185, 129, 0.8)' }}>
+                    <Typography sx={{ color: 'rgba(59, 130, 246, 0.85)' }}>
                       {state.url}
                     </Typography>
                   ) : (
@@ -207,13 +207,14 @@ const RefundStatus = () => {
                       endIcon={<LaunchIcon />}
                       onClick={() => window.open(state.url, '_blank', 'noopener,noreferrer')}
                       sx={{
-                        borderColor: '#10B981', // Updated to secondary color
-                        color: '#1E293B',
+                        borderColor: '#3B82F6',
+                        color: '#2563EB',
                         alignSelf: 'flex-start',
                         marginTop: 'auto',
                         '&:hover': {
-                          background: 'rgba(16, 185, 129, 0.1)', // Updated hover background
-                          borderColor: '#1E3A8A' // Primary color on hover
+                          background: 'rgba(59, 130, 246, 0.1)',
+                          borderColor: '#2563EB',
+                          color: '#1D4ED8'
                         }
                       }}
                     >

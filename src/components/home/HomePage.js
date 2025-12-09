@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+  import React, { useMemo, useState, useEffect } from 'react';
 import SEOHelmet from '../common/SEOHelmet';
 import { 
   Container, 
@@ -17,6 +17,7 @@ import {
   Slide,
   Zoom
 } from '@mui/material';
+import { TextField, InputAdornment, IconButton, Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Link as RouterLink } from 'react-router-dom';
 import CheckIcon from '@mui/icons-material/Check';
@@ -30,12 +31,14 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import SecurityIcon from '@mui/icons-material/Security';
 import SupportIcon from '@mui/icons-material/Support';
+ 
 import useScrollAnimation from '../../hooks/useScrollAnimation';
 import InspirationalQuotes from '../common/InspirationalQuotes';
 import FloatingParticles from '../common/FloatingParticles';
 import PremiumTestimonials from '../common/PremiumTestimonials';
 import SuccessMetrics from '../common/SuccessMetrics';
 import '../styles/animations.css';
+
 
 // Premium styled components with enhanced visual effects
 const AnimatedTypography = styled(Typography)(({ theme: _theme }) => ({
@@ -298,10 +301,41 @@ const PremiumSection = styled(Box)(({ theme: _theme }) => ({
   },
 }));
 
+const Hero = styled(Box)(({ theme: _theme }) => ({
+  minHeight: '70vh',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  textAlign: 'center',
+  paddingTop: _theme.spacing(8),
+  paddingBottom: _theme.spacing(8),
+  background: 'linear-gradient(135deg, #0F172A 0%, #111827 40%, #1E3A8A 70%, #10B981 100%)',
+  color: '#FFFFFF'
+}));
+
+ 
+
+const TimeCard = styled(Box)(({ theme: _theme }) => ({
+  minWidth: 90,
+  padding: _theme.spacing(2),
+  borderRadius: 16,
+  background: 'rgba(255, 255, 255, 0.08)',
+  border: '1px solid rgba(255, 255, 255, 0.15)',
+  backdropFilter: 'blur(8px)',
+  transition: 'transform 300ms ease',
+  willChange: 'transform'
+}));
+
+ 
+
+ 
+
 const HomePage = () => {
   const [count1, setCount1] = useState(0);
   const [count2, setCount2] = useState(0);
   const [count3, setCount3] = useState(0);
+  const heroQuote = 'Empowering individuals and businesses to build financial confidence through precise filings and proactive tax strategy.';
+
 
   // Scroll animation hooks for different sections
   const [heroRef, heroVisible] = useScrollAnimation(0.2);
@@ -420,85 +454,23 @@ const HomePage = () => {
     return () => clearInterval(timer);
   }, []);
 
+  
+
   return (
     <>
       <SEOHelmet
-        title="Affinity Tax Services - Expert Tax Preparation & Planning in the US"
-        description="Top-rated tax preparation, planning, and consultation services for individuals and businesses across the United States. Maximize refunds, minimize liability with personalized strategies from certified professionals."
-        keywords="tax preparation, tax planning, business tax services, individual tax services, tax consultation, estate planning, affinity tax services, professional tax preparation, tax strategies, IRS help, tax filing, tax returns, certified tax preparer, tax advisor"
+        title="Affinity Tax Services | Professional Tax Preparation & Planning"
+        description="Expert tax preparation, planning, and IRS support for individuals and businesses. Accurate, secure, and client-focused services."
+        keywords="tax preparation, tax planning, IRS support, business tax, individual tax"
         canonical="/"
         image="/og-home.jpg"
         structuredData={{
           '@context': 'https://schema.org',
-          '@type': 'ProfessionalService',
+          '@type': 'WebPage',
           name: 'Affinity Tax Services',
-          url: 'https://www.affinitytaxservices.com',
-          logo: 'https://www.affinitytaxservices.com/logo.svg',
-          image: 'https://www.affinitytaxservices.com/og-home.jpg',
-          description: 'Expert tax preparation, planning, and consultation services for individuals and businesses across the United States.',
-          serviceType: ['Tax Preparation', 'Tax Planning', 'Business Tax Services', 'Individual Tax Services', 'Tax Consultation', 'Estate Planning'],
-          areaServed: 'United States',
-          telephone: '+1-234-567-8900',
-          email: 'info@affinitytaxservices.com',
-          address: {
-            '@type': 'PostalAddress',
-            streetAddress: '123 Tax Street, Suite 456',
-            addressLocality: 'Financial District',
-            addressRegion: 'NY',
-            postalCode: '10001',
-            addressCountry: 'US'
-          },
-          geo: {
-            '@type': 'GeoCoordinates',
-            latitude: 40.7128,
-            longitude: -74.0060
-          },
-          openingHoursSpecification: [
-            {
-              '@type': 'OpeningHoursSpecification',
-              dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-              opens: '09:00',
-              closes: '17:00'
-            }
-          ],
-          priceRange: '$$',
-          aggregateRating: {
-            '@type': 'AggregateRating',
-            ratingValue: '4.9',
-            reviewCount: '247',
-            bestRating: '5',
-            worstRating: '1'
-          },
-          hasOfferCatalog: {
-            '@type': 'OfferCatalog',
-            name: 'Professional Tax Services',
-            itemListElement: [
-              {
-                '@type': 'Offer',
-                itemOffered: {
-                  '@type': 'Service',
-                  name: 'Individual Tax Preparation',
-                  description: 'Comprehensive tax preparation services for individuals and families'
-                }
-              },
-              {
-                '@type': 'Offer',
-                itemOffered: {
-                  '@type': 'Service',
-                  name: 'Business Tax Services',
-                  description: 'Professional tax services for businesses of all sizes'
-                }
-              },
-              {
-                '@type': 'Offer',
-                itemOffered: {
-                  '@type': 'Service',
-                  name: 'Tax Planning & Strategy',
-                  description: 'Strategic tax planning services to minimize liability and maximize savings'
-                }
-              }
-            ]
-          }
+          description: 'Professional tax preparation and planning services',
+          datePublished: new Date().toISOString(),
+          dateModified: new Date().toISOString()
         }}
       />
       <Box sx={{ position: 'relative', overflow: 'hidden' }}>
@@ -530,16 +502,7 @@ const HomePage = () => {
                   px: { xs: 1, sm: 2 },
                 }}
               >
-                Turn Tax Season Into
-                <br />
-                <Box component="span" sx={{ 
-                  background: 'linear-gradient(135deg, #10B981 0%, #3B82F6 100%)',
-                  backgroundClip: 'text',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                }}>
-                  Wealth Season
-                </Box>
+                Tax Clarity. Refund Confidence.
               </AnimatedTypography>
               
               <Typography 
@@ -551,31 +514,15 @@ const HomePage = () => {
                   fontFamily: '"Inter", sans-serif',
                   fontSize: { xs: '1rem', sm: '1.125rem', md: '1.5rem' },
                   lineHeight: { xs: 1.5, md: 1.4 },
-                  maxWidth: { xs: '100%', sm: '600px' },
+                  maxWidth: { xs: '100%', sm: '800px' },
                   mx: 'auto',
                   px: { xs: 2, sm: 3 },
                 }}
               >
-                Stop leaving money on the table. Our expert strategies don't just file your taxes—they build your financial empire, one deduction at a time.
+                {heroQuote}
               </Typography>
               
-              <Box sx={{ display: 'flex', justifyContent: 'center', gap: 3, flexWrap: 'wrap', mb: 8 }}>
-                <GradientButton 
-                  component={RouterLink} 
-                  to="/register" 
-                  size="large" 
-                  endIcon={<ArrowForwardIcon />}
-                >
-                  Start Your Journey
-                </GradientButton>
-                <OutlinedButton 
-                  component={RouterLink} 
-                  to="/contacts" 
-                  size="large"
-                >
-                  Schedule Consultation
-                </OutlinedButton>
-              </Box>
+              
             </Box>
           </Fade>
         </Box>
