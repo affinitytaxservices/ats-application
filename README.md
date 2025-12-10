@@ -147,3 +147,70 @@ For support and inquiries, please contact:
 ---
 
 **Built with ❤️ by the Affinity Tax Services Development Team**
+
+## 📦 Deployment (Enhance Control Panel, No GitHub)
+
+This guide explains how to deploy the application to your Enhance control panel without using GitHub.
+
+### Prerequisites
+- Node.js and npm available on the server
+- MySQL database with credentials
+- Ability to upload files via File Manager or SFTP/SSH
+
+### Environment Variables
+Configure these in your Enhance app’s environment:
+- `NODE_ENV=production`
+- `PORT=5000` (or your panel’s assigned port)
+- `DB_HOST`, `DB_USER`, `DB_PASSWORD`, `DB_NAME`
+- `JWT_SECRET` (set a strong secret)
+- `REACT_APP_API_URL=https://your-domain.com/api`
+- Optional mail: `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS`, `SMTP_REJECT_UNAUTH`, `SMTP_FROM`
+- Optional WhatsApp: `WHATSAPP_ACCESS_TOKEN`, `WHATSAPP_PHONE_NUMBER_ID`, `WHATSAPP_VERIFY_TOKEN`, `WHATSAPP_APP_SECRET`
+
+### Upload the Project (without GitHub)
+1. Create a zip of the project on your machine, excluding `node_modules`.
+2. Upload the zip to the app directory using Enhance File Manager or SFTP.
+3. Extract so the directory contains `package.json`, `server/`, `src/`, `public/`, etc.
+
+### Install and Build
+Run these commands on the server (via the panel or SSH):
+```bash
+npm ci
+npm run build:prod
+```
+This produces the `build/` directory used by the server to serve the React app.
+
+### Database Migrations
+Apply schema migrations after setting DB env vars:
+```bash
+npm run migrate
+```
+
+### Start the Server
+Set the app’s start command in Enhance to:
+```bash
+npm run start:server
+```
+This runs `server/index.js`, serving API routes under `/api` and the React build from `/build`.
+
+### Frontend API URL
+Ensure `REACT_APP_API_URL` points to your domain, for example:
+```env
+REACT_APP_API_URL=https://your-domain.com/api
+```
+
+### CORS Configuration
+If your production hostname differs from the defaults, add it to `allowedOrigins` in `server/index.js` and redeploy/restart.
+
+### Verify Deployment
+- Visit `https://your-domain.com/health` to confirm server is running.
+- Load the site and exercise key pages; check `/api` endpoints respond.
+- Use Enhance logs to diagnose issues (common: missing env vars, DB connection, or missing `build/`).
+
+### Alternative: Build Locally
+You can build locally and upload the `build/` folder along with the project:
+```bash
+npm ci
+npm run build:prod
+```
+Then upload everything except `node_modules`, including `build/`, and still run `npm ci` on the server for backend dependencies.

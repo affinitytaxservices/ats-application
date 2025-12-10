@@ -1,6 +1,7 @@
 const express = require('express');
 const pool = require('../db');
 const authMiddleware = require('../middleware/authMiddleware');
+const requireVerified = require('../middleware/requireVerified');
 
 const router = express.Router();
 
@@ -11,7 +12,7 @@ async function getClientIdByUser(userId) {
 }
 
 // GET /api/client/dashboard
-router.get('/dashboard', authMiddleware, async (req, res) => {
+router.get('/dashboard', authMiddleware, requireVerified, async (req, res) => {
   try {
     const userId = req.user.id;
     const clientId = await getClientIdByUser(userId);
@@ -91,7 +92,7 @@ router.get('/dashboard', authMiddleware, async (req, res) => {
 });
 
 // GET /api/client/documents
-router.get('/documents', authMiddleware, async (req, res) => {
+router.get('/documents', authMiddleware, requireVerified, async (req, res) => {
   try {
     const userId = req.user.id;
     const [docs] = await pool.query(
@@ -109,7 +110,7 @@ router.get('/documents', authMiddleware, async (req, res) => {
 });
 
 // GET /api/client/notifications
-router.get('/notifications', authMiddleware, async (req, res) => {
+router.get('/notifications', authMiddleware, requireVerified, async (req, res) => {
   try {
     const userId = req.user.id;
     const [rows] = await pool.query(
@@ -127,7 +128,7 @@ router.get('/notifications', authMiddleware, async (req, res) => {
 });
 
 // GET /api/client/tax-summary
-router.get('/tax-summary', authMiddleware, async (req, res) => {
+router.get('/tax-summary', authMiddleware, requireVerified, async (req, res) => {
   try {
     const clientId = await getClientIdByUser(req.user.id);
     if (!clientId) return res.json({ data: { totalIncome: 0, totalDeductions: 0, estimatedTax: 0, taxPaid: 0 } });
@@ -162,7 +163,7 @@ router.get('/tax-summary', authMiddleware, async (req, res) => {
 });
 
 // GET /api/client/appointments
-router.get('/appointments', authMiddleware, async (req, res) => {
+router.get('/appointments', authMiddleware, requireVerified, async (req, res) => {
   try {
     const clientId = await getClientIdByUser(req.user.id);
     const [rows] = await pool.query(

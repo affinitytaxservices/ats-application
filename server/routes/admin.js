@@ -1,6 +1,7 @@
 const express = require('express');
 const pool = require('../db');
 const authMiddleware = require('../middleware/authMiddleware');
+const requireVerified = require('../middleware/requireVerified');
 
 const router = express.Router();
 
@@ -12,7 +13,7 @@ function requireAdmin(req, res, next) {
 }
 
 // GET /api/admin/dashboard/stats
-router.get('/dashboard/stats', authMiddleware, requireAdmin, async (req, res) => {
+router.get('/dashboard/stats', authMiddleware, requireVerified, requireAdmin, async (req, res) => {
   try {
     const [[{ totalUsers }]] = await pool.query('SELECT COUNT(*) AS totalUsers FROM users');
     const [[{ totalClients }]] = await pool.query('SELECT COUNT(*) AS totalClients FROM clients');
@@ -50,7 +51,7 @@ router.get('/dashboard/stats', authMiddleware, requireAdmin, async (req, res) =>
 });
 
 // GET /api/admin/system-health
-router.get('/system-health', authMiddleware, requireAdmin, async (req, res) => {
+router.get('/system-health', authMiddleware, requireVerified, requireAdmin, async (req, res) => {
   try {
     const [rows] = await pool.query('SELECT * FROM system_health ORDER BY lastChecked DESC LIMIT 50');
     return res.json({ data: rows });
@@ -69,7 +70,7 @@ router.get('/system-health', authMiddleware, requireAdmin, async (req, res) => {
 });
 
 // GET /api/admin/audit-logs
-router.get('/audit-logs', authMiddleware, requireAdmin, async (req, res) => {
+router.get('/audit-logs', authMiddleware, requireVerified, requireAdmin, async (req, res) => {
   try {
     const page = Math.max(parseInt(req.query.page || '1', 10), 1);
     const limit = Math.max(parseInt(req.query.limit || '10', 10), 1);
@@ -89,7 +90,7 @@ router.get('/audit-logs', authMiddleware, requireAdmin, async (req, res) => {
 });
 
 // GET /api/admin/users/:userId/activity
-router.get('/users/:userId/activity', authMiddleware, requireAdmin, async (req, res) => {
+router.get('/users/:userId/activity', authMiddleware, requireVerified, requireAdmin, async (req, res) => {
   try {
     const { userId } = req.params;
     const { startDate, endDate } = req.query;
@@ -117,7 +118,7 @@ router.get('/users/:userId/activity', authMiddleware, requireAdmin, async (req, 
 });
 
 // GET /api/admin/analytics/revenue
-router.get('/analytics/revenue', authMiddleware, requireAdmin, async (req, res) => {
+router.get('/analytics/revenue', authMiddleware, requireVerified, requireAdmin, async (req, res) => {
   try {
     const period = (req.query.period || 'month').toLowerCase();
     if (period === 'year') {
@@ -154,7 +155,7 @@ router.get('/analytics/revenue', authMiddleware, requireAdmin, async (req, res) 
 });
 
 // GET /api/admin/task-analytics
-router.get('/task-analytics', authMiddleware, requireAdmin, async (req, res) => {
+router.get('/task-analytics', authMiddleware, requireVerified, requireAdmin, async (req, res) => {
   try {
     const [statusRows] = await pool.query(
       'SELECT status, COUNT(*) AS count FROM tasks GROUP BY status'
@@ -174,7 +175,7 @@ router.get('/task-analytics', authMiddleware, requireAdmin, async (req, res) => 
 });
 
 // GET /api/admin/export/:dataType
-router.get('/export/:dataType', authMiddleware, requireAdmin, async (req, res) => {
+router.get('/export/:dataType', authMiddleware, requireVerified, requireAdmin, async (req, res) => {
   try {
     const { dataType } = req.params;
     const tableMap = {
@@ -212,7 +213,7 @@ router.get('/export/:dataType', authMiddleware, requireAdmin, async (req, res) =
 });
 
 // POST /api/admin/backup
-router.post('/backup', authMiddleware, requireAdmin, async (req, res) => {
+router.post('/backup', authMiddleware, requireVerified, requireAdmin, async (req, res) => {
   try {
     // Stub: In a real implementation, trigger backup job
     return res.json({ success: true, message: 'Backup initiated' });
@@ -223,7 +224,7 @@ router.post('/backup', authMiddleware, requireAdmin, async (req, res) => {
 });
 
 // GET /api/admin/settings and PUT /api/admin/settings
-router.get('/settings', authMiddleware, requireAdmin, async (req, res) => {
+router.get('/settings', authMiddleware, requireVerified, requireAdmin, async (req, res) => {
   try {
     const [rows] = await pool.query('SELECT id, type, value, description, createdAt, updatedAt FROM settings');
     return res.json({ data: rows });
@@ -233,7 +234,7 @@ router.get('/settings', authMiddleware, requireAdmin, async (req, res) => {
   }
 });
 
-router.put('/settings', authMiddleware, requireAdmin, async (req, res) => {
+router.put('/settings', authMiddleware, requireVerified, requireAdmin, async (req, res) => {
   try {
     const { settings } = req.body;
     if (!Array.isArray(settings)) return res.status(400).json({ error: 'Invalid settings payload' });
@@ -256,7 +257,7 @@ router.put('/settings', authMiddleware, requireAdmin, async (req, res) => {
 
 // WhatsApp admin endpoints
 // GET /api/admin/whatsapp/conversations
-router.get('/whatsapp/conversations', authMiddleware, requireAdmin, async (req, res) => {
+router.get('/whatsapp/conversations', authMiddleware, requireVerified, requireAdmin, async (req, res) => {
   try {
     const page = Math.max(parseInt(req.query.page || '1', 10), 1);
     const limit = Math.max(parseInt(req.query.limit || '20', 10), 1);
@@ -301,7 +302,7 @@ router.get('/whatsapp/conversations', authMiddleware, requireAdmin, async (req, 
 });
 
 // GET /api/admin/whatsapp/messages/:phone
-router.get('/whatsapp/messages/:phone', authMiddleware, requireAdmin, async (req, res) => {
+router.get('/whatsapp/messages/:phone', authMiddleware, requireVerified, requireAdmin, async (req, res) => {
   try {
     const phone = req.params.phone.replace(/\D/g, '');
     const limit = Math.max(parseInt(req.query.limit || '50', 10), 1);
@@ -328,7 +329,7 @@ router.get('/whatsapp/messages/:phone', authMiddleware, requireAdmin, async (req
 });
 
 // GET /api/admin/whatsapp/appointments
-router.get('/whatsapp/appointments', authMiddleware, requireAdmin, async (req, res) => {
+router.get('/whatsapp/appointments', authMiddleware, requireVerified, requireAdmin, async (req, res) => {
   try {
     const page = Math.max(parseInt(req.query.page || '1', 10), 1);
     const limit = Math.max(parseInt(req.query.limit || '20', 10), 1);
@@ -382,7 +383,7 @@ router.get('/whatsapp/appointments', authMiddleware, requireAdmin, async (req, r
 });
 
 // PUT /api/admin/whatsapp/appointments/:id/status
-router.put('/whatsapp/appointments/:id/status', authMiddleware, requireAdmin, async (req, res) => {
+router.put('/whatsapp/appointments/:id/status', authMiddleware, requireVerified, requireAdmin, async (req, res) => {
   try {
     const { id } = req.params;
     const { status } = req.body;
@@ -408,7 +409,7 @@ router.put('/whatsapp/appointments/:id/status', authMiddleware, requireAdmin, as
 });
 
 // GET /api/admin/whatsapp/support-tickets
-router.get('/whatsapp/support-tickets', authMiddleware, requireAdmin, async (req, res) => {
+router.get('/whatsapp/support-tickets', authMiddleware, requireVerified, requireAdmin, async (req, res) => {
   try {
     const page = Math.max(parseInt(req.query.page || '1', 10), 1);
     const limit = Math.max(parseInt(req.query.limit || '20', 10), 1);
@@ -456,7 +457,7 @@ router.get('/whatsapp/support-tickets', authMiddleware, requireAdmin, async (req
 });
 
 // PUT /api/admin/whatsapp/support-tickets/:id/assign
-router.put('/whatsapp/support-tickets/:id/assign', authMiddleware, requireAdmin, async (req, res) => {
+router.put('/whatsapp/support-tickets/:id/assign', authMiddleware, requireVerified, requireAdmin, async (req, res) => {
   try {
     const { id } = req.params;
     const { assigned_to } = req.body;
@@ -478,7 +479,7 @@ router.put('/whatsapp/support-tickets/:id/assign', authMiddleware, requireAdmin,
 });
 
 // PUT /api/admin/whatsapp/support-tickets/:id/response
-router.put('/whatsapp/support-tickets/:id/response', authMiddleware, requireAdmin, async (req, res) => {
+router.put('/whatsapp/support-tickets/:id/response', authMiddleware, requireVerified, requireAdmin, async (req, res) => {
   try {
     const { id } = req.params;
     const { response } = req.body;
@@ -507,7 +508,7 @@ router.put('/whatsapp/support-tickets/:id/response', authMiddleware, requireAdmi
 });
 
 // POST /api/admin/whatsapp/send-text
-router.post('/whatsapp/send-text', authMiddleware, requireAdmin, async (req, res) => {
+router.post('/whatsapp/send-text', authMiddleware, requireVerified, requireAdmin, async (req, res) => {
   try {
     const { to, text } = req.body;
     if (!to || !text) {
@@ -525,7 +526,7 @@ router.post('/whatsapp/send-text', authMiddleware, requireAdmin, async (req, res
 });
 
 // POST /api/admin/whatsapp/send-template
-router.post('/whatsapp/send-template', authMiddleware, requireAdmin, async (req, res) => {
+router.post('/whatsapp/send-template', authMiddleware, requireVerified, requireAdmin, async (req, res) => {
   try {
     const { to, template, language = 'en_US', components = [] } = req.body;
     if (!to || !template) {

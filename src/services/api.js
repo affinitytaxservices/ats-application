@@ -64,6 +64,28 @@ export const authAPI = {
       throw error.response?.data || error;
     }
   },
+
+  verifyOtp: async (code) => {
+    try {
+      const response = await api.post('/auth/verify-otp', { code });
+      if (response.data.token) {
+        localStorage.setItem('auth_token', response.data.token);
+        localStorage.setItem('user_data', JSON.stringify(response.data.user));
+      }
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error;
+    }
+  },
+
+  resendOtp: async () => {
+    try {
+      const response = await api.post('/auth/resend-otp');
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error;
+    }
+  },
   
   logout: async () => {
     try {

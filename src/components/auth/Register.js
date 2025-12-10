@@ -115,7 +115,7 @@ function Register() {
     try {
       const success = await register(formData);
       if (success) {
-        navigate('/dashboard');
+        navigate('/verify-otp');
       } else {
         setGeneralError('Registration failed. Please try again.');
       }

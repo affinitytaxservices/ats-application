@@ -279,7 +279,7 @@ const HomePage = () => {
   const [count1, setCount1] = useState(0);
   const [count2, setCount2] = useState(0);
   const [count3, setCount3] = useState(0);
-  const heroQuote = 'Empowering individuals and businesses to build financial confidence through precise filings and proactive tax strategy.';
+  const heroQuote = "Stop leaving money on the table. Our expert strategies don't just file your taxes—they build your financial empire, one deduction at a time.";
 
 
   // Scroll animation hooks for different sections
@@ -447,7 +447,9 @@ const HomePage = () => {
                   px: { xs: 1, sm: 2 },
                 }}
               >
-                Tax Clarity. Refund Confidence.
+                Turn Tax Season Into 
+                <br />
+                Wealth Season 
               </AnimatedTypography>
               
               <Typography 

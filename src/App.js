@@ -12,6 +12,7 @@ import HomePage from './components/home/HomePage';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import ForgotPassword from './components/auth/ForgotPassword';
+import VerifyOtp from './components/auth/VerifyOtp';
 import EmployeeLogin from './components/auth/EmployeeLogin';
 import NewAdminDashboard from './components/dashboard/NewAdminDashboard';
 import NewClientDashboard from './components/dashboard/NewClientDashboard';
@@ -43,6 +44,10 @@ const ProtectedRoute = ({ children, requiredRole }) => {
     return <Navigate to="/login" />;
   }
   
+  if (user && user.isVerified === 0) {
+    return <Navigate to="/verify-otp" />;
+  }
+
   if (requiredRole && user) {
     // Handle both single role string and array of roles
     const allowedRoles = Array.isArray(requiredRole) ? requiredRole : [requiredRole];
@@ -90,6 +95,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/verify-otp" element={<VerifyOtp />} />
             <Route path="/employee-login" element={<EmployeeLogin />} />
             <Route path="/dashboard" element={<DashboardRoute />} />
             <Route path="/refund-status" element={<RefundStatus />} />

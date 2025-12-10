@@ -28,6 +28,9 @@ export const AuthProvider = ({ children }) => {
           if (res?.success && res.user) {
             setUser(res.user);
             setIsAuthenticated(true);
+            if (res.user.isVerified === 0) {
+              window.location.href = '/verify-otp';
+            }
             setLoading(false);
             return;
           }
@@ -51,6 +54,9 @@ export const AuthProvider = ({ children }) => {
       if (res?.success && res.user) {
         setUser(res.user);
         setIsAuthenticated(true);
+        if (res.requiresVerification || res.user.isVerified === 0) {
+          window.location.href = '/verify-otp';
+        }
         return true;
       }
       return false;
@@ -87,6 +93,9 @@ export const AuthProvider = ({ children }) => {
 
         setUser(res.user);
         setIsAuthenticated(true);
+        if (res.user.isVerified === 0) {
+          window.location.href = '/verify-otp';
+        }
         return true;
       }
       return false;
