@@ -1,4 +1,6 @@
 import React from 'react';
+import SEOHelmet from '../common/SEOHelmet';
+import { seoConfig } from '../../config/seo.config';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useNavigate } from 'react-router-dom';
@@ -148,13 +150,28 @@ const taxTopics = [
   },
 ];
 
-function TaxInformation() {
+const TaxInformation = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const navigate = useNavigate();
+  const { taxInformation: seo } = seoConfig.pages;
   const newLocal = <span style={{ color: '#DC2626', fontWeight: 'bold', textShadow: '0 1px 2px rgba(220,38,38,0.3)' }}>Tax Information & Resources</span>;
+
   return (
-    <Box sx={{ backgroundColor: '#ffffff', minHeight: '100vh' }}>
+    <Box sx={{ 
+      minHeight: '100vh', 
+      background: 'rgba(248, 250, 252, 0.95)',
+      pt: { xs: 4, md: 8 },
+      pb: { xs: 8, md: 12 }
+    }}>
+      <SEOHelmet
+        title={seo.title}
+        description={seo.description}
+        keywords={seo.keywords}
+        canonical={seo.canonical}
+        image={seo.ogImage}
+        structuredData={seo.structuredData}
+      />
       <Container maxWidth="lg">
         <Box sx={{ py: 6 }}>
         <Fade in timeout={800}>

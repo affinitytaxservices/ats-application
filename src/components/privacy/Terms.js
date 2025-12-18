@@ -1,9 +1,22 @@
 import React from 'react';
 import { Container, Typography, Box, Paper, Divider, List, ListItem, ListItemText } from '@mui/material';
 import { fadeIn, slideUp } from '../../styles/animations';
+import SEOHelmet from '../common/SEOHelmet';
+import { seoConfig } from '../../config/seo.config';
 
 function Terms() {
+  const { terms: seo } = seoConfig.pages;
+
   return (
+    <>
+      <SEOHelmet
+        title={seo.title}
+        description={seo.description}
+        keywords={seo.keywords}
+        canonical={seo.canonical}
+        image={seo.ogImage}
+        structuredData={seo.structuredData}
+      />
     <Box sx={{ 
       minHeight: '100vh', 
       background: 'rgba(248, 250, 252, 0.95)',
@@ -142,6 +155,7 @@ function Terms() {
         </Paper>
       </Container>
     </Box>
+    </>
   );
 }
 

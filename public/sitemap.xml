@@ -7,7 +7,7 @@
   <!-- Homepage -->
   <url>
     <loc>https://affinitytaxservices.com/</loc>
-    <lastmod>2024-01-21</lastmod>
+    <lastmod>2025-12-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
@@ -20,7 +20,7 @@
   <!-- About Us -->
   <url>
     <loc>https://affinitytaxservices.com/about</loc>
-    <lastmod>2024-01-21</lastmod>
+    <lastmod>2025-12-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -33,7 +33,7 @@
   <!-- Individual Tax Services -->
   <url>
     <loc>https://affinitytaxservices.com/individual-tax</loc>
-    <lastmod>2024-01-21</lastmod>
+    <lastmod>2025-12-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
     <image:image>
@@ -46,7 +46,7 @@
   <!-- Business Tax Services -->
   <url>
     <loc>https://affinitytaxservices.com/business-tax</loc>
-    <lastmod>2024-01-21</lastmod>
+    <lastmod>2025-12-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
     <image:image>
@@ -59,7 +59,7 @@
   <!-- Tax Planning Services -->
   <url>
     <loc>https://affinitytaxservices.com/tax-planning</loc>
-    <lastmod>2024-01-21</lastmod>
+    <lastmod>2025-12-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
     <image:image>
@@ -71,21 +71,24 @@
 
   <!-- Contact Page -->
   <url>
-    <loc>https://affinitytaxservices.com/contact</loc>
-    <lastmod>2024-01-21</lastmod>
+    <loc>https://affinitytaxservices.com/contacts</loc>
+    <lastmod>2025-12-16</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-    <image:image>
-      <image:loc>https://affinitytaxservices.com/og-contact.jpg</image:loc>
-      <image:title>Contact Affinity Tax Services - Expert Tax Help & Consultation</image:title>
-      <image:caption>Multiple ways to contact us - phone, email, or visit our office</image:caption>
-    </image:image>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Tax Information -->
+  <url>
+    <loc>https://affinitytaxservices.com/tax-information</loc>
+    <lastmod>2025-12-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
 
   <!-- Privacy Policy -->
   <url>
     <loc>https://affinitytaxservices.com/privacy-policy</loc>
-    <lastmod>2024-01-21</lastmod>
+    <lastmod>2025-12-16</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
@@ -93,7 +96,7 @@
   <!-- Terms of Service -->
   <url>
     <loc>https://affinitytaxservices.com/terms-of-service</loc>
-    <lastmod>2024-01-21</lastmod>
+    <lastmod>2025-12-16</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>

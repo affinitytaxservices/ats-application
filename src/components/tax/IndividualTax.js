@@ -1,5 +1,6 @@
 import React from 'react';
 import SEOHelmet from '../common/SEOHelmet';
+import { seoConfig } from '../../config/seo.config';
 import {
   Box,
   Container,
@@ -81,36 +82,17 @@ const benefits = [
 ];
 
 function IndividualTax() {
+  const { individualTax: seo } = seoConfig.pages;
+
   return (
     <>
       <SEOHelmet
-        title="Individual Tax Preparation Services - Expert Personal Tax Filing | Affinity Tax"
-        description="Professional individual tax preparation services for W-2 employees, freelancers, investors, and retirees. Maximize your refund with our certified tax preparers. IRS-compliant filing guaranteed."
-        keywords="individual tax preparation, personal tax filing, W-2 tax preparation, freelancer tax services, tax refund maximization, certified tax preparer, IRS tax filing, tax preparation services, individual tax returns, tax deductions, tax credits"
-        canonical="/individual-tax"
-        image="/og-individual-tax.jpg"
-        structuredData={{
-          '@context': 'https://schema.org',
-          '@type': 'Service',
-          name: 'Individual Tax Preparation Services',
-          description: 'Professional individual tax preparation services for W-2 employees, freelancers, investors, and retirees.',
-          provider: {
-            '@type': 'ProfessionalService',
-            name: 'Affinity Tax Services',
-            url: 'https://www.affinitytaxservices.com',
-            telephone: '+1-234-567-8900',
-            email: 'info@affinitytaxservices.com'
-          },
-          areaServed: 'United States',
-          serviceType: 'Tax Preparation Service',
-          offers: {
-            '@type': 'Offer',
-            name: 'Individual Tax Preparation',
-            description: 'Comprehensive tax preparation for individuals including W-2 employees, freelancers, and investors',
-            priceRange: '$$',
-            availability: 'InStock'
-          }
-        }}
+        title={seo.title}
+        description={seo.description}
+        keywords={seo.keywords}
+        canonical={seo.canonical}
+        image={seo.ogImage}
+        structuredData={seo.structuredData}
       />
     <Container maxWidth="lg">
       <Box sx={{ my: 6 }}>

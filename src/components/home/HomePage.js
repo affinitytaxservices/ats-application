@@ -1,5 +1,6 @@
   import React, { useState, useEffect } from 'react';
 import SEOHelmet from '../common/SEOHelmet';
+import { seoConfig } from '../../config/seo.config';
 import { 
   Container, 
   Typography, 
@@ -400,23 +401,17 @@ const HomePage = () => {
   }, []);
 
   
+  const { home: seo } = seoConfig.pages;
 
   return (
     <>
       <SEOHelmet
-        title="Affinity Tax Services | Professional Tax Preparation & Planning"
-        description="Expert tax preparation, planning, and IRS support for individuals and businesses. Accurate, secure, and client-focused services."
-        keywords="tax preparation, tax planning, IRS support, business tax, individual tax"
-        canonical="/"
-        image="/og-home.jpg"
-        structuredData={{
-          '@context': 'https://schema.org',
-          '@type': 'WebPage',
-          name: 'Affinity Tax Services',
-          description: 'Professional tax preparation and planning services',
-          datePublished: new Date().toISOString(),
-          dateModified: new Date().toISOString()
-        }}
+        title={seo.title}
+        description={seo.description}
+        keywords={seo.keywords}
+        canonical={seo.canonical}
+        image={seo.ogImage}
+        structuredData={seo.structuredData}
       />
       <Box sx={{ position: 'relative', overflow: 'hidden' }}>
       {/* Floating Particles Background */}

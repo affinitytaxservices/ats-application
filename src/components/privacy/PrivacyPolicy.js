@@ -1,8 +1,21 @@
 import React from 'react';
 import { Container, Typography, Box, Paper, Divider } from '@mui/material';
+import SEOHelmet from '../common/SEOHelmet';
+import { seoConfig } from '../../config/seo.config';
 
 function PrivacyPolicy() {
+  const { privacyPolicy: seo } = seoConfig.pages;
+
   return (
+    <>
+      <SEOHelmet
+        title={seo.title}
+        description={seo.description}
+        keywords={seo.keywords}
+        canonical={seo.canonical}
+        image={seo.ogImage}
+        structuredData={seo.structuredData}
+      />
     <Box sx={{ 
       minHeight: '100vh', 
       background: 'rgba(248, 250, 252, 0.95)',
@@ -105,6 +118,7 @@ function PrivacyPolicy() {
         </Paper>
       </Container>
     </Box>
+    </>
   );
 }
 

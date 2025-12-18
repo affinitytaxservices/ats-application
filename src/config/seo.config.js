@@ -10,7 +10,7 @@ export const seoConfig = {
   
   // Google Analytics and Search Console
   googleAnalytics: {
-    measurementId: 'GA_MEASUREMENT_ID', // Replace with actual GA4 ID
+    measurementId: 'G-CNWW81F5YM', // Replace with actual GA4 ID
     gtmId: 'GTM-XXXXXXX' // Replace with actual GTM ID
   },
   
@@ -48,9 +48,9 @@ export const seoConfig = {
   // Page-specific SEO configurations
   pages: {
     home: {
-      title: 'Affinity Tax Services - Expert Tax Preparation & Planning in the US',
-      description: 'Professional tax preparation, planning, and consultation services. IRS-compliant tax filing with certified CPAs and tax advisors. Maximum refund guarantee.',
-      keywords: 'tax preparation services, tax planning, tax consultation, IRS tax help, certified tax preparer, tax filing services, professional tax services',
+      title: 'Affinity Tax Services | Expert Tax Preparation & Strategic Planning',
+      description: 'Maximize your refund with Affinity Tax Services. Certified CPAs providing expert personal and business tax preparation, strategic planning, and IRS audit support.',
+      keywords: 'tax preparation, tax planning, CPA, IRS audit support, business tax services, individual tax return, tax consultant, maximize refund, electronic filing',
       canonical: '/',
       ogImage: '/og-home.jpg',
       structuredData: {
@@ -70,18 +70,18 @@ export const seoConfig = {
         },
         'aggregateRating': {
           '@type': 'AggregateRating',
-          'ratingValue': '4.8',
-          'reviewCount': '127'
+          'ratingValue': '4.9',
+          'reviewCount': '150'
         },
         'areaServed': 'United States',
-        'serviceType': ['Tax Preparation', 'Tax Planning', 'Tax Consultation']
+        'serviceType': ['Tax Preparation', 'Tax Planning', 'Tax Consultation', 'IRS Audit Support']
       }
     },
     
     about: {
-      title: 'About Affinity Tax Services - Trusted Tax Professionals Since 2010',
-      description: 'Learn about Affinity Tax Services, our team of certified tax professionals, and our commitment to providing expert tax preparation and planning services since 2010.',
-      keywords: 'about tax services, tax professionals, certified tax preparers, tax company history, experienced tax advisors',
+      title: 'About Affinity Tax Services | Trusted CPAs & Tax Advisors',
+      description: 'Meet our team of certified tax professionals dedicated to your financial success. Over 10 years of experience in tax preparation and strategic planning.',
+      keywords: 'about affinity tax services, certified public accountants, tax advisors, tax company history, experienced tax professionals, financial success',
       canonical: '/about',
       ogImage: '/og-about.jpg',
       structuredData: {
@@ -171,18 +171,32 @@ export const seoConfig = {
       }
     },
     
+    taxInformation: {
+      title: 'Tax Information & Resources | Affinity Tax Services',
+      description: 'Access essential tax guides, important dates, and educational resources. Stay informed about individual and business tax requirements.',
+      keywords: 'tax information, tax resources, tax guides, tax deadlines, tax education, IRS forms, tax help center',
+      canonical: '/tax-information',
+      ogImage: '/og-tax-planning.jpg', // Fallback
+      structuredData: {
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        'name': 'Tax Information & Resources',
+        'description': 'Comprehensive tax information and resources center'
+      }
+    },
+    
     contact: {
       title: 'Contact Affinity Tax Services - Expert Tax Help & Consultation',
       description: 'Contact Affinity Tax Services for professional tax preparation, planning, and consultation. Multiple ways to reach us - phone, email, or visit our office.',
       keywords: 'contact tax services, tax consultation, tax help, contact tax preparer, tax office, tax services contact',
-      canonical: '/contact',
+      canonical: '/contacts',
       ogImage: '/og-contact.jpg',
       structuredData: {
         '@context': 'https://schema.org',
         '@type': 'ContactPage',
         'name': 'Contact Affinity Tax Services',
         'description': 'Contact information for Affinity Tax Services',
-        'url': 'https://affinitytaxservices.com/contact',
+        'url': 'https://affinitytaxservices.com/contacts',
         'mainEntity': {
           '@type': 'ProfessionalService',
           'name': 'Affinity Tax Services',
@@ -197,6 +211,34 @@ export const seoConfig = {
             'addressCountry': 'US'
           }
         }
+      }
+    },
+
+    privacyPolicy: {
+      title: 'Privacy Policy | Affinity Tax Services',
+      description: 'Read our Privacy Policy to understand how Affinity Tax Services collects, uses, and protects your personal information.',
+      keywords: 'privacy policy, data protection, personal information, tax data security, client confidentiality',
+      canonical: '/privacy-policy',
+      ogImage: '/og-home.jpg', // Fallback to home OG image
+      structuredData: {
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        'name': 'Privacy Policy',
+        'description': 'Privacy Policy of Affinity Tax Services'
+      }
+    },
+
+    terms: {
+      title: 'Terms & Conditions | Affinity Tax Services',
+      description: 'Review the Terms and Conditions for using Affinity Tax Services website and services.',
+      keywords: 'terms and conditions, terms of service, user agreement, legal disclaimer',
+      canonical: '/terms-of-service',
+      ogImage: '/og-home.jpg', // Fallback to home OG image
+      structuredData: {
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        'name': 'Terms & Conditions',
+        'description': 'Terms and Conditions of Affinity Tax Services'
       }
     }
   },
@@ -230,8 +272,8 @@ export const seoConfig = {
     googleMyBusiness: {
       businessName: 'Affinity Tax Services',
       category: 'Tax Preparation Service',
-      address: '123 Tax Street, Suite 456, Financial District, NY 10001',
-      phone: '+1-555-TAX-HELP',
+      address: 'need to add address',
+      phone: '8341154481 ',
       website: 'https://affinitytaxservices.com',
       hours: 'Mon-Fri: 9AM-5PM, Sat: 10AM-2PM',
       services: ['Tax Preparation', 'Tax Planning', 'Tax Consultation', 'IRS Representation']
@@ -243,7 +285,7 @@ export const seoConfig = {
       'Yelp',
       'Yellow Pages',
       'Better Business Bureau',
-      'Angie's List',
+      "Angie's List",
       'Thumbtack'
     ]
   },

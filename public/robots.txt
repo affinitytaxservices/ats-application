@@ -12,7 +12,8 @@ Allow: /about
 Allow: /individual-tax
 Allow: /business-tax
 Allow: /tax-planning
-Allow: /contact
+Allow: /tax-information
+Allow: /contacts
 Allow: /privacy-policy
 Allow: /terms-of-service
 

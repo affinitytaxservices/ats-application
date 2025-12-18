@@ -1,5 +1,5 @@
 -- Create users table
-USE ats_DB;
+USE affinity2_dev;
 
 CREATE TABLE IF NOT EXISTS `users` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
