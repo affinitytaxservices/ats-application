@@ -114,6 +114,9 @@ const Footer = () => {
                 }}
               >
                 Professional tax services for individuals and businesses. We make tax season stress-free.
+                <Box component="span" sx={{ display: 'block', mt: 1, fontSize: '0.75rem', opacity: 0.8 }}>
+                  Also known as AffinityTaxServices
+                </Box>
               </Typography>
               <Box 
                 sx={{

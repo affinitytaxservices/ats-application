@@ -33,6 +33,7 @@ import PrivacyPolicy from './components/privacy/PrivacyPolicy';
 import Terms from './components/privacy/Terms';
 import WhatsAppAdmin from './components/admin/WhatsAppAdmin';
 import WhatsAppWidget from './components/common/WhatsAppWidget';
+import NotFound from './components/common/NotFound';
 
 
 
@@ -172,6 +173,9 @@ function App() {
                 </ProtectedRoute>
               } 
             />
+            
+            {/* Catch all route for 404 */}
+            <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
       <WhatsAppWidget />

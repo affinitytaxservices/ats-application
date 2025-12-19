@@ -27,7 +27,7 @@ const WhatsAppWidget = () => {
   const [message, setMessage] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
 
-  const businessPhone = process.env.REACT_APP_WHATSAPP_BUSINESS_PHONE || '+1234567890';
+  const businessPhone = process.env.REACT_APP_WHATSAPP_BUSINESS_PHONE || '+91 8341154481';
 
   const handleOpen = () => {
     setOpen(true);
@@ -169,7 +169,7 @@ const WhatsAppWidget = () => {
               <TextField
                 fullWidth
                 label="Your Phone Number"
-                placeholder="(555) 123-4567"
+                placeholder="+91 8341154481"
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
                 sx={{ mb: 2 }}

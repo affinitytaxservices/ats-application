@@ -558,7 +558,7 @@ function Navbar() {
             )}
 
             {isAuthenticated ? (
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: 1 }}>
                 <Button
                   color="inherit"
                   component={RouterLink}
@@ -644,7 +644,7 @@ function Navbar() {
                 </Menu>
               </Box>
             ) : (
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: 1 }}>
                 <Button
                   color="inherit"
                   component={RouterLink}

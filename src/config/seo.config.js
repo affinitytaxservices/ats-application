@@ -50,15 +50,22 @@ export const seoConfig = {
     home: {
       title: 'Affinity Tax Services | Expert Tax Preparation & Strategic Planning',
       description: 'Maximize your refund with Affinity Tax Services. Certified CPAs providing expert personal and business tax preparation, strategic planning, and IRS audit support.',
-      keywords: 'tax preparation, tax planning, CPA, IRS audit support, business tax services, individual tax return, tax consultant, maximize refund, electronic filing',
+      keywords: 'AffinityTaxServices, Affinity Tax, tax preparation, tax planning, CPA, IRS audit support, business tax services, individual tax return, tax consultant, maximize refund, electronic filing',
       canonical: '/',
       ogImage: '/og-home.jpg',
       structuredData: {
         '@context': 'https://schema.org',
         '@type': 'ProfessionalService',
         'name': 'Affinity Tax Services',
+        'alternateName': 'AffinityTaxServices',
         'description': 'Expert tax preparation and planning services for individuals and businesses',
         'url': 'https://affinitytaxservices.com',
+        'sameAs': [
+          'https://facebook.com/affinitytaxservices',
+          'https://twitter.com/affinitytax',
+          'https://linkedin.com/company/affinity-tax-services',
+          'https://instagram.com/affinitytaxservices'
+        ],
         'telephone': '+1-555-TAX-HELP',
         'address': {
           '@type': 'PostalAddress',
