@@ -39,8 +39,8 @@ router.post('/login', async (req, res) => {
       ];
       const matched = devUsers.find(u => u.email === email && u.password === password);
       if (matched) {
-        const user = { id: 1, email: matched.email, firstName: matched.firstName, lastName: matched.lastName, role: matched.role, phone: null };
-        const payload = { id: user.id, email: user.email, role: user.role };
+        const user = { id: 1, email: matched.email, firstName: matched.firstName, lastName: matched.lastName, role: matched.role, phone: null, isVerified: 1 };
+        const payload = { id: user.id, email: user.email, role: user.role, verified: true };
         const token = jwt.sign(payload, process.env.JWT_SECRET || 'dev-secret', { expiresIn: '12h' });
         return res.json({ success: true, token, user });
       }
@@ -118,6 +118,23 @@ router.post('/register', async (req, res) => {
 
 router.get('/me', authMiddleware, async (req, res) => {
   try {
+    // Dev shortcut: if dev user, return without DB
+    if (process.env.NODE_ENV !== 'production' && req.user.id === 1) {
+      return res.json({
+        success: true,
+        user: {
+          id: 1,
+          email: req.user.email,
+          firstName: 'Dev',
+          lastName: req.user.role.charAt(0).toUpperCase() + req.user.role.slice(1),
+          role: req.user.role,
+          phone: null,
+          isVerified: 1,
+          verifiedAt: new Date()
+        }
+      });
+    }
+
     const [rows] = await pool.query(
       'SELECT id, email, firstName, lastName, role, phone, isVerified, verifiedAt FROM users WHERE id = ? LIMIT 1',
       [req.user.id]

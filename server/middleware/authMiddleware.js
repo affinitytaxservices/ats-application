@@ -19,7 +19,13 @@ function authMiddleware(req, res, next) {
 
   try {
     const payload = jwt.verify(token, process.env.JWT_SECRET || 'dev-secret');
-    req.user = payload; // { id, email, role }
+    req.user = payload; // { id, email, role, verified }
+
+    // Dev environment fix: Ensure all dev users are verified
+    if (process.env.NODE_ENV !== 'production') {
+      req.user.verified = true;
+    }
+
     next();
   } catch (err) {
     return res.status(401).json({ error: 'Invalid token' });

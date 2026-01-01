@@ -5,5 +5,5 @@ function requireVerified(req, res, next) {
   next();
 }
 
-export default requireVerified;
+module.exports = requireVerified;
 
