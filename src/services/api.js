@@ -466,6 +466,18 @@ export const appointmentAPI = {
   }
 };
 
+// Contact API
+export const contactAPI = {
+  sendMessage: async (payload) => {
+    try {
+      const response = await api.post('/contact', payload);
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error;
+    }
+  }
+};
+
 // Payments API
 export const paymentAPI = {
   getAllPayments: async (page = 1, limit = 10, filters = {}) => {

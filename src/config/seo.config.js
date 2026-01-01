@@ -99,6 +99,24 @@ export const seoConfig = {
         'url': 'https://affinitytaxservices.com/about'
       }
     },
+
+    services: {
+      title: 'Our Services | Affinity Tax Services',
+      description: 'Explore our comprehensive tax services including individual tax preparation, business tax solutions, and strategic tax planning.',
+      keywords: 'tax services, individual tax, business tax, tax planning, accounting services, tax preparation',
+      canonical: '/services',
+      ogImage: '/og-services.jpg',
+      structuredData: {
+        '@context': 'https://schema.org',
+        '@type': 'Service',
+        'name': 'Tax Services',
+        'description': 'Comprehensive tax services for individuals and businesses',
+        'provider': {
+          '@type': 'ProfessionalService',
+          'name': 'Affinity Tax Services'
+        }
+      }
+    },
     
     individualTax: {
       title: 'Individual Tax Preparation Services - Expert Personal Tax Filing | Affinity Tax',
@@ -196,14 +214,14 @@ export const seoConfig = {
       title: 'Contact Affinity Tax Services - Expert Tax Help & Consultation',
       description: 'Contact Affinity Tax Services for professional tax preparation, planning, and consultation. Multiple ways to reach us - phone, email, or visit our office.',
       keywords: 'contact tax services, tax consultation, tax help, contact tax preparer, tax office, tax services contact',
-      canonical: '/contacts',
+      canonical: '/contact',
       ogImage: '/og-contact.jpg',
       structuredData: {
         '@context': 'https://schema.org',
         '@type': 'ContactPage',
         'name': 'Contact Affinity Tax Services',
         'description': 'Contact information for Affinity Tax Services',
-        'url': 'https://affinitytaxservices.com/contacts',
+        'url': 'https://affinitytaxservices.com/contact',
         'mainEntity': {
           '@type': 'ProfessionalService',
           'name': 'Affinity Tax Services',
@@ -247,9 +265,71 @@ export const seoConfig = {
         'name': 'Terms & Conditions',
         'description': 'Terms and Conditions of Affinity Tax Services'
       }
-    }
+    },
+
+    faqs: {
+      title: 'Frequently Asked Questions | Affinity Tax Services',
+      description: 'Find answers to common questions about tax preparation, filing deadlines, documents needed, and our services.',
+      keywords: 'tax faqs, tax questions, tax preparation help, filing questions, refund status help, tax documents needed',
+      canonical: '/faqs',
+      ogImage: '/og-home.jpg',
+      structuredData: {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        'mainEntity': [
+          {
+            '@type': 'Question',
+            'name': 'What documents do I need for my tax return?',
+            'acceptedAnswer': {
+              '@type': 'Answer',
+              'text': 'Generally, you will need W-2s from all employers, 1099 forms (for interest, dividends, retirement, or contract work), proof of identification, and Social Security numbers for you and your dependents. If you own a business or have other income sources, additional documentation will be required.'
+            }
+          },
+          {
+            '@type': 'Question',
+            'name': 'When is the tax filing deadline?',
+            'acceptedAnswer': {
+              '@type': 'Answer',
+              'text': 'For most individuals, the federal tax filing deadline is April 15th. If April 15th falls on a weekend or holiday, the deadline is moved to the next business day. Extensions can be filed to push the deadline to October 15th, though any taxes owed are still due by the April deadline.'
+            }
+          },
+          {
+            '@type': 'Question',
+            'name': 'How long does it take to get my refund?',
+            'acceptedAnswer': {
+              '@type': 'Answer',
+              'text': 'Most refunds are issued within 21 days for taxpayers who file electronically and choose direct deposit. Paper returns can take 6-8 weeks or longer. You can check the status of your refund using our "Refund Status" tool or the IRS "Where\'s My Refund" tool.'
+            }
+          },
+          {
+            '@type': 'Question',
+            'name': 'Do you offer tax planning services?',
+            'acceptedAnswer': {
+              '@type': 'Answer',
+              'text': 'Yes, we provide comprehensive tax planning services for both individuals and businesses. Our goal is to help you minimize your tax liability through strategic planning throughout the year, not just at tax time.'
+            }
+          },
+          {
+            '@type': 'Question',
+            'name': 'Can you help if I get audited by the IRS?',
+            'acceptedAnswer': {
+              '@type': 'Answer',
+              'text': 'Absolutely. We offer audit support and representation services. If you receive a notice from the IRS, do not ignore it. Contact us immediately, and we will help you understand the notice and determine the best course of action.'
+            }
+          },
+          {
+            '@type': 'Question',
+            'name': 'What is the difference between a deduction and a credit?',
+            'acceptedAnswer': {
+              '@type': 'Answer',
+              'text': 'A tax deduction lowers your taxable income, which in turn lowers the amount of tax you owe. A tax credit reduces your tax bill dollar-for-dollar. Credits are generally more valuable than deductions.'
+            }
+          }
+        ]
+      }
+    },
   },
-  
+
   // Performance and technical SEO settings
   performance: {
     // Core Web Vitals targets

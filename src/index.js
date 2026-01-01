@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import './index.css';
 import theme from './styles/theme';
 import App from './App';  // Import using correct case-sensitive filename
 import ErrorBoundary from './components/common/ErrorBoundary';
@@ -31,7 +32,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <ErrorBoundary>
-      <BrowserRouter>
+      <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <AuthProvider>

@@ -43,10 +43,6 @@ const WhatsAppWidget = () => {
       return;
     }
 
-    // Format phone number (remove non-digits and add country code if needed)
-    // const cleanPhone = phoneNumber.replace(/\D/g, '');
-    // const formattedPhone = cleanPhone.startsWith('1') ? cleanPhone : `1${cleanPhone}`;
-    
     // Create WhatsApp deep link
     const whatsappUrl = `https://wa.me/${businessPhone.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`;
     

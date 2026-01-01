@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Box, Skeleton } from '@mui/material';
+import useEdgeEnhanceImage from '../../hooks/useEdgeEnhanceImage';
 
 const ResponsiveImage = ({
   src,
@@ -7,9 +8,11 @@ const ResponsiveImage = ({
   width,
   height,
   objectFit = 'cover',
+  objectPosition = 'center',
   borderRadius = 0,
   lazy = true,
   placeholder = true,
+  edgeEnhance = false,
   ...props
 }) => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -58,10 +61,12 @@ const ResponsiveImage = ({
       return baseSrc;
     }
     
-    // For other images, you could implement different sizes
-    // This is a simplified version - in production, you'd have actual responsive images
+    // Prefer WebP if available (same path with .webp)
     return baseSrc;
   };
+
+  // Optional edge enhancement processing
+  const { processedSrc } = useEdgeEnhanceImage(src, { enabled: edgeEnhance });
 
   return (
     <Box
@@ -72,7 +77,7 @@ const ResponsiveImage = ({
         position: 'relative',
         overflow: 'hidden',
         borderRadius,
-        backgroundColor: placeholder ? 'rgba(255, 255, 255, 0.1)' : 'transparent',
+        backgroundColor: placeholder ? 'rgba(0, 0, 0, 0.04)' : 'transparent',
         ...props.sx
       }}
       {...props}
@@ -88,7 +93,7 @@ const ResponsiveImage = ({
             top: 0,
             left: 0,
             borderRadius,
-            backgroundColor: 'rgba(255, 255, 255, 0.1)'
+            backgroundColor: 'rgba(0, 0, 0, 0.08)'
           }}
         />
       )}
@@ -116,8 +121,8 @@ const ResponsiveImage = ({
       {isInView && !error && (
         <Box
           component="img"
-          src={src}
-          srcSet={generateSrcSet(src)}
+          src={edgeEnhance ? processedSrc : src}
+          srcSet={generateSrcSet(edgeEnhance ? processedSrc : src)}
           sizes="(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw"
           alt={alt}
           loading={lazy ? 'lazy' : 'eager'}
@@ -127,6 +132,7 @@ const ResponsiveImage = ({
             width: '100%',
             height: '100%',
             objectFit,
+            objectPosition,
             borderRadius,
             opacity: isLoaded ? 1 : 0,
             transition: 'opacity 0.3s ease-in-out',

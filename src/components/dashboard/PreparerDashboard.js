@@ -1,549 +1,475 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
-  Container,
-  Grid,
-  Paper,
+  Drawer,
+  AppBar,
+  Toolbar,
+  List,
   Typography,
+  Divider,
+  IconButton,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Avatar,
+  Menu,
+  MenuItem,
+  Badge,
+  Tooltip,
+  useTheme,
+  useMediaQuery,
+  Paper,
+  Grid,
   Card,
   CardContent,
-  CardActions,
-  Button,
-  Avatar,
   Chip,
-  IconButton,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemAvatar,
-  ListItemSecondaryAction,
-  Divider,
-  Badge,
-  Stack,
+  Button,
   Alert,
-  Fab,
 } from '@mui/material';
 import {
-  AccountBalance,
-  Person,
-  Schedule,
-  CheckCircle,
-  Add,
-  Edit,
-  Visibility,
-  Phone,
-  Email,
-  AttachMoney,
+  Menu as MenuIcon,
+  Dashboard,
+  Assignment,
+  People,
+  Settings,
+  Help,
+  Logout,
   Notifications,
+  AdminPanelSettings,
+  Analytics,
+  AccountCircle,
+  Brightness4,
+  Brightness7,
+  Work,
 } from '@mui/icons-material';
-import { motion } from 'framer-motion';
+import { useAuth } from '../../contexts/AuthContext';
+import { useTaskManagement, TaskManagementProvider } from '../../contexts/TaskManagementContext';
+import AdminTaskPanel from './AdminTaskPanel';
+import EmployeeTaskView from './EmployeeTaskView';
 
-function PreparerDashboard() {
-  const [stats] = useState({
-    activeClients: 24,
-    completedReturns: 156,
-    pendingReturns: 8,
-    totalRevenue: 45600,
-    thisWeekReturns: 12,
-    avgProcessingTime: 2.5,
-  });
+const PreparerDashboard = () => {
+  const { user, logout } = useAuth();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  
+  const [drawerOpen, setDrawerOpen] = useState(!isMobile);
+  const [currentView, setCurrentView] = useState('dashboard');
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [darkMode, setDarkMode] = useState(false);
 
-  const [recentClients] = useState([
-    {
-      id: 1,
-      name: 'Tony Stark',
-    email: 'tony.stark@email.com',
-      phone: '(555) 123-4567',
-      status: 'In Progress',
-      returnType: 'Individual',
-      deadline: '2025-04-15',
-      priority: 'high',
-    },
-    {
-      id: 2,
-      name: 'Teja',
-      email: 'Tejaj@email.com',
-      phone: '(555) 987-6543',
-      status: 'Review Required',
-      returnType: 'Business',
-      deadline: '2025-04-10',
-      priority: 'urgent',
-    },
-    {
-      id: 3,
-      name: 'Nithya',
-      email: 'nithya@email.com',
-      phone: '(555) 456-7890',
-      status: 'Completed',
-      returnType: 'Individual',
-      deadline: '2025-04-08',
-      priority: 'normal',
-    },
-  ]);
+  // Check user role - admin users can access admin panel, others see employee view
+  const isAdmin = user?.role === 'admin' || user?.email?.includes('admin') || user?.role === 'tax_professional';
 
-  const [upcomingTasks] = useState([
-    {
-      id: 1,
-      title: 'Review Teja Business Return',
-      client: 'Teja',
-      dueDate: '2025-04-10',
-      priority: 'urgent',
-      type: 'review',
-    },
-    {
-      id: 2,
-      title: 'Client Meeting - Nithya',
-      client: 'Nithya',
-      dueDate: '2025-04-11',
-      priority: 'high',
-      type: 'meeting',
-    },
-    {
-      id: 3,
-      title: 'File Extension Request',
-      client: 'Teja Corporation',
-      dueDate: '2025-04-12',
-      priority: 'normal',
-      type: 'filing',
-    },
-  ]);
+  useEffect(() => {
+    // Set default view based on user role
+    if (isAdmin) {
+      setCurrentView('admin-panel');
+    } else {
+      setCurrentView('my-tasks');
+    }
+  }, [isAdmin]);
 
-  const getStatusColor = (status) => {
-    switch (status.toLowerCase()) {
-      case 'completed':
-        return '#10B981';
-      case 'in progress':
-        return '#F59E0B';
-      case 'review required':
-        return '#EF4444';
-      default:
-        return '#6B7280';
+  const handleDrawerToggle = () => {
+    setDrawerOpen(!drawerOpen);
+  };
+
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    logout();
+    handleMenuClose();
+  };
+
+  const handleViewChange = (view) => {
+    setCurrentView(view);
+    if (isMobile) {
+      setDrawerOpen(false);
     }
   };
 
-  const getPriorityColor = (priority) => {
-    switch (priority) {
-      case 'urgent':
-        return '#EF4444';
-      case 'high':
-        return '#F59E0B';
-      case 'normal':
-        return '#10B981';
-      default:
-        return '#6B7280';
+  // Navigation items based on user role
+  const getNavigationItems = () => {
+    const commonItems = [
+      { id: 'dashboard', label: 'Dashboard', icon: <Dashboard />, roles: ['admin', 'employee'] },
+      { id: 'my-tasks', label: 'My Tasks', icon: <Assignment />, roles: ['admin', 'employee'] },
+    ];
+
+    const adminItems = [
+      { id: 'admin-panel', label: 'Admin Panel', icon: <AdminPanelSettings />, roles: ['admin'] },
+      { id: 'team-management', label: 'Team Management', icon: <People />, roles: ['admin'] },
+      { id: 'analytics', label: 'Analytics', icon: <Analytics />, roles: ['admin'] },
+    ];
+
+    const items = [...commonItems];
+    if (isAdmin) {
+      items.push(...adminItems);
     }
+
+    items.push(
+      { id: 'settings', label: 'Settings', icon: <Settings />, roles: ['admin', 'employee'] },
+      { id: 'help', label: 'Help & Support', icon: <Help />, roles: ['admin', 'employee'] }
+    );
+
+    return items;
   };
 
-  const StatCard = ({ title, value, icon, color, subtitle, trend }) => (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      whileHover={{ y: -5 }}
-    >
-      <Card
-        sx={{
-          height: '100%',
-          background: '#ffffff',
-          border: '1px solid #E5E7EB',
-          borderRadius: '12px',
-          overflow: 'hidden',
-          position: 'relative',
-          transition: 'all 0.2s ease-in-out',
-          '&:hover': {
-            transform: 'translateY(-2px)',
-            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-            borderColor: '#D1D5DB',
-          },
-        }}
-      >
-        <CardContent sx={{ p: 3 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
-            <Box
-              sx={{
-                width: 48,
-                height: 48,
-                borderRadius: '12px',
-                background: color,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'white',
-              }}
-            >
-              {icon}
+  const DashboardOverview = () => {
+    const { tasks, getTasksByAssignee, employees } = useTaskManagement();
+    const userTasks = isAdmin ? tasks : getTasksByAssignee(user?.id);
+    
+    return (
+      <Box>
+        <Typography variant="h4" gutterBottom>
+          Welcome to Preparer Dashboard
+        </Typography>
+        <Typography variant="body1" color="text.secondary" paragraph>
+                {isAdmin 
+                  ? 'Manage tasks, assign work to your team, and track progress across all projects.'
+                  : 'View your assigned tasks, track your progress, and collaborate with your team.'
+                }
+              </Typography>
+
+              <Grid container spacing={3} mb={4}>
+                <Grid item xs={12} sm={6} md={3}>
+                  <Card>
+                    <CardContent sx={{ textAlign: 'center' }}>
+                      <Assignment sx={{ fontSize: 40, color: 'primary.main', mb: 1 }} />
+                      <Typography variant="h4">{userTasks.length}</Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {isAdmin ? 'Total Tasks' : 'My Tasks'}
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Grid>
+                
+                <Grid item xs={12} sm={6} md={3}>
+                  <Card>
+                    <CardContent sx={{ textAlign: 'center' }}>
+                      <Work sx={{ fontSize: 40, color: 'warning.main', mb: 1 }} />
+                      <Typography variant="h4">
+                        {userTasks.filter(t => t.status === 'in_progress').length}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        In Progress
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Grid>
+
+                <Grid item xs={12} sm={6} md={3}>
+                  <Card>
+                    <CardContent sx={{ textAlign: 'center' }}>
+                      <Assignment sx={{ fontSize: 40, color: 'success.main', mb: 1 }} />
+                      <Typography variant="h4">
+                        {userTasks.filter(t => t.status === 'completed' || t.status === 'submitted').length}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        Completed
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </Grid>
+
+                {isAdmin && (
+                  <Grid item xs={12} sm={6} md={3}>
+                    <Card>
+                      <CardContent sx={{ textAlign: 'center' }}>
+                        <People sx={{ fontSize: 40, color: 'info.main', mb: 1 }} />
+                        <Typography variant="h4">{employees.length}</Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          Team Members
+                        </Typography>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                )}
+              </Grid>
+
+              {/* Quick Actions */}
+              <Paper sx={{ p: 3, mb: 3 }}>
+                <Typography variant="h6" gutterBottom>
+                  Quick Actions
+                </Typography>
+                <Box display="flex" gap={2} flexWrap="wrap">
+                  {isAdmin ? (
+                    <>
+                      <Button 
+                        variant="contained" 
+                        startIcon={<Assignment />}
+                        onClick={() => handleViewChange('admin-panel')}
+                      >
+                        Create New Task
+                      </Button>
+                      <Button 
+                        variant="outlined" 
+                        startIcon={<People />}
+                        onClick={() => handleViewChange('team-management')}
+                      >
+                        Manage Team
+                      </Button>
+                      <Button 
+                        variant="outlined" 
+                        startIcon={<Analytics />}
+                        onClick={() => handleViewChange('analytics')}
+                      >
+                        View Analytics
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <Button 
+                        variant="contained" 
+                        startIcon={<Assignment />}
+                        onClick={() => handleViewChange('my-tasks')}
+                      >
+                        View My Tasks
+                      </Button>
+                      <Button 
+                        variant="outlined" 
+                        startIcon={<Work />}
+                        onClick={() => handleViewChange('my-tasks')}
+                      >
+                        Start Working
+                      </Button>
+                    </>
+                  )}                </Box>
+              </Paper>
+
+              {/* Recent Activity or Notifications */}
+              <Paper sx={{ p: 3 }}>
+                <Typography variant="h6" gutterBottom>
+                  Recent Activity
+                </Typography>
+                {userTasks.slice(0, 5).map((task) => (
+                  <Box key={task.id} display="flex" justifyContent="space-between" alignItems="center" py={1}>
+                    <Box>
+                      <Typography variant="body2">{task.title}</Typography>
+                      <Typography variant="caption" color="text.secondary">
+                        {task.assignedBy ? `Assigned by ${task.assignedBy}` : 'Self-assigned'}
+                      </Typography>
+                    </Box>
+                    <Chip 
+                      label={task.status.replace('_', ' ')} 
+                      size="small" 
+                      color={
+                        task.status === 'completed' ? 'success' : 
+                        task.status === 'in_progress' ? 'warning' : 'default'
+                      }
+                    />
+                  </Box>
+                ))}
+                {userTasks.length === 0 && (
+                  <Typography variant="body2" color="text.secondary">
+                    No recent activity
+                  </Typography>
+                )}
+              </Paper>
             </Box>
-            {trend && (
-              <Chip
-                label={trend}
-                size="small"
-                sx={{
-                  background: trend.startsWith('+') ? '#10B98120' : '#EF444420',
-                  color: trend.startsWith('+') ? '#10B981' : '#EF4444',
-                  fontWeight: 600,
-                }}
-              />
-            )}
+          );
+  };
+
+  const renderCurrentView = () => {
+    switch (currentView) {
+      case 'dashboard':
+        return <DashboardOverview />;
+      case 'admin-panel':
+        return isAdmin ? <AdminTaskPanel /> : <Alert severity="error">Access denied. Admin privileges required.</Alert>;
+      case 'my-tasks':
+        return <EmployeeTaskView />;
+      case 'team-management':
+        return isAdmin ? (
+          <Box>
+            <Typography variant="h4" gutterBottom>Team Management</Typography>
+            <Typography variant="body1">Team management features coming soon...</Typography>
           </Box>
-          
-          <Typography variant="h4" sx={{ fontWeight: 700, color: color, mb: 1, fontFamily: '"Inter", sans-serif' }}>
-            {value}
-          </Typography>
-          
-          <Typography variant="body2" sx={{ color: '#6B7280', fontWeight: 500, mb: 1, fontFamily: '"Inter", sans-serif' }}>
-            {title}
-          </Typography>
-          
-          {subtitle && (
-            <Typography variant="caption" sx={{ color: '#9CA3AF', fontFamily: '"Inter", sans-serif' }}>
-              {subtitle}
+        ) : <Alert severity="error">Access denied. Admin privileges required.</Alert>;
+      case 'analytics':
+        return isAdmin ? (
+          <Box>
+            <Typography variant="h4" gutterBottom>Analytics & Reports</Typography>
+            <Typography variant="body1">Analytics dashboard coming soon...</Typography>
+          </Box>
+        ) : <Alert severity="error">Access denied. Admin privileges required.</Alert>;
+      case 'settings':
+        return (
+          <Box>
+            <Typography variant="h4" gutterBottom>Settings</Typography>
+            <Typography variant="body1">Settings panel coming soon...</Typography>
+          </Box>
+        );
+      case 'help':
+        return (
+          <Box>
+            <Typography variant="h4" gutterBottom>Help & Support</Typography>
+            <Typography variant="body1">Help documentation coming soon...</Typography>
+          </Box>
+        );
+      default:
+        return <DashboardOverview />;
+    }
+  };
+
+  const drawer = (
+    <Box>
+      <Toolbar>
+        <Box display="flex" alignItems="center" gap={2}>
+          <Avatar sx={{ bgcolor: 'primary.main' }}>
+            {user?.name?.charAt(0) || 'U'}
+          </Avatar>
+          <Box>
+            <Typography variant="subtitle2">{user?.name || 'User'}</Typography>
+            <Typography variant="caption" color="text.secondary">
+              {isAdmin ? 'Administrator' : 'Employee'}
             </Typography>
-          )}
-        </CardContent>
-      </Card>
-    </motion.div>
+          </Box>
+        </Box>
+      </Toolbar>
+      <Divider />
+      <List>
+        {getNavigationItems().map((item) => (
+          <ListItem
+            button
+            key={item.id}
+            onClick={() => handleViewChange(item.id)}
+            selected={currentView === item.id}
+          >
+            <ListItemIcon>{item.icon}</ListItemIcon>
+            <ListItemText primary={item.label} />
+          </ListItem>
+        ))}
+      </List>
+    </Box>
   );
 
   return (
-    <Box
-      sx={{
-        minHeight: '100vh',
-        background: '#FAFAFA',
-        py: 4,
-      }}
-    >
-      <Container maxWidth="xl">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+    <TaskManagementProvider>
+      <Box sx={{ display: 'flex' }}>
+        {/* App Bar */}
+        <AppBar
+          position="fixed"
+          sx={{
+            width: { md: `calc(100% - ${drawerOpen ? 280 : 0}px)` },
+            ml: { md: drawerOpen ? '280px' : 0 },
+            transition: theme.transitions.create(['width', 'margin'], {
+              easing: theme.transitions.easing.sharp,
+              duration: theme.transitions.duration.leavingScreen,
+            }),
+          }}
         >
-          <Box sx={{ mb: 4 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-              <Avatar
-                sx={{
-                  width: 56,
-                  height: 56,
-                  background: '#3B82F6',
-                }}
-              >
-                <AccountBalance />
-              </Avatar>
-              <Box>
-                <Typography variant="h4" sx={{ fontWeight: 700, color: '#1F2937', fontFamily: '"Inter", sans-serif' }}>
-                  Tax Preparer Dashboard
-                </Typography>
-                <Typography variant="body1" sx={{ color: '#6B7280', fontFamily: '"Inter", sans-serif' }}>
-                  Welcome back! Here's your client overview and pending tasks.
-                </Typography>
-              </Box>
-            </Box>
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ mr: 2 }}
+            >
+              <MenuIcon />
+            </IconButton>
             
-            <Alert
-              severity="info"
-              sx={{
-                borderRadius: '12px',
-                background: '#ffffff',
-                border: '1px solid #E5E7EB',
-              }}
-            >
-              <Typography variant="body2" sx={{ fontWeight: 500, fontFamily: '"Inter", sans-serif' }}>
-                Tax season deadline approaching: 8 returns need immediate attention
-              </Typography>
-            </Alert>
-          </Box>
-        </motion.div>
+            <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
+              Affinity Tax Services - Preparer Dashboard
+            </Typography>
 
-        {/* Stats Grid */}
-        <Grid container spacing={3} sx={{ mb: 4 }}>
-          <Grid item xs={12} sm={6} md={3}>
-            <StatCard
-              title="Active Clients"
-              value={stats.activeClients}
-              icon={<Person />}
-              color="#3B82F6"
-              subtitle="Currently working with"
-              trend="+3 this week"
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <StatCard
-              title="Completed Returns"
-              value={stats.completedReturns}
-              icon={<CheckCircle />}
-              color="#10B981"
-              subtitle="This tax season"
-              trend="+12 this week"
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <StatCard
-              title="Pending Returns"
-              value={stats.pendingReturns}
-              icon={<Schedule />}
-              color="#F59E0B"
-              subtitle="Require attention"
-            />
-          </Grid>
-          <Grid item xs={12} sm={6} md={3}>
-            <StatCard
-              title="Revenue (YTD)"
-              value={`$${stats.totalRevenue.toLocaleString()}`}
-              icon={<AttachMoney />}
-              color="#8B5CF6"
-              subtitle="Year to date earnings"
-              trend="+15.2%"
-            />
-          </Grid>
-        </Grid>
-
-        <Grid container spacing={3}>
-          {/* Recent Clients */}
-          <Grid item xs={12} lg={8}>
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              <Paper
-                sx={{
-                  p: 3,
-                  borderRadius: '12px',
-                  background: '#ffffff',
-                  border: '1px solid #E5E7EB',
-                  color: '#1F2937',
-                }}
-              >
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 3 }}>
-                  <Typography variant="h6" sx={{ fontWeight: 600, color: '#1F2937', fontFamily: '"Inter", sans-serif' }}>
-                    Recent Clients
-                  </Typography>
-                  <Button
-                    variant="outlined"
-                    startIcon={<Add />}
-                    sx={{
-                      borderRadius: '8px',
-                      textTransform: 'none',
-                      fontWeight: 600,
-                      borderColor: '#3B82F6',
-                      color: '#3B82F6',
-                      fontFamily: '"Inter", sans-serif',
-                      '&:hover': {
-                        borderColor: '#2563EB',
-                        backgroundColor: '#3B82F610',
-                      },
-                    }}
-                  >
-                    New Client
-                  </Button>
-                </Box>
-
-                <List sx={{ p: 0 }}>
-                  {recentClients.map((client, index) => (
-                    <React.Fragment key={client.id}>
-                      <ListItem
-                        sx={{
-                          borderRadius: '12px',
-                          mb: 1,
-                          '&:hover': {
-                            background: '#F9FAFB',
-                          },
-                        }}
-                      >
-                        <ListItemAvatar>
-                          <Avatar
-                            sx={{
-                              background: getStatusColor(client.status),
-                            }}
-                          >
-                            {client.name.split(' ').map(n => n[0]).join('')}
-                          </Avatar>
-                        </ListItemAvatar>
-                        
-                        <ListItemText
-                          primary={
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                              <Typography variant="subtitle1" sx={{ fontWeight: 600, fontFamily: '"Inter", sans-serif' }}>
-                                {client.name}
-                              </Typography>
-                              <Chip
-                                label={client.status}
-                                size="small"
-                                sx={{
-                                  background: `${getStatusColor(client.status)}20`,
-                                  color: getStatusColor(client.status),
-                                  fontWeight: 600,
-                                }}
-                              />
-                              <Chip
-                                label={client.priority}
-                                size="small"
-                                variant="outlined"
-                                sx={{
-                                  borderColor: getPriorityColor(client.priority),
-                                  color: getPriorityColor(client.priority),
-                                  fontWeight: 600,
-                                }}
-                              />
-                            </Box>
-                          }
-                          secondary={
-                            <Box sx={{ mt: 1 }}>
-                              <Typography variant="body2" sx={{ color: '#6B7280' }}>
-                                {client.returnType} • Due: {client.deadline}
-                              </Typography>
-                              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mt: 0.5 }}>
-                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                                  <Email sx={{ fontSize: 14, color: '#9CA3AF' }} />
-                                  <Typography variant="caption" sx={{ color: '#9CA3AF' }}>
-                                    {client.email}
-                                  </Typography>
-                                </Box>
-                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                                  <Phone sx={{ fontSize: 14, color: '#9CA3AF' }} />
-                                  <Typography variant="caption" sx={{ color: '#9CA3AF' }}>
-                                    {client.phone}
-                                  </Typography>
-                                </Box>
-                              </Box>
-                            </Box>
-                          }
-                        />
-                        
-                        <ListItemSecondaryAction>
-                          <Stack direction="row" spacing={1}>
-                            <IconButton size="small" sx={{ color: '#6B7280' }}>
-                              <Visibility />
-                            </IconButton>
-                            <IconButton size="small" sx={{ color: '#6B7280' }}>
-                              <Edit />
-                            </IconButton>
-                          </Stack>
-                        </ListItemSecondaryAction>
-                      </ListItem>
-                      {index < recentClients.length - 1 && <Divider sx={{ my: 1 }} />}
-                    </React.Fragment>
-                  ))}
-                </List>
-              </Paper>
-            </motion.div>
-          </Grid>
-
-          {/* Upcoming Tasks */}
-          <Grid item xs={12} lg={4}>
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-            >
-              <Paper
-                sx={{
-                  p: 3,
-                  borderRadius: '12px',
-                  background: '#ffffff',
-                  border: '1px solid #E5E7EB',
-                  height: 'fit-content',
-                  color: '#1F2937',
-                }}
-              >
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'between', mb: 3 }}>
-                  <Typography variant="h6" sx={{ fontWeight: 600, color: '#1F2937', fontFamily: '"Inter", sans-serif' }}>
-                    Upcoming Tasks
-                  </Typography>
-                  <Badge badgeContent={upcomingTasks.length} color="error">
-                    <Notifications sx={{ color: '#6B7280' }} />
+            <Box display="flex" alignItems="center" gap={1}>
+              <Tooltip title="Notifications">
+                <IconButton color="inherit">
+                  <Badge badgeContent={3} color="error">
+                    <Notifications />
                   </Badge>
-                </Box>
+                </IconButton>
+              </Tooltip>
 
-                <Stack spacing={2}>
-                  {upcomingTasks.map((task) => (
-                    <Card
-                      key={task.id}
-                      sx={{
-                        borderRadius: '12px',
-                        border: '1px solid #E5E7EB',
-                        background: '#ffffff',
-                        transition: 'all 0.2s ease-in-out',
-                        '&:hover': {
-                          transform: 'translateY(-1px)',
-                          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-                          borderColor: '#D1D5DB',
-                        },
-                      }}
-                    >
-                      <CardContent sx={{ p: 2 }}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
-                          <Chip
-                            label={task.type}
-                            size="small"
-                            sx={{
-                              background: `${getPriorityColor(task.priority)}20`,
-                              color: getPriorityColor(task.priority),
-                              fontWeight: 600,
-                            }}
-                          />
-                          <Typography variant="caption" sx={{ color: '#6B7280' }}>
-                            {task.dueDate}
-                          </Typography>
-                        </Box>
-                        
-                        <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1, fontFamily: '"Inter", sans-serif' }}>
-                          {task.title}
-                        </Typography>
-                        
-                        <Typography variant="body2" sx={{ color: '#6B7280', fontFamily: '"Inter", sans-serif' }}>
-                          Client: {task.client}
-                        </Typography>
-                      </CardContent>
-                      
-                      <CardActions sx={{ p: 2, pt: 0 }}>
-                        <Button
-                          size="small"
-                          variant="outlined"
-                          sx={{
-                            borderColor: '#3B82F6',
-                            color: '#3B82F6',
-                            textTransform: 'none',
-                            fontWeight: 600,
-                            fontFamily: '"Inter", sans-serif',
-                            '&:hover': {
-                              borderColor: '#2563EB',
-                              backgroundColor: '#3B82F610',
-                            },
-                          }}
-                        >
-                          View Details
-                        </Button>
-                      </CardActions>
-                    </Card>
-                  ))}
-                </Stack>
-              </Paper>
-            </motion.div>
-          </Grid>
-        </Grid>
+              <Tooltip title="Toggle theme">
+                <IconButton color="inherit" onClick={() => setDarkMode(!darkMode)}>
+                  {darkMode ? <Brightness7 /> : <Brightness4 />}
+                </IconButton>
+              </Tooltip>
 
-        {/* Quick Actions FAB */}
-        <Fab
-            color="primary"
+              <Tooltip title="Account">
+                <IconButton color="inherit" onClick={handleMenuClick}>
+                  <AccountCircle />
+                </IconButton>
+              </Tooltip>
+            </Box>
+          </Toolbar>
+        </AppBar>
+
+        {/* Navigation Drawer */}
+        <Box
+          component="nav"
+          sx={{ width: { md: drawerOpen ? 280 : 0 }, flexShrink: { md: 0 } }}
+        >
+          <Drawer
+            variant={isMobile ? 'temporary' : 'persistent'}
+            open={drawerOpen}
+            onClose={handleDrawerToggle}
+            ModalProps={{
+              keepMounted: true, // Better open performance on mobile.
+            }}
             sx={{
-              position: 'fixed',
-              bottom: 24,
-              right: 24,
-              background: '#3B82F6',
-              '&:hover': {
-                background: '#2563EB',
-                transform: 'scale(1.05)',
+              '& .MuiDrawer-paper': {
+                boxSizing: 'border-box',
+                width: 280,
               },
-              transition: 'all 0.2s ease-in-out',
             }}
           >
-          <Add />
-        </Fab>
-      </Container>
-    </Box>
+            {drawer}
+          </Drawer>
+        </Box>
+
+        {/* Main Content */}
+        <Box
+          component="main"
+          sx={{
+            flexGrow: 1,
+            p: 3,
+            width: { md: `calc(100% - ${drawerOpen ? 280 : 0}px)` },
+            transition: theme.transitions.create('width', {
+              easing: theme.transitions.easing.sharp,
+              duration: theme.transitions.duration.leavingScreen,
+            }),
+          }}
+        >
+          <Toolbar />
+          {renderCurrentView()}
+        </Box>
+
+        {/* User Menu */}
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleMenuClose}
+        >
+          <MenuItem onClick={handleMenuClose}>
+            <ListItemIcon>
+              <AccountCircle fontSize="small" />
+            </ListItemIcon>
+            Profile
+          </MenuItem>
+          <MenuItem onClick={handleMenuClose}>
+            <ListItemIcon>
+              <Settings fontSize="small" />
+            </ListItemIcon>
+            Settings
+          </MenuItem>
+          <Divider />
+          <MenuItem onClick={handleLogout}>
+            <ListItemIcon>
+              <Logout fontSize="small" />
+            </ListItemIcon>
+            Logout
+          </MenuItem>
+        </Menu>
+      </Box>
+    </TaskManagementProvider>
   );
-}
+};
 
 export default PreparerDashboard;

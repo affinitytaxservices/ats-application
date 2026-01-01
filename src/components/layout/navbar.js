@@ -1,708 +1,306 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   AppBar,
   Toolbar,
   Button,
   IconButton,
-  Menu,
-  MenuItem,
   Box,
   Drawer,
   List,
   ListItem,
+  ListItemButton,
   ListItemIcon,
   ListItemText,
   useMediaQuery,
   useTheme,
-  Slide,
-  Fade,
+  Container,
+  Stack,
+  Avatar,
+  Menu,
+  MenuItem,
   Divider,
 } from '@mui/material';
 import { useNavigate, Link as RouterLink, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import MenuIcon from '@mui/icons-material/Menu';
-import AccountCircle from '@mui/icons-material/AccountCircle';
+import CloseIcon from '@mui/icons-material/Close';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import UploadFileIcon from '@mui/icons-material/UploadFile';
-import InfoIcon from '@mui/icons-material/Info';
 import LoginIcon from '@mui/icons-material/Login';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import SecurityIcon from '@mui/icons-material/Security';
-import WorkIcon from '@mui/icons-material/Work';
 import LogoutIcon from '@mui/icons-material/Logout';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import LogoComponent from '../common/LogoComponent';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
-// Clean minimalist button style
-const commonButtonStyle = {
-  '&:hover': {
-    backgroundColor: 'rgba(59, 130, 246, 0.06)',
-    transform: 'translateY(-1px)',
-    color: '#3B82F6'
-  },
-  '&:active': {
-    transform: 'translateY(0px)',
-    color: '#2563EB'
-  },
-  borderRadius: '8px',
-  px: { xs: 2, sm: 3 },
-  py: { xs: 1.2, sm: 1.5 },
-  mx: { xs: 0.5, sm: 1 },
-  minHeight: { xs: '44px', sm: '42px' },
-  transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
-  fontWeight: 500,
-  textTransform: 'none',
-  fontSize: { xs: '0.9rem', sm: '0.95rem' },
-  color: '#64748B',
-  border: 'none',
-  position: 'relative',
-  '&::after': {
-    content: '""',
-    position: 'absolute',
-    bottom: 0,
-    left: '50%',
-    width: 0,
-    height: '2px',
-    backgroundColor: '#3B82F6',
-    transition: 'all 0.3s ease',
-    transform: 'translateX(-50%)',
-  },
-  '&:hover::after': {
-    width: '80%',
-  }
-};
-
-// Clean minimalist mobile drawer item style
-const drawerItemStyle = {
-  py: { xs: 2, sm: 1.5 },
-  borderRadius: '8px',
-  my: 0.5,
-  mx: 2,
-  minHeight: { xs: '56px', sm: '48px' },
-  transition: 'all 0.2s ease',
-  '&:hover': {
-    backgroundColor: 'rgba(59, 130, 246, 0.08)',
-    transform: 'translateX(4px)'
-  },
-  '& .MuiListItemIcon-root': {
-    minWidth: { xs: '48px', sm: '44px' }
-  },
-  '& .MuiListItemText-primary': {
-    fontSize: { xs: '1.05rem', sm: '1rem' },
-    fontWeight: 500
-  }
-};
-
-function Navbar() {
+const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [resourcesAnchorEl, setResourcesAnchorEl] = React.useState(null);
-  const { isAuthenticated, isAdmin, logout } = useAuth();
+  const { currentUser, logout, isAuthenticated } = useAuth();
+  
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleResourcesMenu = (event) => {
-    setResourcesAnchorEl(event.currentTarget);
-  };
-
-  const handleResourcesClose = () => {
-    setResourcesAnchorEl(null);
-  };
-
-  const handleLogout = () => {
-    logout();
-    navigate('/');
-    handleClose();
-  };
+  // Handle scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
-  const handleNavigation = (path) => {
-    navigate(path);
-    setMobileOpen(false);
-    handleResourcesClose();
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
   };
 
-  const isActive = (path) => {
-    return location.pathname === path;
+  const handleMenuClose = () => {
+    setAnchorEl(null);
   };
 
-  // Mobile drawer content
+  const handleLogout = async () => {
+    handleMenuClose();
+    try {
+      await logout();
+      navigate('/login');
+    } catch (error) {
+      console.error('Failed to log out', error);
+    }
+  };
+
+  const navLinks = [
+    { name: 'Home', path: '/' },
+    { name: 'About Us', path: '/about' },
+    { name: 'Services', path: '/services' },
+    { name: 'Contact Us', path: '/contact' },
+  ];
+
   const drawer = (
-    <Box 
-      onClick={handleDrawerToggle} 
-      sx={{ 
-        textAlign: 'center', 
-        py: 3,
-        height: '100%',
-        background: 'linear-gradient(180deg, rgba(15, 23, 42, 0.98) 0%, rgba(30, 58, 138, 0.95) 100%)',
-        color: '#ffffff'
-      }}
-    >
-      <Box
-        component={RouterLink}
-        to="/"
-        sx={{
-          textDecoration: 'none',
-          color: 'inherit',
-          mb: 4,
-          display: 'flex',
-          justifyContent: 'center'
-        }}
-      >
-        <LogoComponent variant="medium" showText={true} />
+    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column', bgcolor: 'background.default' }}>
+      <Box sx={{ p: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <LogoComponent variant="medium" />
+        <IconButton onClick={handleDrawerToggle}>
+          <CloseIcon />
+        </IconButton>
       </Box>
-      <List sx={{ px: 2 }}>
-        <ListItem 
-          button 
-          onClick={() => handleNavigation('/about')} 
-          sx={{
-            ...drawerItemStyle,
-            backgroundColor: isActive('/about') ? 'rgba(16, 185, 129, 0.15)' : 'transparent',
-          }}
-        >
-          <ListItemIcon><SecurityIcon sx={{ color: '#10B981' }} /></ListItemIcon>
-          <ListItemText 
-            primary="About Us" 
-            sx={{ 
-              '& .MuiListItemText-primary': { 
-                color: '#ffffff', 
-                fontWeight: isActive('/about') ? 600 : 400,
-                fontFamily: '"Montserrat", sans-serif',
-              } 
-            }} 
-          />
-        </ListItem>
-        <ListItem 
-          button 
-          onClick={() => handleNavigation('/tax-planning')} 
-          sx={{
-            ...drawerItemStyle,
-            backgroundColor: isActive('/tax-planning') ? 'rgba(16, 185, 129, 0.15)' : 'transparent',
-          }}
-        >
-          <ListItemIcon><TrendingUpIcon sx={{ color: '#10B981' }} /></ListItemIcon>
-          <ListItemText 
-            primary="Tax Planning" 
-            sx={{ 
-              '& .MuiListItemText-primary': { 
-                color: '#ffffff', 
-                fontWeight: isActive('/tax-planning') ? 600 : 400,
-                fontFamily: '"Montserrat", sans-serif',
-              } 
-            }} 
-          />
-        </ListItem>
-
-
-         <ListItem 
-           button 
-           onClick={() => handleNavigation('/tax-information')} 
-           sx={{
-             ...drawerItemStyle,
-             backgroundColor: isActive('/tax-information') ? 'rgba(16, 185, 129, 0.15)' : 'transparent',
-           }}
-         >
-          <ListItemIcon><InfoIcon sx={{ color: '#10B981' }} /></ListItemIcon>
-          <ListItemText 
-            primary="Tax Resources" 
-            sx={{ 
-              '& .MuiListItemText-primary': { 
-                color: '#ffffff', 
-                fontWeight: isActive('/tax-information') ? 600 : 400,
-                fontFamily: '"Montserrat", sans-serif',
-              } 
-            }} 
-          />
-        </ListItem>
-
-        
-        {isAuthenticated ? (
-          <>
-            <ListItem 
-              button 
-              onClick={() => {
-                if (isAdmin) {
-                  handleNavigation('/admin');
-                } else {
-                  handleNavigation('/client-dashboard');
-                }
-              }} 
+      <Divider />
+      <List sx={{ flexGrow: 1, px: 2, py: 3 }}>
+        {navLinks.map((link) => (
+          <ListItem key={link.name} disablePadding sx={{ mb: 1 }}>
+            <ListItemButton
+              component={RouterLink}
+              to={link.path}
+              onClick={handleDrawerToggle}
+              selected={location.pathname === link.path}
               sx={{
-                ...drawerItemStyle,
-                backgroundColor: isActive('/admin') || isActive('/client-dashboard') 
-                  ? 'rgba(16, 185, 129, 0.15)' 
-                  : 'transparent',
+                borderRadius: 2,
+                '&.Mui-selected': {
+                  bgcolor: 'primary.main',
+                  color: 'primary.contrastText',
+                  '&:hover': {
+                    bgcolor: 'primary.dark',
+                  },
+                },
               }}
             >
-              <ListItemIcon><DashboardIcon sx={{ color: '#10B981' }} /></ListItemIcon>
               <ListItemText 
-                primary="Dashboard" 
-                sx={{ 
-                  '& .MuiListItemText-primary': { 
-                    color: '#ffffff', 
-                    fontWeight: isActive('/admin') || isActive('/client-dashboard') ? 600 : 400,
-                    fontFamily: '"Montserrat", sans-serif',
-                  } 
-                }} 
+                primary={link.name} 
+                primaryTypographyProps={{ fontWeight: 600 }}
               />
-            </ListItem>
-            <ListItem 
-              button 
-              onClick={() => handleNavigation('/documents')} 
-              sx={{
-                ...drawerItemStyle,
-                backgroundColor: isActive('/documents') ? 'rgba(16, 185, 129, 0.15)' : 'transparent',
-              }}
-            >
-              <ListItemIcon><UploadFileIcon sx={{ color: '#10B981' }} /></ListItemIcon>
-              <ListItemText 
-                primary="Documents" 
-                sx={{ 
-                  '& .MuiListItemText-primary': { 
-                    color: '#ffffff', 
-                    fontWeight: isActive('/documents') ? 600 : 400,
-                    fontFamily: '"Montserrat", sans-serif',
-                  } 
-                }} 
-              />
-            </ListItem>
-            <ListItem 
-              button 
-              onClick={handleLogout} 
-              sx={drawerItemStyle}
-            >
-              <ListItemIcon><LogoutIcon sx={{ color: '#F59E0B' }} /></ListItemIcon>
-              <ListItemText 
-                primary="Logout" 
-                sx={{ 
-                  '& .MuiListItemText-primary': { 
-                    color: '#ffffff', 
-                    fontFamily: '"Montserrat", sans-serif',
-                  } 
-                }} 
-              />
-            </ListItem>
-          </>
-        ) : (
-          <>
-            <Divider sx={{ my: 2, backgroundColor: 'rgba(255, 255, 255, 0.1)' }} />
-            <ListItem 
-              button 
-              onClick={() => handleNavigation('/login')} 
-              sx={{
-                ...drawerItemStyle,
-                backgroundColor: isActive('/login') ? 'rgba(16, 185, 129, 0.15)' : 'transparent',
-              }}
-            >
-              <ListItemIcon><LoginIcon sx={{ color: '#10B981' }} /></ListItemIcon>
-              <ListItemText 
-                primary="Client Login" 
-                sx={{ 
-                  '& .MuiListItemText-primary': { 
-                    color: '#ffffff', 
-                    fontWeight: isActive('/login') ? 600 : 400,
-                    fontFamily: '"Montserrat", sans-serif',
-                  } 
-                }} 
-              />
-            </ListItem>
-            <ListItem 
-              button 
-              onClick={() => handleNavigation('/register')} 
-              sx={{
-                ...drawerItemStyle,
-                backgroundColor: isActive('/register') ? 'rgba(16, 185, 129, 0.15)' : 'transparent',
-              }}
-            >
-              <ListItemIcon><PersonAddIcon sx={{ color: '#10B981' }} /></ListItemIcon>
-              <ListItemText 
-                primary="Register" 
-                sx={{ 
-                  '& .MuiListItemText-primary': { 
-                    color: '#ffffff', 
-                    fontWeight: isActive('/register') ? 600 : 400,
-                    fontFamily: '"Montserrat", sans-serif',
-                  } 
-                }} 
-              />
-            </ListItem>
-            {/* Contact Us, Privacy Policy, and Terms links removed from mobile drawer */}
-          </>
-        )}
+            </ListItemButton>
+          </ListItem>
+        ))}
       </List>
+      <Box sx={{ p: 2 }}>
+        {isAuthenticated ? (
+          <Button
+            fullWidth
+            variant="contained"
+            color="primary"
+            startIcon={<DashboardIcon />}
+            onClick={() => {
+              navigate('/dashboard');
+              handleDrawerToggle();
+            }}
+            sx={{ mb: 1 }}
+          >
+            Dashboard
+          </Button>
+        ) : (
+          <Stack spacing={2}>
+            <Button
+              fullWidth
+              variant="outlined"
+              startIcon={<LoginIcon />}
+              component={RouterLink}
+              to="/login"
+              onClick={handleDrawerToggle}
+            >
+              Log In
+            </Button>
+            <Button
+              fullWidth
+              variant="contained"
+              endIcon={<ArrowForwardIcon />}
+              component={RouterLink}
+              to="/register"
+              onClick={handleDrawerToggle}
+            >
+              Get Started
+            </Button>
+          </Stack>
+        )}
+      </Box>
     </Box>
   );
 
   return (
     <>
-      <Slide appear={false} direction="down" in={!isMobile || true}>
-        <AppBar 
-          position="sticky" 
-          elevation={0}
-          sx={{
-            background: 'rgba(255, 255, 255, 0.95)',
-            backdropFilter: 'blur(20px)',
-            borderBottom: '1px solid rgba(229, 231, 235, 0.8)',
-            boxShadow: 'none',
-            color: '#374151',
-          }}
-        >
-          <Toolbar sx={{ 
-            py: { xs: 2, md: 1.5 }, 
-            px: { xs: 3, md: 4 },
-            minHeight: { xs: '64px', md: '72px' }
-          }}>
+      <AppBar 
+        position="fixed" 
+        color="inherit"
+        elevation={scrolled ? 4 : 0}
+        sx={{
+          transition: 'all 0.3s ease',
+          bgcolor: scrolled ? 'rgba(255, 255, 255, 0.9)' : 'transparent',
+          backdropFilter: scrolled ? 'blur(20px)' : 'none',
+          borderBottom: scrolled ? `1px solid ${theme.palette.divider}` : 'none',
+        }}
+      >
+        <Container maxWidth="xl">
+          <Toolbar disableGutters sx={{ height: 80 }}>
+            {/* Logo */}
+            <Box sx={{ flexGrow: 0, mr: 4, display: 'flex', cursor: 'pointer' }} onClick={() => navigate('/')}>
+              <LogoComponent variant="medium" />
+            </Box>
+
+            {/* Desktop Nav */}
+            {!isMobile && (
+              <Box sx={{ flexGrow: 1, display: 'flex', gap: 1 }}>
+                {navLinks.map((link) => (
+                  <Button
+                    key={link.name}
+                    component={RouterLink}
+                    to={link.path}
+                    sx={{
+                      color: location.pathname === link.path ? 'primary.main' : 'text.secondary',
+                      fontWeight: location.pathname === link.path ? 600 : 500,
+                      '&:hover': {
+                        color: 'primary.main',
+                        bgcolor: 'rgba(15, 23, 42, 0.04)',
+                      },
+                    }}
+                  >
+                    {link.name}
+                  </Button>
+                ))}
+              </Box>
+            )}
+
+            {/* Desktop Auth Actions */}
+            {!isMobile && (
+              <Box sx={{ flexGrow: 0 }}>
+                {isAuthenticated ? (
+                  <>
+                    <Button
+                      onClick={handleMenuOpen}
+                      startIcon={<Avatar sx={{ width: 32, height: 32, bgcolor: 'primary.main' }}>{currentUser?.name?.[0] || 'U'}</Avatar>}
+                      endIcon={<MenuIcon />}
+                      sx={{ 
+                        textTransform: 'none',
+                        color: 'text.primary',
+                        border: `1px solid ${theme.palette.divider}`,
+                        borderRadius: 50,
+                        px: 2,
+                        py: 0.5,
+                      }}
+                    >
+                      Account
+                    </Button>
+                    <Menu
+                      anchorEl={anchorEl}
+                      open={Boolean(anchorEl)}
+                      onClose={handleMenuClose}
+                      PaperProps={{
+                        elevation: 0,
+                        sx: {
+                          overflow: 'visible',
+                          filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                          mt: 1.5,
+                        },
+                      }}
+                      transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                      anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                    >
+                      <MenuItem onClick={() => { navigate('/dashboard'); handleMenuClose(); }}>
+                        <ListItemIcon><DashboardIcon fontSize="small" /></ListItemIcon>
+                        Dashboard
+                      </MenuItem>
+                      <Divider />
+                      <MenuItem onClick={handleLogout}>
+                        <ListItemIcon><LogoutIcon fontSize="small" /></ListItemIcon>
+                        Logout
+                      </MenuItem>
+                    </Menu>
+                  </>
+                ) : (
+                  <Stack direction="row" spacing={2}>
+                    <Button 
+                      variant="text" 
+                      component={RouterLink} 
+                      to="/login"
+                      sx={{ color: 'text.primary', fontWeight: 600 }}
+                    >
+                      Log In
+                    </Button>
+                    <Button 
+                      variant="contained" 
+                      component={RouterLink} 
+                      to="/register"
+                      endIcon={<ArrowForwardIcon />}
+                    >
+                      Get Started
+                    </Button>
+                  </Stack>
+                )}
+              </Box>
+            )}
+
+            {/* Mobile Menu Button */}
             {isMobile && (
               <IconButton
                 color="inherit"
                 aria-label="open drawer"
-                edge="start"
+                edge="end"
                 onClick={handleDrawerToggle}
-                sx={{ 
-                  mr: { xs: 3, sm: 2 },
-                  p: { xs: 1.5, sm: 1 },
-                  minWidth: '48px',
-                  minHeight: '48px',
-                  color: '#6B7280',
-                  borderRadius: '12px',
-                  border: '1px solid rgba(107, 114, 128, 0.2)',
-                  '&:hover': {
-                    backgroundColor: 'rgba(59, 130, 246, 0.08)',
-                    color: '#3B82F6',
-                    borderColor: 'rgba(59, 130, 246, 0.3)',
-                    transform: 'scale(1.05)'
-                  },
-                  '&:active': {
-                    transform: 'scale(0.95)'
-                  },
-                  transition: 'all 0.2s ease'
-                }}
+                sx={{ ml: 'auto' }}
               >
-                <MenuIcon sx={{ fontSize: { xs: '1.5rem', sm: '1.25rem' } }} />
+                <MenuIcon />
               </IconButton>
             )}
-            
-            <Box
-              component={RouterLink}
-              to="/"
-              sx={{
-                flexGrow: 1,
-                textDecoration: 'none',
-                color: 'inherit',
-                display: 'flex',
-                alignItems: 'center',
-                py: 0.5,
-                pl: { xs: 1, sm: 0 }
-              }}
-            >
-              <LogoComponent variant={isMobile ? 'large' : 'large'} showText={true} />
-            </Box>
-
-            {!isMobile && (
-              <Box sx={{ flexGrow: 1, display: 'flex', ml: 4 }}>
-                <Button
-                  color="inherit"
-                  endIcon={<KeyboardArrowDownIcon />}
-                  onClick={handleResourcesMenu}
-                  sx={{
-                    ...commonButtonStyle,
-                    borderBottom: Boolean(resourcesAnchorEl) || isActive('/tax-information') || isActive('/individual-tax') || isActive('/business-tax')
-                      ? '2px solid #3B82F6'
-                      : '2px solid transparent',
-                  }}
-                >
-                  Tax Hub
-                </Button>
-                <Button
-                  color="inherit"
-                  component={RouterLink}
-                  to="/about"
-                  sx={{
-                    ...commonButtonStyle,
-                    borderBottom: isActive('/about') ? '2px solid #3B82F6' : '2px solid transparent',
-                  }}
-                >
-                  About Us
-                </Button>
-                <Button
-                   color="inherit"
-                   component={RouterLink}
-                   to="/tax-planning"
-                   sx={{
-                     ...commonButtonStyle,
-                     borderBottom: isActive('/tax-planning') ? '2px solid #3B82F6' : '2px solid transparent',
-                   }}
-                 >
-                   Tax Planning
-                 </Button>
-
-
-                {/* Contact Us, Privacy Policy, and Terms links removed from header */}
-                <Menu
-                  anchorEl={resourcesAnchorEl}
-                  open={Boolean(resourcesAnchorEl)}
-                  onClose={handleResourcesClose}
-                  TransitionComponent={Fade}
-                  PaperProps={{
-                    elevation: 0,
-                    sx: {
-                      mt: 1.5,
-                      overflow: 'visible',
-                      boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
-                      borderRadius: '12px',
-                      minWidth: 200,
-                      border: '1px solid rgba(229, 231, 235, 0.8)',
-                      '&:before': {
-                        content: '""',
-                        display: 'block',
-                        position: 'absolute',
-                        top: 0,
-                        left: 20,
-                        width: 10,
-                        height: 10,
-                        bgcolor: 'background.paper',
-                        transform: 'translateY(-50%) rotate(45deg)',
-                        zIndex: 0,
-                        border: '1px solid rgba(229, 231, 235, 0.8)',
-                        borderBottom: 'none',
-                        borderRight: 'none',
-                      },
-                      background: 'rgba(255, 255, 255, 0.98)',
-                      backdropFilter: 'blur(20px)',
-                    },
-                  }}
-                >
-                  <MenuItem 
-                    onClick={() => handleNavigation('/tax-information')} 
-                    sx={{ 
-                      py: 1.5, 
-                      px: 2,
-                      borderRadius: '8px',
-                      mx: 1,
-                      my: 0.5,
-                      borderLeft: isActive('/tax-information') ? '3px solid #3B82F6' : '3px solid transparent',
-                      background: isActive('/tax-information') ? 'rgba(59, 130, 246, 0.06)' : 'transparent',
-                      '&:hover': { 
-                        backgroundColor: 'rgba(59, 130, 246, 0.06)',
-                        transform: 'translateX(2px)',
-                        transition: 'all 0.2s ease'
-                      }
-                    }}
-                  >
-                    <ListItemIcon>
-                      <InfoIcon fontSize="small" sx={{ color: '#3B82F6', mr: 1 }} />
-                    </ListItemIcon>
-                    Tax Information
-                  </MenuItem>
-                  <MenuItem 
-                    onClick={() => handleNavigation('/individual-tax')} 
-                    sx={{ 
-                      py: 1.5, 
-                      px: 2,
-                      borderRadius: '8px',
-                      mx: 1,
-                      my: 0.5,
-                      borderLeft: isActive('/individual-tax') ? '3px solid #3B82F6' : '3px solid transparent',
-                      background: isActive('/individual-tax') ? 'rgba(59, 130, 246, 0.06)' : 'transparent',
-                      '&:hover': { 
-                        backgroundColor: 'rgba(59, 130, 246, 0.06)',
-                        transform: 'translateX(2px)',
-                        transition: 'all 0.2s ease'
-                      }
-                    }}
-                  >
-                    <ListItemIcon>
-                      <PersonAddIcon fontSize="small" sx={{ color: '#6B7280', mr: 1 }} />
-                    </ListItemIcon>
-                    Individual Tax
-                  </MenuItem>
-                  <MenuItem 
-                    onClick={() => handleNavigation('/business-tax')} 
-                    sx={{ 
-                      py: 1.5, 
-                      px: 2,
-                      borderRadius: '8px',
-                      mx: 1,
-                      my: 0.5,
-                      borderLeft: isActive('/business-tax') ? '3px solid #3B82F6' : '3px solid transparent',
-                      background: isActive('/business-tax') ? 'rgba(59, 130, 246, 0.06)' : 'transparent',
-                      '&:hover': { 
-                        backgroundColor: 'rgba(59, 130, 246, 0.06)',
-                        transform: 'translateX(2px)',
-                        transition: 'all 0.2s ease'
-                      }
-                    }}
-                  >
-                    <ListItemIcon>
-                      <WorkIcon fontSize="small" sx={{ color: '#6B7280', mr: 1 }} />
-                    </ListItemIcon>
-                    Business Tax
-                  </MenuItem>
-
-                </Menu>
-              </Box>
-            )}
-
-            {isAuthenticated ? (
-              <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: 1 }}>
-                <Button
-                  color="inherit"
-                  component={RouterLink}
-                  to={isAdmin ? '/admin' : '/client-dashboard'}
-                  sx={{
-                    ...commonButtonStyle,
-                    borderBottom: (isActive('/admin') || isActive('/client-dashboard')) ? '2px solid #3B82F6' : '2px solid transparent',
-                  }}
-                >
-                  Dashboard
-                </Button>
-                <Button
-                  color="inherit"
-                  component={RouterLink}
-                  to="/documents"
-                  sx={{
-                    ...commonButtonStyle,
-                    borderBottom: isActive('/documents') ? '2px solid #3B82F6' : '2px solid transparent',
-                  }}
-                >
-                  Documents
-                </Button>
-                <IconButton
-                  size="large"
-                  aria-label="account of current user"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  onClick={handleMenu}
-                  color="inherit"
-                  sx={{
-                    ml: 1,
-                    color: '#6B7280',
-                    '&:hover': {
-                      backgroundColor: 'rgba(59, 130, 246, 0.08)',
-                      color: '#3B82F6'
-                    }
-                  }}
-                >
-                  <AccountCircle />
-                </IconButton>
-                <Menu
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                  TransitionComponent={Fade}
-                  PaperProps={{
-                    elevation: 3,
-                    sx: {
-                      mt: 1.5,
-                      overflow: 'visible',
-                      filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.15))',
-                      borderRadius: 2,
-                      minWidth: 180,
-                      '&:before': {
-                        content: '""',
-                        display: 'block',
-                        position: 'absolute',
-                        top: 0,
-                        right: 14,
-                        width: 10,
-                        height: 10,
-                        bgcolor: 'background.paper',
-                        transform: 'translateY(-50%) rotate(45deg)',
-                        zIndex: 0,
-                      },
-                      background: 'rgba(255, 255, 255, 0.95)',
-                      backdropFilter: 'blur(10px)',
-                    },
-                  }}
-                >
-                  <MenuItem 
-                    onClick={handleLogout}
-                    sx={{ 
-                      py: 1.5, 
-                      '&:hover': { backgroundColor: 'rgba(239, 68, 68, 0.1)' }
-                    }}
-                  >
-                    <ListItemIcon>
-                      <LogoutIcon fontSize="small" sx={{ color: '#EF4444' }} />
-                    </ListItemIcon>
-                    Logout
-                  </MenuItem>
-                </Menu>
-              </Box>
-            ) : (
-              <Box sx={{ display: { xs: 'none', md: 'flex' }, alignItems: 'center', gap: 1 }}>
-                <Button
-                  color="inherit"
-                  component={RouterLink}
-                  to="/login"
-                  sx={{
-                    ...commonButtonStyle,
-                    borderBottom: isActive('/login') ? '2px solid #3B82F6' : '2px solid transparent',
-                  }}
-                >
-                  Login
-                </Button>
-                <Button
-                  color="inherit"
-                  component={RouterLink}
-                  to="/register"
-                  sx={{
-                    ...commonButtonStyle,
-                    borderBottom: isActive('/register') ? '2px solid #3B82F6' : '2px solid transparent',
-                  }}
-                >
-                  Register
-                </Button>
-              </Box>
-            )}
           </Toolbar>
-        </AppBar>
-      </Slide>
+        </Container>
+      </AppBar>
       
-      {/* Mobile drawer */}
+      {/* Mobile Drawer */}
       <Drawer
-        variant="temporary"
-        anchor="left"
+        anchor="right"
         open={mobileOpen}
         onClose={handleDrawerToggle}
-        ModalProps={{
-          keepMounted: true, // Better open performance on mobile.
-        }}
-        sx={{
-          display: { xs: 'block', md: 'none' },
-          '& .MuiDrawer-paper': {
-            boxSizing: 'border-box',
-            width: { xs: '85vw', sm: 320 },
-            maxWidth: 320,
-            background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 58, 138, 0.9) 100%)',
-            backdropFilter: 'blur(10px)',
-            border: 'none',
-            borderRadius: '0 16px 16px 0',
-            overflow: 'hidden'
-          },
-          '& .MuiBackdrop-root': {
-            backgroundColor: 'rgba(0, 0, 0, 0.7)'
-          }
-        }}
+        ModalProps={{ keepMounted: true }}
+        PaperProps={{ sx: { width: '85%', maxWidth: 360 } }}
       >
         {drawer}
       </Drawer>
+      
+      {/* Spacer for fixed AppBar */}
+      <Toolbar sx={{ height: 80 }} /> 
     </>
   );
-}
+};
 
 export default Navbar;

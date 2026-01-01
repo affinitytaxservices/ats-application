@@ -33,10 +33,20 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(express.json());
+const requestLogger = require('./middleware/requestLogger');
+app.use(requestLogger);
 
-// Health check
+// Health check with simple cache
+const Cache = require('./utils/cache');
+const healthCache = new Cache(5000);
 app.get('/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+  const cached = healthCache.get('health');
+  if (cached) {
+    return res.json(cached);
+  }
+  const payload = { status: 'ok', timestamp: new Date().toISOString() };
+  healthCache.set('health', payload);
+  res.json(payload);
 });
 
 // API routes
@@ -50,16 +60,15 @@ const whatsappRoutes = require('./routes/whatsapp');
 app.use('/api/whatsapp', whatsappRoutes);
 const taskRoutes = require('./routes/tasks');
 app.use('/api/tasks', taskRoutes);
+const errorRoutes = require('./routes/errors');
+app.use('/api/errors', errorRoutes);
+// Contact API
+const contactRoutes = require('./routes/contact');
+app.use('/api/contact', contactRoutes);
 
 // Users API
 const userRoutes = require('./routes/users');
 app.use('/api/users', userRoutes);
-// const documentRoutes = require('./routes/documents');
-// app.use('/api/documents', documentRoutes);
-// const taxReturnRoutes = require('./routes/taxReturns');
-// app.use('/api/tax_returns', taxReturnRoutes);
-// const appointmentRoutes = require('./routes/appointments');
-// app.use('/api/appointments', appointmentRoutes);
 
 // Serve React production build
 const buildPath = path.join(__dirname, '..', 'build');
@@ -76,6 +85,9 @@ app.get('/favicon.ico', (_req, res) => {
 app.use((req, res) => {
   res.sendFile(path.join(buildPath, 'index.html'));
 });
+
+const errorHandler = require('./middleware/errorHandler');
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

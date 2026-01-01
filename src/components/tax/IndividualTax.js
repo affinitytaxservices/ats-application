@@ -184,7 +184,7 @@ function IndividualTax() {
                   <Button
                     variant="contained"
                     component={RouterLink}
-                    to="/contacts"
+                    to="/contact"
                     endIcon={<ArrowForwardIcon />}
                     sx={{
                       background: 'linear-gradient(135deg, #1E3A8A 0%, #10B981 100%)',

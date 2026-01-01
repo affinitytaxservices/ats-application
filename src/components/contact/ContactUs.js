@@ -14,21 +14,28 @@ import {
   useTheme,
   useMediaQuery,
   Avatar,
+  SvgIcon,
 } from '@mui/material';
 import EmailIcon from '@mui/icons-material/Email';
 import PhoneIcon from '@mui/icons-material/Phone';
 import FacebookIcon from '@mui/icons-material/Facebook';
-import XIcon from '@mui/icons-material/X';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import SendIcon from '@mui/icons-material/Send';
+import { contactAPI } from '../../services/api';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { fadeIn, slideUp } from '../../styles/animations';
 import SEOHelmet from '../common/SEOHelmet';
 import { seoConfig } from '../../config/seo.config';
 
-function Contacts() {
+const XIcon = (props) => (
+  <SvgIcon {...props}>
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+  </SvgIcon>
+);
+
+function ContactUs() {
   const theme = useTheme();
   // Use isMobile for responsive design adjustments
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
@@ -40,11 +47,14 @@ function Contacts() {
     firstName: '',
     lastName: '',
     email: '',
+    phone: '',
     subject: '',
-    message: ''
+    message: '',
+    website: '' // honeypot
   });
   
   const [errors, setErrors] = useState({});
+  const [generalError, setGeneralError] = useState('');
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -94,29 +104,27 @@ function Contacts() {
     return Object.keys(newErrors).length === 0;
   };
   
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     if (validateForm()) {
       setIsSubmitting(true);
-      
-      // Simulate API call with timeout
-      setTimeout(() => {
-        // TODO: Add actual API call to send message
-        console.log('Form submitted:', formData);
-        setSnackbarOpen(true);
+      try {
+        const payload = { ...formData };
+        const res = await contactAPI.sendMessage(payload);
+        if (res?.success) {
+          setSnackbarOpen(true);
+          setFormSubmitted(true);
+          setFormData({ firstName: '', lastName: '', email: '', phone: '', subject: '', message: '', website: '' });
+          setGeneralError('');
+        } else {
+          setGeneralError('Submission failed');
+        }
+      } catch (err) {
+        setGeneralError(typeof err === 'string' ? err : 'Submission failed');
+      } finally {
         setIsSubmitting(false);
-        setFormSubmitted(true);
-        
-        // Reset form
-        setFormData({
-          firstName: '',
-          lastName: '',
-          email: '',
-          subject: '',
-          message: ''
-        });
-      }, 1500);
+      }
     }
   };
   
@@ -137,7 +145,7 @@ function Contacts() {
         structuredData={seo.structuredData}
       />
       <Box sx={{ 
-        background: 'linear-gradient(180deg, rgba(241,245,249,0.8) 0%, rgba(248,250,252,1) 100%)',
+        background: 'linear-gradient(135deg, #0F172A 0%, #1E3A8A 60%, #10B981 100%)',
         py: 8,
         minHeight: '100vh'
       }}>
@@ -180,48 +188,7 @@ function Contacts() {
             We're here to help with all your tax-related questions and concerns. Our team of experts is ready to assist you.
           </Typography>
           
-          <Box
-            sx={{
-              position: 'relative',
-              height: { xs: '200px', md: '300px' },
-              width: '100%',
-              borderRadius: '16px',
-              overflow: 'hidden',
-              mb: 6,
-              boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
-            }}
-          >
-            <Box
-              component="img"
-              src="/images/office-background.jpg"
-              alt="Affinity Tax Services Office - Professional Tax Preparation and Planning Consultation Center"
-              sx={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                transition: 'transform 0.5s ease',
-                '&:hover': {
-                  transform: 'scale(1.05)'
-                }
-              }}
-            />
-            <Box sx={{
-              position: 'absolute',
-              bottom: 0,
-              left: 0,
-              right: 0,
-              background: 'linear-gradient(0deg, rgba(15,23,42,0.8) 0%, rgba(15,23,42,0) 100%)',
-              p: 3,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-              <Typography variant="h4" sx={{ color: 'white', fontWeight: 700, textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}>
-                <Box component="span" sx={{ color: '#3B82F6' }}>Affinity Tax Services</Box>
-              </Typography>
-            </Box>
-          </Box>
+          
         </Box>
         
         <Paper 
@@ -239,7 +206,7 @@ function Contacts() {
         
         <Grid container>
           <Grid item xs={12} md={5} sx={{ 
-            background: 'linear-gradient(135deg, #1E3A8A 0%, #142C6F 100%)',
+            background: 'linear-gradient(135deg, #0F172A 0%, #1E3A8A 100%)',
             color: 'white',
             p: { xs: 4, md: 6 },
             display: 'flex',
@@ -267,7 +234,7 @@ function Contacts() {
                 Contact Information
               </Typography>
               
-              <Typography variant="body1" sx={{ mb: 4, opacity: 0.9, lineHeight: 1.7 }}>
+              <Typography variant="body1" sx={{ mb: 4, color: '#bfdbfe', lineHeight: 1.7 }}>
                 Feel free to reach out to us using any of the contact methods below. We're here to assist you with all your tax needs.
               </Typography>
               
@@ -476,6 +443,12 @@ function Contacts() {
                 Fill out the form below and our team will get back to you as soon as possible.
               </Typography>
               
+              {generalError && (
+                <Alert severity="error" sx={{ mb: 3, borderRadius: '12px' }}>
+                  {generalError}
+                </Alert>
+              )}
+
               <Grid container spacing={3}>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -489,24 +462,34 @@ function Contacts() {
                     helperText={errors.firstName}
                     autoFocus
                     variant="outlined"
-                    sx={{ 
-                      '& .MuiOutlinedInput-root': {
-                        borderRadius: '12px',
-                        backgroundColor: 'rgba(241,245,249,0.4)',
-                        transition: 'all 0.3s ease',
-                        '&:hover': {
-                          backgroundColor: 'rgba(241,245,249,0.6)',
-                        },
-                        '&.Mui-focused': {
-                          backgroundColor: 'white',
-                          boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
-                        },
+                  sx={{ 
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: '12px',
+                      backgroundColor: 'rgba(241,245,249,0.4)',
+                      transition: 'all 0.3s ease',
+                      outline: 'none',
+                      '&:focus-within': { outline: 'none' },
+                      '&.Mui-focused': {
+                        outline: 'none',
+                        backgroundColor: 'white',
+                        boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
                       },
-                      '& .MuiInputLabel-root': {
-                        fontWeight: 500,
+                      '&.Mui-focused fieldset': {
+                        borderColor: '#E5E7EB',
+                        borderWidth: 1,
                       },
-                    }}
-                  />
+                      '&:hover': {
+                        backgroundColor: 'rgba(241,245,249,0.6)',
+                      },
+                    },
+                    '& .MuiOutlinedInput-input': {
+                      '&:focus': { outline: 'none' },
+                    },
+                    '& .MuiInputLabel-root': {
+                      fontWeight: 500,
+                    },
+                  }}
+                />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
@@ -519,24 +502,34 @@ function Contacts() {
                     error={!!errors.lastName}
                     helperText={errors.lastName}
                     variant="outlined"
-                    sx={{ 
-                      '& .MuiOutlinedInput-root': {
-                        borderRadius: '12px',
-                        backgroundColor: 'rgba(241,245,249,0.4)',
-                        transition: 'all 0.3s ease',
-                        '&:hover': {
-                          backgroundColor: 'rgba(241,245,249,0.6)',
-                        },
-                        '&.Mui-focused': {
-                          backgroundColor: 'white',
-                          boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
-                        },
+                  sx={{ 
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: '12px',
+                      backgroundColor: 'rgba(241,245,249,0.4)',
+                      transition: 'all 0.3s ease',
+                      outline: 'none',
+                      '&:focus-within': { outline: 'none' },
+                      '&.Mui-focused': {
+                        outline: 'none',
+                        backgroundColor: 'white',
+                        boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
                       },
-                      '& .MuiInputLabel-root': {
-                        fontWeight: 500,
+                      '&.Mui-focused fieldset': {
+                        borderColor: '#E5E7EB',
+                        borderWidth: 1,
                       },
-                    }}
-                  />
+                      '&:hover': {
+                        backgroundColor: 'rgba(241,245,249,0.6)',
+                      },
+                    },
+                    '& .MuiOutlinedInput-input': {
+                      '&:focus': { outline: 'none' },
+                    },
+                    '& .MuiInputLabel-root': {
+                      fontWeight: 500,
+                    },
+                  }}
+                />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
@@ -550,23 +543,43 @@ function Contacts() {
                     error={!!errors.email}
                     helperText={errors.email}
                     variant="outlined"
-                    sx={{ 
-                      '& .MuiOutlinedInput-root': {
-                        borderRadius: '12px',
-                        backgroundColor: 'rgba(241,245,249,0.4)',
-                        transition: 'all 0.3s ease',
-                        '&:hover': {
-                          backgroundColor: 'rgba(241,245,249,0.6)',
-                        },
-                        '&.Mui-focused': {
-                          backgroundColor: 'white',
-                          boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
-                        },
+                  sx={{ 
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: '12px',
+                      backgroundColor: 'rgba(241,245,249,0.4)',
+                      transition: 'all 0.3s ease',
+                      outline: 'none',
+                      '&:focus-within': { outline: 'none' },
+                      '&.Mui-focused': {
+                        outline: 'none',
+                        backgroundColor: 'white',
+                        boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
                       },
-                      '& .MuiInputLabel-root': {
-                        fontWeight: 500,
+                      '&.Mui-focused fieldset': {
+                        borderColor: '#E5E7EB',
+                        borderWidth: 1,
                       },
-                    }}
+                      '&:hover': {
+                        backgroundColor: 'rgba(241,245,249,0.6)',
+                      },
+                    },
+                    '& .MuiOutlinedInput-input': {
+                      '&:focus': { outline: 'none' },
+                    },
+                    '& .MuiInputLabel-root': {
+                      fontWeight: 500,
+                    },
+                  }}
+                />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Phone Number (optional)"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    variant="outlined"
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -580,24 +593,34 @@ function Contacts() {
                     error={!!errors.subject}
                     helperText={errors.subject}
                     variant="outlined"
-                    sx={{ 
-                      '& .MuiOutlinedInput-root': {
-                        borderRadius: '12px',
-                        backgroundColor: 'rgba(241,245,249,0.4)',
-                        transition: 'all 0.3s ease',
-                        '&:hover': {
-                          backgroundColor: 'rgba(241,245,249,0.6)',
-                        },
-                        '&.Mui-focused': {
-                          backgroundColor: 'white',
-                          boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
-                        },
+                  sx={{ 
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: '12px',
+                      backgroundColor: 'rgba(241,245,249,0.4)',
+                      transition: 'all 0.3s ease',
+                      outline: 'none',
+                      '&:focus-within': { outline: 'none' },
+                      '&.Mui-focused': {
+                        outline: 'none',
+                        backgroundColor: 'white',
+                        boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
                       },
-                      '& .MuiInputLabel-root': {
-                        fontWeight: 500,
+                      '&.Mui-focused fieldset': {
+                        borderColor: '#E5E7EB',
+                        borderWidth: 1,
                       },
-                    }}
-                  />
+                      '&:hover': {
+                        backgroundColor: 'rgba(241,245,249,0.6)',
+                      },
+                    },
+                    '& .MuiOutlinedInput-input': {
+                      '&:focus': { outline: 'none' },
+                    },
+                    '& .MuiInputLabel-root': {
+                      fontWeight: 500,
+                    },
+                  }}
+                />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
@@ -612,23 +635,43 @@ function Contacts() {
                     error={!!errors.message}
                     helperText={errors.message}
                     variant="outlined"
-                    sx={{ 
-                      '& .MuiOutlinedInput-root': {
-                        borderRadius: '12px',
-                        backgroundColor: 'rgba(241,245,249,0.4)',
-                        transition: 'all 0.3s ease',
-                        '&:hover': {
-                          backgroundColor: 'rgba(241,245,249,0.6)',
-                        },
-                        '&.Mui-focused': {
-                          backgroundColor: 'white',
-                          boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
-                        },
+                  sx={{ 
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: '12px',
+                      backgroundColor: 'rgba(241,245,249,0.4)',
+                      transition: 'all 0.3s ease',
+                      outline: 'none',
+                      '&:focus-within': { outline: 'none' },
+                      '&:hover': {
+                        backgroundColor: 'rgba(241,245,249,0.6)',
                       },
-                      '& .MuiInputLabel-root': {
-                        fontWeight: 500,
+                      '&.Mui-focused': {
+                        outline: 'none',
+                        backgroundColor: 'white',
+                        boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
                       },
-                    }}
+                      '&.Mui-focused fieldset': {
+                        borderColor: '#E5E7EB',
+                        borderWidth: 1,
+                      },
+                    },
+                    '& .MuiOutlinedInput-input': {
+                      '&:focus': { outline: 'none' },
+                    },
+                    '& .MuiInputLabel-root': {
+                      fontWeight: 500,
+                    },
+                  }}
+                />
+                </Grid>
+                {/* Honeypot field */}
+                <Grid item xs={12} style={{ display: 'none' }}>
+                  <TextField
+                    label="Website"
+                    name="website"
+                    value={formData.website}
+                    onChange={handleChange}
+                    variant="outlined"
                   />
                 </Grid>
               </Grid>
@@ -678,20 +721,20 @@ function Contacts() {
           Our customer support team is available during business hours to help you with any urgent tax matters.
         </Typography>
         <Button
-          variant="outlined"
-          color="primary"
+          variant="contained"
           size="large"
           startIcon={<PhoneIcon />}
           sx={{
             borderRadius: '12px',
-            borderWidth: '2px',
             textTransform: 'none',
             px: 4,
             py: 1.5,
-            fontWeight: 600,
+            fontWeight: 700,
+            background: 'linear-gradient(90deg, #1E3A8A 0%, #10B981 100%)',
+            boxShadow: '0 6px 12px rgba(16,185,129,0.25)',
+            color: '#FFFFFF',
             '&:hover': {
-              borderWidth: '2px',
-              backgroundColor: 'rgba(30, 58, 138, 0.04)'
+              boxShadow: '0 10px 20px rgba(16,185,129,0.35)'
             }
           }}
         >
@@ -727,4 +770,4 @@ function Contacts() {
   );
 }
 
-export default Contacts;
+export default ContactUs;

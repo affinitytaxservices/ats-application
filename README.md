@@ -122,6 +122,28 @@ The application is fully responsive and optimized for:
 - Tablets
 - Mobile devices
 
+## 📬 Contact API
+
+- Endpoint: `POST /api/contact`
+- Payload: `{ firstName, lastName, email, phone?, subject, message, website? }`
+- Anti-spam: hidden `website` honeypot must remain empty
+- Rate limiting: 10 requests/hour per IP
+- Storage: persisted to `contact_messages` table
+- Notifications: email sent when `SMTP_*` and `CONTACT_NOTIFY_EMAIL` configured
+
+## 🖼️ Image Guidelines
+
+- Use `ResponsiveImage` for lazy-loaded, responsive images with placeholders
+- Prefer SVG for icons and WebP for photos (keep PNG/JPG as fallback)
+- Keep large hero images under ~300KB where feasible
+
+## 🔧 Maintenance
+
+- Apply DB migrations: `npm run migrate`
+- SMTP env vars for contact notifications:
+  - `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM`, `CONTACT_NOTIFY_EMAIL`
+- Frontend API base URL: `REACT_APP_API_URL`
+
 ## 🤝 Contributing
 
 1. Fork the repository

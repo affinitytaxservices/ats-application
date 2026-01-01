@@ -16,24 +16,27 @@ import VerifyOtp from './components/auth/VerifyOtp';
 import EmployeeLogin from './components/auth/EmployeeLogin';
 import NewAdminDashboard from './components/dashboard/NewAdminDashboard';
 import NewClientDashboard from './components/dashboard/NewClientDashboard';
-import PreparerDashboard from './components/PreparerDashboard';
-import RefundStatusFAB from './components/RefundStatusFAB';
-import RefundStatus from './components/RefundStatus';
+import PreparerDashboard from './components/dashboard/PreparerDashboard';
+import RefundStatusFAB from './components/tax/RefundStatusFAB';
+import RefundStatus from './components/tax/RefundStatus';
 import TaxInformation from './components/tax/TaxInformation';
 import IndividualTax from './components/tax/IndividualTax';
 import BusinessTax from './components/tax/BusinessTax';
 import AboutUs from './components/about/AboutUs';
+import ServicesPage from './components/services/ServicesPage';
 import TaxPlanning from './components/tax/TaxPlanning';
+import FAQs from './components/support/FAQs';
 import Documents from './components/documents/Documents';
 import Appointments from './components/appointments/Appointments';
 import Notifications from './components/notifications/Notifications';
 
-import Contacts from './components/privacy/Contacts';
+import ContactUs from './components/contact/ContactUs';
 import PrivacyPolicy from './components/privacy/PrivacyPolicy';
 import Terms from './components/privacy/Terms';
 import WhatsAppAdmin from './components/admin/WhatsAppAdmin';
 import WhatsAppWidget from './components/common/WhatsAppWidget';
 import NotFound from './components/common/NotFound';
+import ScrollToTop from './components/common/ScrollToTop';
 
 
 
@@ -89,6 +92,7 @@ const DashboardRoute = () => {
 function App() {
   return (
     <div className="app">
+      <ScrollToTop />
       <Navbar />
       <main className="main-content" id="main-content">
         <Routes>
@@ -103,7 +107,9 @@ function App() {
             <Route path="/tax-information" element={<TaxInformation />} />
             <Route path="/individual-tax" element={<IndividualTax />} />
             <Route path="/business-tax" element={<BusinessTax />} />
+            <Route path="/services" element={<ServicesPage />} />
             <Route path="/about" element={<AboutUs />} />
+            <Route path="/faqs" element={<FAQs />} />
             <Route path="/tax-planning" element={<TaxPlanning />} />
             <Route path="/documents" element={
               <ProtectedRoute>
@@ -121,7 +127,7 @@ function App() {
               </ProtectedRoute>
             } />
 
-            <Route path="/contacts" element={<Contacts />} />
+            <Route path="/contact" element={<ContactUs />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-and-conditions" element={<Terms />} />
 

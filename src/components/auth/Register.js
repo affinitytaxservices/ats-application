@@ -12,6 +12,8 @@ import {
   Paper,
   Stack,
   Link,
+  Container,
+  Grid,
 } from '@mui/material';
 import {
   Visibility,
@@ -130,254 +132,398 @@ function Register() {
     <Box
       sx={{
         minHeight: '100vh',
-        backgroundColor: '#F8FAFC',
+        background: 'linear-gradient(135deg, #0F172A 0%, #1E3A8A 60%, #10B981 100%)',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center',
-        padding: 2,
+        py: { xs: 4, md: 8 },
       }}
     >
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <Paper
-          elevation={1}
-          sx={{
-            p: 4,
-            borderRadius: '16px',
-            border: '1px solid #E5E7EB',
-            maxWidth: 480,
-            width: '100%',
-          }}
-        >
-            <Box sx={{ textAlign: 'center', mb: 4 }}>
-              <Typography
-                variant="h4"
+      <Container maxWidth="lg">
+        <Grid container spacing={4} alignItems="stretch">
+          <Grid item xs={12} md={6}>
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, ease: 'easeOut' }}
+            >
+              <Paper
+                elevation={0}
                 sx={{
-                  fontWeight: 600,
-                  color: '#1F2937',
-                  mb: 1,
+                  height: '100%',
+                  p: { xs: 4, md: 6 },
+                  borderRadius: 3,
+                  background: 'rgba(255,255,255,0.06)',
+                  backdropFilter: 'blur(8px)',
+                  border: '1px solid rgba(255,255,255,0.15)',
                 }}
               >
-                Create Account
-              </Typography>
-              <Typography
-                variant="body1"
+                <Typography
+                  variant="h3"
+                  sx={{
+                    fontWeight: 800,
+                    color: '#FFFFFF',
+                    mb: 2,
+                    letterSpacing: 0.5,
+                  }}
+                >
+                  Affinity Tax Services
+                </Typography>
+                <Typography
+                  variant="h6"
+                  sx={{ color: 'rgba(255,255,255,0.8)', mb: 4 }}
+                >
+                  Create your secure account in minutes
+                </Typography>
+                <Stack spacing={2}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                    <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: '#10B981' }} />
+                    <Typography sx={{ color: '#E5E7EB', fontWeight: 500 }}>
+                      Email verification and secure password requirements
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                    <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: '#3B82F6' }} />
+                    <Typography sx={{ color: '#E5E7EB', fontWeight: 500 }}>
+                      Personalized dashboard and document tracking
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                    <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: '#F59E0B' }} />
+                    <Typography sx={{ color: '#E5E7EB', fontWeight: 500 }}>
+                      Trusted support for every tax season
+                    </Typography>
+                  </Box>
+                </Stack>
+              </Paper>
+            </motion.div>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, ease: 'easeOut' }}
+            >
+              <Paper
+                elevation={0}
                 sx={{
-                  color: '#6B7280',
-                  fontWeight: 400,
+                  p: { xs: 4, md: 6 },
+                  borderRadius: 3,
+                  background: '#FFFFFF',
+                  border: '1px solid #E5E7EB',
                 }}
               >
-                Join us today and get started
-              </Typography>
-            </Box>
-
-            <Box component="form" onSubmit={handleSubmit}>
-              {generalError && (
-                <Alert 
-                  severity="error" 
-                  sx={{ 
-                    mb: 3,
-                    borderRadius: '8px',
-                  }}
-                >
-                  {generalError}
-                </Alert>
-              )}
-
-              <Stack spacing={3}>
-                <TextField
-                  fullWidth
-                  label="First Name"
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={handleChange}
-                  error={!!errors.firstName}
-                  helperText={errors.firstName}
-                  autoComplete="given-name"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <Person sx={{ color: '#6B7280' }} />
-                      </InputAdornment>
-                    ),
-                  }}
-                  sx={{
-                    '& .MuiOutlinedInput-root': {
-                      borderRadius: '8px',
-                    },
-                  }}
-                />
-
-                <TextField
-                  fullWidth
-                  label="Last Name"
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleChange}
-                  error={!!errors.lastName}
-                  helperText={errors.lastName}
-                  autoComplete="family-name"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <Person sx={{ color: '#6B7280' }} />
-                      </InputAdornment>
-                    ),
-                  }}
-                  sx={{
-                    '& .MuiOutlinedInput-root': {
-                      borderRadius: '8px',
-                    },
-                  }}
-                />
-
-                <TextField
-                  fullWidth
-                  label="Email Address"
-                  name="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  error={!!errors.email}
-                  helperText={errors.email}
-                  autoComplete="email"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <Email sx={{ color: '#6B7280' }} />
-                      </InputAdornment>
-                    ),
-                  }}
-                  sx={{
-                    '& .MuiOutlinedInput-root': {
-                      borderRadius: '8px',
-                    },
-                  }}
-                />
-
-                <TextField
-                  fullWidth
-                  label="Password"
-                  name="password"
-                  type={showPassword ? 'text' : 'password'}
-                  value={formData.password}
-                  onChange={handleChange}
-                  error={!!errors.password}
-                  helperText={errors.password}
-                  autoComplete="new-password"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <Lock sx={{ color: '#6B7280' }} />
-                      </InputAdornment>
-                    ),
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={togglePasswordVisibility}
-                          edge="end"
-                          sx={{ color: '#6B7280' }}
-                        >
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                  }}
-                  sx={{
-                    '& .MuiOutlinedInput-root': {
-                      borderRadius: '8px',
-                    },
-                  }}
-                />
-
-                <TextField
-                  fullWidth
-                  label="Confirm Password"
-                  name="confirmPassword"
-                  type={showConfirmPassword ? 'text' : 'password'}
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  error={!!errors.confirmPassword}
-                  helperText={errors.confirmPassword}
-                  autoComplete="new-password"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <Lock sx={{ color: '#6B7280' }} />
-                      </InputAdornment>
-                    ),
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle confirm password visibility"
-                          onClick={toggleConfirmPasswordVisibility}
-                          edge="end"
-                          sx={{ color: '#6B7280' }}
-                        >
-                          {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                  }}
-                  sx={{
-                    '& .MuiOutlinedInput-root': {
-                      borderRadius: '8px',
-                    },
-                  }}
-                />
-
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  size="small"
-                  disabled={isSubmitting}
-                  startIcon={isSubmitting ? <CircularProgress size={16} /> : <PersonAdd />}
-                  sx={{
-                    py: 1,
-                    borderRadius: '8px',
-                    backgroundColor: '#4F46E5',
-                    fontWeight: 600,
-                    fontSize: '0.875rem',
-                    textTransform: 'none',
-                    '&:hover': {
-                      backgroundColor: '#4338CA',
-                    },
-                    '&:disabled': {
-                      backgroundColor: '#9CA3AF',
-                    },
-                  }}
-                >
-                  {isSubmitting ? 'Creating Account...' : 'Create Account'}
-                </Button>
-              </Stack>
-
-              <Box sx={{ textAlign: 'center', mt: 3 }}>
-                <Typography variant="body2" sx={{ color: '#6B7280' }}>
-                  Already have an account?{' '}
-                  <Link
-                    component={RouterLink}
-                    to="/login"
+                <Box sx={{ mb: 4, textAlign: 'left' }}>
+                  <Typography
+                    variant="h4"
                     sx={{
-                      color: '#4F46E5',
-                      textDecoration: 'none',
-                      fontWeight: 500,
-                      '&:hover': {
-                        textDecoration: 'underline',
-                      },
+                      fontWeight: 700,
+                      color: '#0F172A',
+                      mb: 1,
                     }}
                   >
-                    Sign in
-                  </Link>
-                </Typography>
-              </Box>
-            </Box>
-          </Paper>
-        </motion.div>
+                    Create Account
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    sx={{ color: '#6B7280' }}
+                  >
+                    Fill in your details to get started
+                  </Typography>
+                </Box>
+
+                <Box component="form" onSubmit={handleSubmit}>
+                  {generalError && (
+                    <Alert
+                      severity="error"
+                      sx={{
+                        mb: 3,
+                        borderRadius: 2,
+                      }}
+                    >
+                      {generalError}
+                    </Alert>
+                  )}
+
+                  <Stack spacing={3}>
+                    <TextField
+                      fullWidth
+                      label="First Name"
+                      name="firstName"
+                      value={formData.firstName}
+                      onChange={handleChange}
+                      error={!!errors.firstName}
+                      helperText={errors.firstName}
+                      autoComplete="given-name"
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <Person sx={{ color: '#9CA3AF' }} />
+                          </InputAdornment>
+                        ),
+                      }}
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: 2,
+                      backgroundColor: '#F9FAFB',
+                      outline: 'none',
+                      '&:focus-within': { outline: 'none' },
+                      '&.Mui-focused': { outline: 'none' },
+                      '& fieldset': {
+                        borderColor: '#E5E7EB',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: '#CBD5E1',
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: '#E5E7EB',
+                        borderWidth: 1,
+                      }
+                    },
+                    '& .MuiOutlinedInput-input': {
+                      '&:focus': { outline: 'none' },
+                    },
+                  }}
+                />
+
+                    <TextField
+                      fullWidth
+                      label="Last Name"
+                      name="lastName"
+                      value={formData.lastName}
+                      onChange={handleChange}
+                      error={!!errors.lastName}
+                      helperText={errors.lastName}
+                      autoComplete="family-name"
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <Person sx={{ color: '#9CA3AF' }} />
+                          </InputAdornment>
+                        ),
+                      }}
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: 2,
+                      backgroundColor: '#F9FAFB',
+                      outline: 'none',
+                      '&:focus-within': { outline: 'none' },
+                      '&.Mui-focused': { outline: 'none' },
+                      '& fieldset': {
+                        borderColor: '#E5E7EB',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: '#CBD5E1',
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: '#E5E7EB',
+                        borderWidth: 1,
+                      },
+                    },
+                    '& .MuiOutlinedInput-input': {
+                      '&:focus': { outline: 'none' },
+                    },
+                  }}
+                />
+
+                    <TextField
+                      fullWidth
+                      label="Email Address"
+                      name="email"
+                      type="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      error={!!errors.email}
+                      helperText={errors.email}
+                      autoComplete="email"
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <Email sx={{ color: '#9CA3AF' }} />
+                          </InputAdornment>
+                        ),
+                      }}
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: 2,
+                      backgroundColor: '#F9FAFB',
+                      outline: 'none',
+                      '&:focus-within': { outline: 'none' },
+                      '&.Mui-focused': { outline: 'none' },
+                      '& fieldset': {
+                        borderColor: '#E5E7EB',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: '#CBD5E1',
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: '#E5E7EB',
+                        borderWidth: 1,
+                      },
+                    },
+                    '& .MuiOutlinedInput-input': {
+                      '&:focus': { outline: 'none' },
+                    },
+                  }}
+                />
+
+                    <TextField
+                      fullWidth
+                      label="Password"
+                      name="password"
+                      type={showPassword ? 'text' : 'password'}
+                      value={formData.password}
+                      onChange={handleChange}
+                      error={!!errors.password}
+                      helperText={errors.password}
+                      autoComplete="new-password"
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <Lock sx={{ color: '#9CA3AF' }} />
+                          </InputAdornment>
+                        ),
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={togglePasswordVisibility}
+                              edge="end"
+                              sx={{ color: '#9CA3AF' }}
+                            >
+                              {showPassword ? <VisibilityOff /> : <Visibility />}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: 2,
+                      backgroundColor: '#F9FAFB',
+                      outline: 'none',
+                      '&:focus-within': { outline: 'none' },
+                      '&.Mui-focused': { outline: 'none' },
+                      '& fieldset': {
+                        borderColor: '#E5E7EB',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: '#CBD5E1',
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: '#E5E7EB',
+                        borderWidth: 1,
+                      },
+                    },
+                    '& .MuiOutlinedInput-input': {
+                      '&:focus': { outline: 'none' },
+                    },
+                  }}
+                />
+
+                    <TextField
+                      fullWidth
+                      label="Confirm Password"
+                      name="confirmPassword"
+                      type={showConfirmPassword ? 'text' : 'password'}
+                      value={formData.confirmPassword}
+                      onChange={handleChange}
+                      error={!!errors.confirmPassword}
+                      helperText={errors.confirmPassword}
+                      autoComplete="new-password"
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <Lock sx={{ color: '#9CA3AF' }} />
+                          </InputAdornment>
+                        ),
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle confirm password visibility"
+                              onClick={toggleConfirmPasswordVisibility}
+                              edge="end"
+                              sx={{ color: '#9CA3AF' }}
+                            >
+                              {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
+                      sx={{
+                        '& .MuiOutlinedInput-root': {
+                          borderRadius: 2,
+                          backgroundColor: '#F9FAFB',
+                          outline: 'none',
+                          '&:focus-within': { outline: 'none' },
+                          '&.Mui-focused': { outline: 'none' },
+                          '& fieldset': {
+                            borderColor: '#E5E7EB',
+                          },
+                          '&:hover fieldset': {
+                            borderColor: '#CBD5E1',
+                          },
+                          '&.Mui-focused fieldset': {
+                        borderColor: '#E5E7EB',
+                        borderWidth: 1,
+                      },
+                        },
+                        '& .MuiOutlinedInput-input': {
+                          '&:focus': { outline: 'none' },
+                        },
+                      }}
+                    />
+
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      disabled={isSubmitting}
+                      startIcon={isSubmitting ? <CircularProgress size={18} /> : <PersonAdd />}
+                      sx={{
+                        py: 1.25,
+                        borderRadius: 2,
+                        background: 'linear-gradient(90deg, #1E3A8A 0%, #10B981 100%)',
+                        color: '#FFFFFF',
+                        fontWeight: 700,
+                        textTransform: 'none',
+                        boxShadow: '0 6px 12px rgba(16,185,129,0.25)',
+                        '&:hover': {
+                          boxShadow: '0 10px 20px rgba(16,185,129,0.35)',
+                        },
+                        '&:disabled': {
+                          backgroundColor: '#9CA3AF',
+                          color: '#FFFFFF',
+                        },
+                      }}
+                    >
+                      {isSubmitting ? 'Creating Account...' : 'Create Account'}
+                    </Button>
+                  </Stack>
+
+                  <Box sx={{ textAlign: 'center', mt: 4 }}>
+                    <Typography variant="body2" sx={{ color: '#6B7280', mb: 1 }}>
+                      Already have an account?
+                    </Typography>
+                    <Link
+                      component={RouterLink}
+                      to="/login"
+                      sx={{
+                        color: '#3B82F6',
+                        textDecoration: 'none',
+                        fontWeight: 700,
+                        '&:hover': {
+                          textDecoration: 'underline',
+                        },
+                      }}
+                    >
+                      Sign in
+                    </Link>
+                  </Box>
+                </Box>
+              </Paper>
+            </motion.div>
+          </Grid>
+        </Grid>
+      </Container>
     </Box>
   );
 }

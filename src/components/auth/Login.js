@@ -12,6 +12,8 @@ import {
   Paper,
   Stack,
   Link,
+  Container,
+  Grid,
 } from '@mui/material';
 import {
   Email,
@@ -104,239 +106,292 @@ function Login() {
     <Box
       sx={{
         minHeight: '100vh',
-        background: '#FAFAFA',
+        background: 'linear-gradient(135deg, #0F172A 0%, #1E3A8A 60%, #10B981 100%)',
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center',
-        padding: 2,
+        py: { xs: 4, md: 8 },
       }}
     >
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-      >
-        <Paper
-          elevation={0}
-          sx={{
-            p: { xs: 4, sm: 6 },
-            borderRadius: 2,
-            background: '#FFFFFF',
-            border: '1px solid #E5E7EB',
-            maxWidth: 400,
-            width: '100%',
-          }}
-        >
-            {/* Header */}
-            <Box sx={{ textAlign: 'center', mb: 4 }}>
-              <Typography
-                variant="h4"
+      <Container maxWidth="lg">
+        <Grid container spacing={4} alignItems="stretch">
+          <Grid item xs={12} md={6}>
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, ease: 'easeOut' }}
+            >
+              <Paper
+                elevation={0}
                 sx={{
-                  fontWeight: 600,
-                  color: '#1F2937',
-                  mb: 1,
-                  fontSize: { xs: '1.75rem', sm: '2rem' },
+                  height: '100%',
+                  p: { xs: 4, md: 6 },
+                  borderRadius: 3,
+                  background: 'rgba(255,255,255,0.06)',
+                  backdropFilter: 'blur(8px)',
+                  border: '1px solid rgba(255,255,255,0.15)',
                 }}
               >
-                Welcome Back
-              </Typography>
-              <Typography
-                variant="body1"
-                sx={{
-                  color: '#6B7280',
-                  fontSize: '0.95rem',
-                }}
-              >
-                Sign in to your account
-              </Typography>
-            </Box>
-
-            {/* Error Alert */}
-            {generalError && (
-              <Alert 
-                severity="error" 
-                sx={{ 
-                  mb: 3,
-                  borderRadius: 1,
-                  '& .MuiAlert-message': {
-                    fontSize: '0.875rem',
-                  }
-                }}
-              >
-                {generalError}
-              </Alert>
-            )}
-
-            {/* Login Form */}
-            <Box component="form" onSubmit={handleSubmit} noValidate>
-              <Stack spacing={3}>
-                {/* Email Field */}
-                <TextField
-                  fullWidth
-                  name="email"
-                  label="Email Address"
-                  type="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  error={!!errors.email}
-                  helperText={errors.email}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <Email sx={{ color: '#9CA3AF', fontSize: '1.25rem' }} />
-                      </InputAdornment>
-                    ),
-                  }}
+                <Typography
+                  variant="h3"
                   sx={{
+                    fontWeight: 800,
+                    color: '#FFFFFF',
+                    mb: 2,
+                    letterSpacing: 0.5,
+                  }}
+                >
+                  Affinity Tax Services
+                </Typography>
+                <Typography
+                  variant="h6"
+                  sx={{ color: 'rgba(255,255,255,0.8)', mb: 4 }}
+                >
+                  Secure access to your personalized tax dashboard
+                </Typography>
+                <Stack spacing={2}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                    <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: '#10B981' }} />
+                    <Typography sx={{ color: '#E5E7EB', fontWeight: 500 }}>
+                      Encrypted authentication and role-based access
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                    <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: '#3B82F6' }} />
+                    <Typography sx={{ color: '#E5E7EB', fontWeight: 500 }}>
+                      Real-time status and notifications
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                    <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: '#F59E0B' }} />
+                    <Typography sx={{ color: '#E5E7EB', fontWeight: 500 }}>
+                      Seamless document management
+                    </Typography>
+                  </Box>
+                </Stack>
+              </Paper>
+            </motion.div>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6, ease: 'easeOut' }}
+            >
+              <Paper
+                elevation={0}
+                sx={{
+                  p: { xs: 4, md: 6 },
+                  borderRadius: 3,
+                  background: '#FFFFFF',
+                  border: '1px solid #E5E7EB',
+                }}
+              >
+                <Box sx={{ mb: 4 }}>
+                  <Typography
+                    variant="h4"
+                    sx={{
+                      fontWeight: 700,
+                      color: '#0F172A',
+                      mb: 1,
+                    }}
+                  >
+                    Sign In
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    sx={{ color: '#6B7280' }}
+                  >
+                    Enter your credentials to access your account
+                  </Typography>
+                </Box>
+
+                {generalError && (
+                  <Alert
+                    severity="error"
+                    sx={{
+                      mb: 3,
+                      borderRadius: 2,
+                    }}
+                  >
+                    {generalError}
+                  </Alert>
+                )}
+
+                <Box component="form" onSubmit={handleSubmit} noValidate>
+                  <Stack spacing={3}>
+                    <TextField
+                      fullWidth
+                      name="email"
+                      label="Email Address"
+                      type="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      error={!!errors.email}
+                      helperText={errors.email}
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <Email sx={{ color: '#9CA3AF', fontSize: '1.25rem' }} />
+                          </InputAdornment>
+                        ),
+                      }}
+                      sx={{
                     '& .MuiOutlinedInput-root': {
-                      borderRadius: 1.5,
+                      borderRadius: 2,
                       backgroundColor: '#F9FAFB',
+                      outline: 'none',
+                      '&:focus-within': { outline: 'none' },
+                      '&.Mui-focused': { outline: 'none' },
                       '& fieldset': {
                         borderColor: '#E5E7EB',
                       },
                       '&:hover fieldset': {
-                        borderColor: '#D1D5DB',
+                        borderColor: '#CBD5E1',
                       },
                       '&.Mui-focused fieldset': {
-                        borderColor: '#6366F1',
-                        borderWidth: 2,
+                        borderColor: '#E5E7EB',
+                        borderWidth: 1,
                       },
+                    },
+                    '& .MuiOutlinedInput-input': {
+                      '&:focus': { outline: 'none' },
                     },
                     '& .MuiInputLabel-root': {
                       color: '#6B7280',
                       '&.Mui-focused': {
-                        color: '#6366F1',
+                        color: '#3B82F6',
                       },
                     },
                   }}
                 />
 
-                {/* Password Field */}
-                <TextField
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type={showPassword ? 'text' : 'password'}
-                  value={formData.password}
-                  onChange={handleChange}
-                  error={!!errors.password}
-                  helperText={errors.password}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <Lock sx={{ color: '#9CA3AF', fontSize: '1.25rem' }} />
-                      </InputAdornment>
-                    ),
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton
-                          onClick={togglePasswordVisibility}
-                          edge="end"
-                          sx={{ color: '#9CA3AF' }}
-                        >
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                  }}
-                  sx={{
+                    <TextField
+                      fullWidth
+                      name="password"
+                      label="Password"
+                      type={showPassword ? 'text' : 'password'}
+                      value={formData.password}
+                      onChange={handleChange}
+                      error={!!errors.password}
+                      helperText={errors.password}
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <Lock sx={{ color: '#9CA3AF', fontSize: '1.25rem' }} />
+                          </InputAdornment>
+                        ),
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton
+                              onClick={togglePasswordVisibility}
+                              edge="end"
+                              sx={{ color: '#9CA3AF' }}
+                            >
+                              {showPassword ? <VisibilityOff /> : <Visibility />}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
+                      sx={{
                     '& .MuiOutlinedInput-root': {
-                      borderRadius: 1.5,
+                      borderRadius: 2,
                       backgroundColor: '#F9FAFB',
+                      outline: 'none',
+                      '&:focus-within': { outline: 'none' },
+                      '&.Mui-focused': { outline: 'none' },
                       '& fieldset': {
                         borderColor: '#E5E7EB',
                       },
                       '&:hover fieldset': {
-                        borderColor: '#D1D5DB',
+                        borderColor: '#CBD5E1',
                       },
                       '&.Mui-focused fieldset': {
-                        borderColor: '#6366F1',
-                        borderWidth: 2,
+                        borderColor: '#E5E7EB',
+                        borderWidth: 1,
                       },
+                    },
+                    '& .MuiOutlinedInput-input': {
+                      '&:focus': { outline: 'none' },
                     },
                     '& .MuiInputLabel-root': {
                       color: '#6B7280',
                       '&.Mui-focused': {
-                        color: '#6366F1',
+                        color: '#3B82F6',
                       },
                     },
                   }}
                 />
 
-                {/* Forgot Password Link */}
-                <Box sx={{ textAlign: 'right' }}>
+                    <Box sx={{ textAlign: 'right' }}>
+                      <Link
+                        component={RouterLink}
+                        to="/forgot-password"
+                        sx={{
+                          color: '#3B82F6',
+                          textDecoration: 'none',
+                          fontSize: '0.9rem',
+                          fontWeight: 600,
+                          '&:hover': {
+                            textDecoration: 'underline',
+                          },
+                        }}
+                      >
+                        Forgot your password?
+                      </Link>
+                    </Box>
+
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      disabled={isSubmitting}
+                      startIcon={isSubmitting ? <CircularProgress size={18} /> : <LoginIcon />}
+                      sx={{
+                        py: 1.25,
+                        borderRadius: 2,
+                        background: 'linear-gradient(90deg, #1E3A8A 0%, #10B981 100%)',
+                        color: '#FFFFFF',
+                        fontWeight: 700,
+                        textTransform: 'none',
+                        boxShadow: '0 6px 12px rgba(16,185,129,0.25)',
+                        '&:hover': {
+                          boxShadow: '0 10px 20px rgba(16,185,129,0.35)',
+                        },
+                        '&:disabled': {
+                          backgroundColor: '#9CA3AF',
+                          color: '#FFFFFF',
+                        },
+                      }}
+                    >
+                      {isSubmitting ? 'Signing In...' : 'Sign In'}
+                    </Button>
+                  </Stack>
+                </Box>
+
+                <Box sx={{ textAlign: 'center', mt: 4 }}>
+                  <Typography variant="body2" sx={{ color: '#6B7280', mb: 1 }}>
+                    Don't have an account?
+                  </Typography>
                   <Link
                     component={RouterLink}
-                    to="/forgot-password"
+                    to="/register"
                     sx={{
-                      color: '#6366F1',
+                      color: '#3B82F6',
                       textDecoration: 'none',
-                      fontSize: '0.875rem',
-                      fontWeight: 500,
+                      fontWeight: 700,
                       '&:hover': {
                         textDecoration: 'underline',
                       },
                     }}
                   >
-                    Forgot your password?
+                    Create an account
                   </Link>
                 </Box>
-
-                {/* Submit Button */}
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  size="small"
-                  disabled={isSubmitting}
-                  startIcon={isSubmitting ? <CircularProgress size={16} /> : <LoginIcon />}
-                  sx={{
-                    py: 1,
-                    borderRadius: 1.5,
-                    backgroundColor: '#1F2937',
-                    color: '#FFFFFF',
-                    fontWeight: 600,
-                    fontSize: '0.875rem',
-                    textTransform: 'none',
-                    boxShadow: 'none',
-                    '&:hover': {
-                      backgroundColor: '#374151',
-                      boxShadow: '0 4px 12px rgba(31, 41, 55, 0.15)',
-                    },
-                    '&:disabled': {
-                      backgroundColor: '#9CA3AF',
-                      color: '#FFFFFF',
-                    },
-                  }}
-                >
-                  {isSubmitting ? 'Signing In...' : 'Sign In'}
-                </Button>
-              </Stack>
-            </Box>
-
-            {/* Register Link */}
-            <Box sx={{ textAlign: 'center', mt: 4, pt: 3, borderTop: '1px solid #F3F4F6' }}>
-              <Typography variant="body2" sx={{ color: '#6B7280', mb: 1 }}>
-                Don't have an account?
-              </Typography>
-              <Link
-                component={RouterLink}
-                to="/register"
-                sx={{
-                  color: '#6366F1',
-                  textDecoration: 'none',
-                  fontWeight: 600,
-                  fontSize: '0.875rem',
-                  '&:hover': {
-                    textDecoration: 'underline',
-                  },
-                }}
-              >
-                Create an account
-              </Link>
-            </Box>
-          </Paper>
-        </motion.div>
+              </Paper>
+            </motion.div>
+          </Grid>
+        </Grid>
+      </Container>
     </Box>
   );
 }
