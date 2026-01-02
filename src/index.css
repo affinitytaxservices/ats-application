@@ -3,7 +3,7 @@ body {
   font-family: "Inter", "Roboto", "Helvetica", "Arial", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #F8FAFC; /* Slate 50 */
+  background-color: #F0F9FF; /* Light Sky Blue to match global theme */
   color: #1E293B; /* Slate 800 */
 }
 

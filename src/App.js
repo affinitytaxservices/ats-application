@@ -6,6 +6,7 @@ import './styles/mobile.css';
 // Layout Components
 import Navbar from './components/layout/navbar';
 import Footer from './components/layout/Footer';
+import GlobalBackground from './components/layout/GlobalBackground';
 
 // Page Components
 import HomePage from './components/home/HomePage';
@@ -92,6 +93,7 @@ const DashboardRoute = () => {
 function App() {
   return (
     <div className="app">
+      <GlobalBackground />
       <ScrollToTop />
       <Navbar />
       <main className="main-content" id="main-content">

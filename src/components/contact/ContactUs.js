@@ -145,7 +145,7 @@ function ContactUs() {
         structuredData={seo.structuredData}
       />
       <Box sx={{ 
-        background: 'linear-gradient(135deg, #0F172A 0%, #1E3A8A 60%, #10B981 100%)',
+        // Background handled globally
         py: 8,
         minHeight: '100vh'
       }}>

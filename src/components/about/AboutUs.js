@@ -15,15 +15,15 @@ import { styled } from '@mui/material/styles';
 // Styled components
 const StyledCard = styled(Card)(() => ({
   height: '100%',
-  background: 'rgba(248, 250, 252, 0.95)',
-  backdropFilter: 'blur(10px)',
-  border: '1px solid rgba(226, 232, 240, 0.8)',
+  background: '#FFFFFF', // Solid white background
+  backdropFilter: 'none',
+  border: 'none', // Clean borderless look
   transition: 'all 0.3s ease',
   '&:hover': 
   {
     transform: 'translateY(-5px)',
     boxShadow: '0 8px 25px rgba(80, 134, 219, 0.15)',
-    background: 'rgba(241, 245, 249, 0.98)',
+    background: '#FFFFFF',
   }
 }));
 
@@ -101,21 +101,9 @@ const AboutUs = () => {
       />
     <Box sx={{ 
       minHeight: '100vh', 
-      background: 'rgba(248, 250, 252, 0.95)',
-      backdropFilter: 'blur(10px)',
-      position: 'relative',
-      '&::before': {
-        content: '""',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        background: 'linear-gradient(135deg, #1E3A8A 0%, #10B981 100%)',
-        zIndex: -1
-      }
     }}>
-      <Container maxWidth="lg" sx={{ py: 8 }}>
+
+      <Container maxWidth="lg" sx={{ py: 8, position: 'relative', zIndex: 1 }}>
         {/* Header Section */}
         <Fade in timeout={1000}>
           <Box textAlign="center" mb={8}>
@@ -125,17 +113,16 @@ const AboutUs = () => {
               gutterBottom
               sx={{
                 fontWeight: 'bold',
-                color: '#ffffff',
+                color: '#1E293B', // Dark Slate
                 mb: 3,
-                textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
               }}
             >
-              About <Box component="span" sx={{ color: '#3B82F6' }}>Affinity Tax Services</Box>
+              About <Box component="span" sx={{ color: '#2563EB' }}>Affinity Tax Services</Box>
             </Typography>
             <Typography
               variant="h5"
               sx={{
-                color: 'rgba(255, 255, 255, 0.9)',
+                color: '#475569', // Slate 600
                 maxWidth: '800px',
                 mx: 'auto',
                 lineHeight: 1.6,
