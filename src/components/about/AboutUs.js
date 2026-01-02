@@ -67,21 +67,21 @@ const values = [
 
 const teamMembers = [
   {
-    name: 'Teja Reddy EA',
+    name: 'Krishna EA',
     role: 'Managing Partner',
-    experience: 'X years in tax preparation and business consulting',
+    experience: '8+ years in tax preparation and business consulting',
     specialties: ['Business Tax Strategy', 'Tax Planning', 'IRS Representation'],
   },
   {
-    name: 'Arvind Reddy EA',
+    name: 'Arjun EA',
     role: 'Senior Tax Consultant',
-    experience: 'X years in individual and corporate taxation',
+    experience: '4+ years in individual and corporate taxation',
     specialties: ['Business Tax Returns', 'Individual Tax Returns', 'Tax-Exempt Organizations', 'Estate & Trust Returns'],
   },
   {
-    name: 'Sri Nithya EA',
+    name: 'Achyut EA',
     role: 'Tax Planning Specialist',
-    experience: 'X years in strategic tax planning',      
+    experience: '4+ years in strategic tax planning',      
     specialties: ['Individual Tax Returns', 'Tax-Exempt Organizations', 'Estate & Trust Returns'],
   },
 ];

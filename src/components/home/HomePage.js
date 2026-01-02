@@ -96,7 +96,7 @@ const HomePage = () => {
 
   return (
     <Box sx={{ overflowX: 'hidden' }}>
-      <SEOHelmet {...seoConfig.home} />
+      <SEOHelmet {...seoConfig.pages.home} />
       
       {/* Hero Section */}
       <Box 
@@ -237,7 +237,7 @@ const HomePage = () => {
                       transition: 'all 0.3s ease'
                     }}
                   >
-                    Start Free Filing
+                    Begin Your Tax Return Today
                   </Button>
                   <Button 
                     variant="text" 
@@ -288,8 +288,8 @@ const HomePage = () => {
                   </Stack>
                   <Box>
                     <Stack direction="row" spacing={0.5} alignItems="center">
-                      <Rating value={5} readOnly size="small" />
-                      <Typography variant="body1" fontWeight="bold">5.0/5</Typography>
+                      <Rating value={4.3} readOnly precision={0.1} size="small" />
+                      <Typography variant="body1" fontWeight="bold">4.3/5</Typography>
                     </Stack>
                     <Typography variant="body2" color="text.secondary">from 1,000+ happy clients</Typography>
                   </Box>
@@ -337,8 +337,8 @@ const HomePage = () => {
                   }}
                 >
                   <ResponsiveImage 
-                    src="/images/hero-dashboard.svg" 
-                    alt="Tax Planning Dashboard - Financial Analytics and Savings"
+                    src="/images/tax-return-hero.svg" 
+                    alt="2025 Tax Return Document with Refund"
                     width="100%"
                     height="100%"
                     borderRadius={8}

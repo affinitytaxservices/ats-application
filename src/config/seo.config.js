@@ -298,36 +298,69 @@ export const seoConfig = {
             'name': 'How long does it take to get my refund?',
             'acceptedAnswer': {
               '@type': 'Answer',
-              'text': 'Most refunds are issued within 21 days for taxpayers who file electronically and choose direct deposit. Paper returns can take 6-8 weeks or longer. You can check the status of your refund using our "Refund Status" tool or the IRS "Where\'s My Refund" tool.'
-            }
-          },
-          {
-            '@type': 'Question',
-            'name': 'Do you offer tax planning services?',
-            'acceptedAnswer': {
-              '@type': 'Answer',
-              'text': 'Yes, we provide comprehensive tax planning services for both individuals and businesses. Our goal is to help you minimize your tax liability through strategic planning throughout the year, not just at tax time.'
-            }
-          },
-          {
-            '@type': 'Question',
-            'name': 'Can you help if I get audited by the IRS?',
-            'acceptedAnswer': {
-              '@type': 'Answer',
-              'text': 'Absolutely. We offer audit support and representation services. If you receive a notice from the IRS, do not ignore it. Contact us immediately, and we will help you understand the notice and determine the best course of action.'
-            }
-          },
-          {
-            '@type': 'Question',
-            'name': 'What is the difference between a deduction and a credit?',
-            'acceptedAnswer': {
-              '@type': 'Answer',
-              'text': 'A tax deduction lowers your taxable income, which in turn lowers the amount of tax you owe. A tax credit reduces your tax bill dollar-for-dollar. Credits are generally more valuable than deductions.'
+              'text': 'For e-filed returns with direct deposit, most refunds are issued within 21 days. Paper returns can take 6-8 weeks or longer. You can track your refund status using our Refund Status tool or the IRS Where\'s My Refund? tool.'
             }
           }
         ]
       }
     },
+
+    refundStatus: {
+      title: 'Check Tax Refund Status | Affinity Tax Services',
+      description: 'Track your federal and state tax refund status. Direct links to IRS and state revenue department refund tools.',
+      keywords: 'tax refund status, where is my refund, IRS refund, state tax refund, check refund status, tax return status',
+      canonical: '/refund-status',
+      ogImage: '/og-home.jpg',
+      structuredData: {
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        'name': 'Tax Refund Status Tools',
+        'description': 'Links to federal and state tax refund tracking tools'
+      }
+    },
+
+    login: {
+      title: 'Client Login | Affinity Tax Services',
+      description: 'Secure client portal login for Affinity Tax Services. Access your tax documents and status updates.',
+      keywords: 'client login, tax portal, affinity tax login, secure tax documents',
+      canonical: '/login',
+      ogImage: '/og-home.jpg',
+      structuredData: {
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        'name': 'Client Login',
+        'description': 'Secure client portal login'
+      }
+    },
+
+    register: {
+      title: 'Create Account | Affinity Tax Services',
+      description: 'Register for an Affinity Tax Services account to manage your tax documents and appointments.',
+      keywords: 'register, create account, tax portal registration',
+      canonical: '/register',
+      ogImage: '/og-home.jpg',
+      structuredData: {
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        'name': 'Create Account',
+        'description': 'Register for an account'
+      }
+    },
+
+    forgotPassword: {
+      title: 'Reset Password | Affinity Tax Services',
+      description: 'Reset your Affinity Tax Services account password.',
+      keywords: 'reset password, forgot password, tax portal help',
+      canonical: '/forgot-password',
+      ogImage: '/og-home.jpg',
+      structuredData: {
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        'name': 'Reset Password',
+        'description': 'Reset your account password'
+      }
+    },
+
   },
 
   // Performance and technical SEO settings

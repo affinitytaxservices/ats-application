@@ -20,6 +20,8 @@ import {
   CheckCircle,
 } from '@mui/icons-material';
 import { motion } from 'framer-motion';
+import SEOHelmet from '../common/SEOHelmet';
+import { seoConfig } from '../../config/seo.config';
 
 function ForgotPassword() {
   const navigate = useNavigate();
@@ -84,6 +86,7 @@ function ForgotPassword() {
           padding: 2,
         }}
       >
+        <SEOHelmet {...seoConfig.pages.forgotPassword} />
         <Container maxWidth="sm">
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
@@ -209,6 +212,7 @@ function ForgotPassword() {
         padding: 2,
       }}
     >
+      <SEOHelmet {...seoConfig.pages.forgotPassword} />
       <Container maxWidth="sm">
         <motion.div
           initial={{ opacity: 0, y: 50 }}

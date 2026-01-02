@@ -24,6 +24,8 @@ import {
 } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 import { useAuth } from '../../contexts/AuthContext';
+import SEOHelmet from '../common/SEOHelmet';
+import { seoConfig } from '../../config/seo.config';
 
 function Login() {
   const navigate = useNavigate();
@@ -112,6 +114,7 @@ function Login() {
         py: { xs: 4, md: 8 },
       }}
     >
+      <SEOHelmet {...seoConfig.pages.login} />
       <Container maxWidth="lg">
         <Grid container spacing={4} alignItems="stretch">
           <Grid item xs={12} md={6}>

@@ -1,6 +1,8 @@
 import React from 'react';
 import { Container, Typography, Card, CardContent, Box, Button } from '@mui/material';
 import LaunchIcon from '@mui/icons-material/Launch';
+import SEOHelmet from '../common/SEOHelmet';
+import { seoConfig } from '../../config/seo.config';
 
 const stateRefundLinks = {
   federal: {
@@ -69,6 +71,7 @@ const RefundStatus = () => {
       paddingTop: 2,
       paddingBottom: 4
     }}>
+      <SEOHelmet {...seoConfig.pages.refundStatus} />
       <Container maxWidth="lg" sx={{ py: 8 }}>
         <Typography variant="h3" gutterBottom sx={{ 
           color: '#0F172A',

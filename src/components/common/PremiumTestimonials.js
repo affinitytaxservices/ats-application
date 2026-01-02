@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { 
   Box, 
   Typography, 
@@ -10,21 +10,16 @@ import {
   IconButton,
   Fade,
   Slide,
-  Button,
-  Chip,
-  Stack,
-  Dialog
+  Button
 } from '@mui/material';
 import { styled, keyframes } from '@mui/material/styles';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import FormatQuoteIcon from '@mui/icons-material/FormatQuote';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import FilterListIcon from '@mui/icons-material/FilterList';
-import AddIcon from '@mui/icons-material/Add';
 import useScrollAnimation from '../../hooks/useScrollAnimation';
 import SuccessStoryModal from './SuccessStoryModal';
-import SuccessStoryForm from './SuccessStoryForm';
+import SEOHelmet from './SEOHelmet';
 
 // Premium animations
 const shimmer = keyframes`
@@ -257,36 +252,13 @@ const testimonials = [
   }
 ];
 
-const PremiumTestimonials = ({ autoRotate = true, rotationInterval = 6000 }) => {
+const PremiumTestimonials = ({ autoRotate = true, rotationInterval = 5000 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [visibleTestimonials, setVisibleTestimonials] = useState(3);
   const [containerRef, isVisible] = useScrollAnimation(0.2);
   const [selectedTestimonial, setSelectedTestimonial] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedFilter, setSelectedFilter] = useState('All');
-  const [filteredTestimonials, setFilteredTestimonials] = useState(testimonials);
-  const [showSubmissionForm, setShowSubmissionForm] = useState(false);
 
-  // Filter categories
-  const filterCategories = ['All', 'Business Owner', 'Freelancer', 'Startup Founder', 'HR Manager'];
-
-  // Filter testimonials based on selected category
-  useEffect(() => {
-    if (selectedFilter === 'All') {
-      setFilteredTestimonials(testimonials);
-    } else {
-      const filtered = testimonials.filter(testimonial => 
-        testimonial.role.includes(selectedFilter)
-      );
-      setFilteredTestimonials(filtered);
-    }
-    setCurrentIndex(0); // Reset to first testimonial when filter changes
-  }, [selectedFilter]);
-
-  // Handle filter change
-  const handleFilterChange = (filter) => {
-    setSelectedFilter(filter);
-  };
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 600) {
@@ -305,35 +277,35 @@ const PremiumTestimonials = ({ autoRotate = true, rotationInterval = 6000 }) => 
 
   // Auto-rotate testimonials
   useEffect(() => {
-    if (!autoRotate || !isVisible || filteredTestimonials.length === 0) return;
+    if (!autoRotate || !isVisible || testimonials.length === 0) return;
 
     const interval = setInterval(() => {
       setCurrentIndex((prev) => 
-        (prev + visibleTestimonials) % filteredTestimonials.length
+        (prev + visibleTestimonials) % testimonials.length
       );
     }, rotationInterval);
 
     return () => clearInterval(interval);
-  }, [autoRotate, rotationInterval, visibleTestimonials, isVisible, filteredTestimonials.length]);
+  }, [autoRotate, rotationInterval, visibleTestimonials, isVisible]);
 
   const handlePrevious = () => {
     setCurrentIndex((prev) => 
-      prev === 0 ? filteredTestimonials.length - visibleTestimonials : prev - visibleTestimonials
+      prev === 0 ? testimonials.length - visibleTestimonials : prev - visibleTestimonials
     );
   };
 
   const handleNext = () => {
     setCurrentIndex((prev) => 
-      (prev + visibleTestimonials) % filteredTestimonials.length
+      (prev + visibleTestimonials) % testimonials.length
     );
   };
 
   const getCurrentTestimonials = () => {
     const result = [];
     for (let i = 0; i < visibleTestimonials; i++) {
-      const index = (currentIndex + i) % filteredTestimonials.length;
-      if (filteredTestimonials[index]) {
-        result.push(filteredTestimonials[index]);
+      const index = (currentIndex + i) % testimonials.length;
+      if (testimonials[index]) {
+        result.push(testimonials[index]);
       }
     }
     return result;
@@ -349,23 +321,30 @@ const PremiumTestimonials = ({ autoRotate = true, rotationInterval = 6000 }) => 
     setSelectedTestimonial(null);
   };
 
-  const handleOpenSubmissionForm = () => {
-    setShowSubmissionForm(true);
-  };
+  const structuredData = useMemo(() => ({
+    '@context': 'https://schema.org',
+    '@type': 'ProfessionalService',
+    'name': 'Affinity Tax Services',
+    'aggregateRating': {
+      '@type': 'AggregateRating',
+      'ratingValue': '5',
+      'reviewCount': testimonials.length.toString()
+    },
+    'review': testimonials.map(t => ({
+      '@type': 'Review',
+      'author': { '@type': 'Person', 'name': t.name },
+      'reviewRating': { '@type': 'Rating', 'ratingValue': t.rating.toString(), 'bestRating': '5' },
+      'reviewBody': t.text
+    }))
+  }), []);
 
-  const handleCloseSubmissionForm = () => {
-    setShowSubmissionForm(false);
-  };
 
-  const handleSubmitStory = (storyData) => {
-    console.log('New success story submitted:', storyData);
-    // Here you would typically send the data to your backend
-    // For now, we'll just log it
-  };
 
   return (
-    <TestimonialsContainer ref={containerRef}>
-      <Box sx={{ textAlign: 'center', mb: 6 }}>
+    <>
+      <SEOHelmet structuredData={structuredData} />
+      <TestimonialsContainer ref={containerRef}>
+        <Box sx={{ textAlign: 'center', mb: 6 }}>
         <Fade in={isVisible} timeout={1000}>
           <Typography
             variant="h3"
@@ -399,69 +378,7 @@ const PremiumTestimonials = ({ autoRotate = true, rotationInterval = 6000 }) => 
           </Typography>
         </Fade>
         
-        {/* Add Story Button */}
-        <Fade in={isVisible} timeout={1600}>
-          <Box sx={{ mb: 4 }}>
-            <Button
-              onClick={handleOpenSubmissionForm}
-              startIcon={<AddIcon />}
-              variant="outlined"
-              size="large"
-              sx={{
-                borderColor: '#667eea',
-                color: '#667eea',
-                borderRadius: '12px',
-                padding: '10px 24px',
-                fontWeight: 600,
-                textTransform: 'none',
-                '&:hover': {
-                  borderColor: '#4F46E5',
-                  background: 'rgba(102, 126, 234, 0.05)',
-                },
-                fontFamily: '"Inter", sans-serif',
-              }}
-            >
-              Share Your Success Story
-            </Button>
-          </Box>
-        </Fade>
-        
-        {/* Filter Chips */}
-        <Fade in={isVisible} timeout={1400}>
-          <Box sx={{ mt: 4, mb: 2 }}>
-            <Stack 
-              direction="row" 
-              spacing={1} 
-              justifyContent="center" 
-              flexWrap="wrap"
-              sx={{ gap: 1 }}
-            >
-              <FilterListIcon sx={{ color: '#667eea', mr: 1, alignSelf: 'center' }} />
-              {filterCategories.map((category) => (
-                <Chip
-                  key={category}
-                  label={category}
-                  onClick={() => handleFilterChange(category)}
-                  variant={selectedFilter === category ? 'filled' : 'outlined'}
-                  sx={{
-                    background: selectedFilter === category 
-                      ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
-                      : 'transparent',
-                    color: selectedFilter === category ? 'white' : '#667eea',
-                    borderColor: '#667eea',
-                    '&:hover': {
-                      background: selectedFilter === category 
-                        ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
-                        : 'rgba(102, 126, 234, 0.1)',
-                    },
-                    fontFamily: '"Inter", sans-serif',
-                    fontWeight: 500,
-                  }}
-                />
-              ))}
-            </Stack>
-          </Box>
-        </Fade>
+
       </Box>
 
       <Box sx={{ position: 'relative', px: { xs: 2, md: 4 } }}>
@@ -598,7 +515,7 @@ const PremiumTestimonials = ({ autoRotate = true, rotationInterval = 6000 }) => 
         </Grid>
 
         {/* Navigation buttons */}
-        {filteredTestimonials.length > visibleTestimonials && (
+        {testimonials.length > visibleTestimonials && (
           <Box
             sx={{
               display: 'flex',
@@ -625,27 +542,8 @@ const PremiumTestimonials = ({ autoRotate = true, rotationInterval = 6000 }) => 
         onClose={handleCloseModal}
         testimonial={selectedTestimonial}
       />
-
-      {/* Success Story Submission Form Dialog */}
-      <Dialog
-        open={showSubmissionForm}
-        onClose={handleCloseSubmissionForm}
-        maxWidth="md"
-        fullWidth
-        PaperProps={{
-          sx: {
-            borderRadius: '20px',
-            background: 'transparent',
-            boxShadow: 'none',
-          }
-        }}
-      >
-        <SuccessStoryForm
-          onSubmit={handleSubmitStory}
-          onClose={handleCloseSubmissionForm}
-        />
-      </Dialog>
     </TestimonialsContainer>
+    </>
   );
 };
 
