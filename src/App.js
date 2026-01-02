@@ -24,6 +24,8 @@ import TaxInformation from './components/tax/TaxInformation';
 import IndividualTax from './components/tax/IndividualTax';
 import BusinessTax from './components/tax/BusinessTax';
 import AboutUs from './components/about/AboutUs';
+import Team from './components/about/Team';
+import Careers from './components/about/Careers';
 import ServicesPage from './components/services/ServicesPage';
 import TaxPlanning from './components/tax/TaxPlanning';
 import FAQs from './components/support/FAQs';
@@ -111,6 +113,8 @@ function App() {
             <Route path="/business-tax" element={<BusinessTax />} />
             <Route path="/services" element={<ServicesPage />} />
             <Route path="/about" element={<AboutUs />} />
+            <Route path="/team" element={<Team />} />
+            <Route path="/careers" element={<Careers />} />
             <Route path="/faqs" element={<FAQs />} />
             <Route path="/tax-planning" element={<TaxPlanning />} />
             <Route path="/documents" element={

@@ -1,0 +1,261 @@
+<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+<head>
+<meta charset="utf-8">
+<title>Deployment Guide: ATS Application on Enhance Control Panel</title>
+<style>
+body { font-family: Calibri, sans-serif; line-height: 1.5; }
+h1 { font-size: 24pt; color: #2E74B5; border-bottom: 2px solid #2E74B5; padding-bottom: 10px; }
+h2 { font-size: 18pt; color: #2E74B5; margin-top: 20px; }
+h3 { font-size: 14pt; color: #1F4D78; margin-top: 15px; }
+p { font-size: 11pt; margin-bottom: 10px; }
+ul { margin-bottom: 10px; }
+li { margin-bottom: 5px; }
+code { font-family: Consolas, monospace; background-color: #f0f0f0; padding: 2px 4px; border-radius: 3px; }
+pre { background-color: #f5f5f5; padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-family: Consolas, monospace; white-space: pre-wrap; }
+table { border-collapse: collapse; width: 100%; margin-top: 10px; margin-bottom: 10px; }
+th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+th { background-color: #f2f2f2; color: #333; }
+.note { background-color: #e7f3fe; border-left: 6px solid #2196F3; padding: 10px; margin-bottom: 10px; font-style: italic; }
+</style>
+</head>
+<body>
+
+<h1>Deployment Guide: ATS Application on Enhance Control Panel</h1>
+
+<p>This guide details the deployment process for the ATS Application (React + Node.js) on an existing Enhance Control Panel website. It assumes the Enhance panel is installed and the website entry has already been created.</p>
+
+<h2>1. Prerequisites & Access Checklist</h2>
+<p>Before starting, ensure you have the following from your Enhance Control Panel:</p>
+<ul>
+    <li><strong>Website User</strong>: The system user assigned to your website (e.g., <code>ats_user</code>).</li>
+    <li><strong>Server IP</strong>: The IP address of the App Server hosting the website.</li>
+    <li><strong>SSH Access</strong>: Ensure "Shell Access" is enabled for this website user in the Enhance Panel.</li>
+    <li><strong>Database Access</strong>: Ability to create databases and users via Enhance or phpMyAdmin.</li>
+</ul>
+
+<hr>
+
+<h2>2. Database Configuration</h2>
+<p>Even if the website is created, the database needs to be set up for the application.</p>
+
+<h3>1. Create Database:</h3>
+<ul>
+    <li>Log in to Enhance Panel > <strong>Websites</strong> > Select your website.</li>
+    <li>Go to <strong>Databases</strong> > <strong>Add Database</strong>.</li>
+    <li><strong>Name</strong>: <code>ats_DB</code> (recommended).</li>
+    <li><strong>User</strong>: Create a new database user (e.g., <code>ats_db_user</code>) and generate a strong password. <strong>Save these credentials</strong>.</li>
+</ul>
+
+<h3>2. Import Schema:</h3>
+<ul>
+    <li>Click <strong>phpMyAdmin</strong> in the database list.</li>
+    <li>Select your new database (<code>ats_DB</code>) from the sidebar.</li>
+    <li>Go to the <strong>Import</strong> tab.</li>
+    <li>Upload the <code>server/db/schema.sql</code> file from your local project.</li>
+    <li><em>Note: If you have migration scripts (<code>server/migrations/*.sql</code>), import them in order or run the migration script later.</em></li>
+</ul>
+
+<hr>
+
+<h2>3. Application Deployment</h2>
+
+<h3>Step 3.1: File Upload (SFTP)</h3>
+<p>Upload the application code to the server.</p>
+
+<ol>
+    <li><strong>Connect via SFTP</strong>:
+        <ul>
+            <li><strong>Host</strong>: Server IP</li>
+            <li><strong>User</strong>: Your Website User (e.g., <code>ats_user</code>)</li>
+            <li><strong>Password</strong>: The Website User's password</li>
+            <li><strong>Port</strong>: 22</li>
+        </ul>
+    </li>
+    <li><strong>Navigate & Clean</strong>:
+        <ul>
+            <li>Go to <code>public_html/</code> (or your document root).</li>
+            <li>Delete the default <code>index.html</code> created by Enhance.</li>
+        </ul>
+    </li>
+    <li><strong>Upload Files</strong>:
+        <ul>
+            <li>Upload the <strong>entire project folder contents</strong> into <code>public_html/</code>.</li>
+            <li><strong>Exclude</strong>: <code>node_modules</code> (we will install these on the server).</li>
+            <li><strong>Critical Files to Include</strong>:
+                <ul>
+                    <li><code>server/</code> directory</li>
+                    <li><code>src/</code> directory</li>
+                    <li><code>public/</code> directory</li>
+                    <li><code>package.json</code></li>
+                    <li><code>ecosystem.config.js</code></li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+</ol>
+
+<h3>Step 3.2: Node.js Environment Setup (SSH)</h3>
+<p>Enhance website containers are isolated. You need to set up the Node.js environment specifically for this user.</p>
+
+<ol>
+    <li><strong>SSH into the Website</strong>:
+<pre>ssh website_user@your_server_ip</pre>
+    </li>
+    <li><strong>Install Node.js (via NVM)</strong>:
+        <p>Since this is a fresh user environment, install NVM to manage Node.js:</p>
+<pre>
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+nvm install 18
+nvm use 18
+nvm alias default 18
+</pre>
+    </li>
+    <li><strong>Verify Installation</strong>:
+<pre>
+node -v
+npm -v
+</pre>
+    </li>
+</ol>
+
+<h3>Step 3.3: Install Dependencies & Build</h3>
+<ol>
+    <li><strong>Navigate to Document Root</strong>:
+<pre>cd public_html</pre>
+    </li>
+    <li><strong>Install Dependencies</strong>:
+<pre>npm install</pre>
+    </li>
+    <li><strong>Build React Frontend</strong>:
+<pre>npm run build</pre>
+        <p><em>This compiles the React app into the <code>build/</code> directory.</em></p>
+    </li>
+</ol>
+
+<h3>Step 3.4: Configuration (.env)</h3>
+<ol>
+    <li><strong>Create Environment File</strong>:
+<pre>nano .env</pre>
+    </li>
+    <li><strong>Paste Configuration</strong>:
+        <p>Update the values to match your created database credentials.</p>
+<pre>
+NODE_ENV=production
+PORT=5000
+DB_HOST=127.0.0.1
+DB_USER=ats_db_user
+DB_PASSWORD=your_db_password
+DB_NAME=ats_DB
+JWT_SECRET=your_secure_random_string
+</pre>
+        <p><em>Note: Use <code>127.0.0.1</code> for DB_HOST to ensure it uses the local TCP connection or check if Enhance requires a specific socket path.</em></p>
+    </li>
+    <li><strong>Save & Exit</strong>: Press <code>Ctrl+O</code>, <code>Enter</code>, <code>Ctrl+X</code>.</li>
+</ol>
+
+<h3>Step 3.5: Start Backend with PM2</h3>
+<p>Use PM2 to keep the Node.js server running in the background.</p>
+<ol>
+    <li><strong>Install PM2</strong>:
+<pre>npm install -g pm2</pre>
+    </li>
+    <li><strong>Start Application</strong>:
+<pre>pm2 start ecosystem.config.js --env production</pre>
+    </li>
+    <li><strong>Save Process List</strong>:
+        <p>Ensure the app restarts if the container restarts.</p>
+<pre>
+pm2 save
+pm2 startup
+</pre>
+        <p><em>(Run the command output by <code>pm2 startup</code> if instructed).</em></p>
+    </li>
+</ol>
+
+<hr>
+
+<h2>4. Web Server Configuration (Reverse Proxy)</h2>
+<p>Since Enhance serves the website on Port 80/443 via Apache/OpenLiteSpeed, we must proxy traffic to the Node.js app running on Port 5000.</p>
+
+<ol>
+    <li><strong>Edit .htaccess</strong>:
+        <p>In the <code>public_html</code> directory:</p>
+<pre>nano .htaccess</pre>
+    </li>
+    <li><strong>Add Proxy Rules</strong>:
+        <p>Replace existing content with:</p>
+<pre>
+DirectoryIndex disabled
+RewriteEngine On
+
+# Proxy all requests to Node.js app on port 5000
+RewriteRule ^$ http://127.0.0.1:5000/ [P,L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ http://127.0.0.1:5000/$1 [P,L]
+</pre>
+    </li>
+</ol>
+
+<hr>
+
+<h2>5. Verification & Post-Deployment</h2>
+
+<h3>5.1 Verify Deployment</h3>
+<ul>
+    <li><strong>Browser Test</strong>: Open <code>https://yourdomain.com</code>.
+        <ul><li>You should see the ATS Application home page.</li></ul>
+    </li>
+    <li><strong>API Test</strong>: Open <code>https://yourdomain.com/health</code>.
+        <ul><li>Expected JSON response: <code>{"status":"ok", ...}</code>.</li></ul>
+    </li>
+</ul>
+
+<h3>5.2 Troubleshooting Common Issues</h3>
+<ul>
+    <li><strong>503 Service Unavailable / 500 Error</strong>:
+        <ul>
+            <li><strong>Check Node App</strong>: Run <code>pm2 status</code>. If stopped, check logs: <code>pm2 logs ats-backend</code>.</li>
+            <li><strong>Check .htaccess</strong>: Ensure the syntax is correct and <code>mod_proxy</code> is enabled on the server.</li>
+            <li><strong>Check Port</strong>: Ensure <code>.env</code> has <code>PORT=5000</code> and the app is actually listening on it (<code>netstat -tulpn | grep 5000</code>).</li>
+        </ul>
+    </li>
+    <li><strong>Database Connection Refused</strong>:
+        <ul>
+            <li>Verify <code>DB_HOST</code>, <code>DB_USER</code>, and <code>DB_PASSWORD</code> in <code>.env</code>.</li>
+            <li>Try <code>localhost</code> instead of <code>127.0.0.1</code> if using a socket, or vice versa.</li>
+        </ul>
+    </li>
+</ul>
+
+<h3>5.3 Maintenance Commands</h3>
+<p>Run these via SSH as the website user:</p>
+
+<table>
+    <tr>
+        <th>Action</th>
+        <th>Command</th>
+    </tr>
+    <tr>
+        <td><strong>View Logs</strong></td>
+        <td><code>pm2 logs</code></td>
+    </tr>
+    <tr>
+        <td><strong>Restart App</strong></td>
+        <td><code>pm2 restart ats-backend</code></td>
+    </tr>
+    <tr>
+        <td><strong>Stop App</strong></td>
+        <td><code>pm2 stop ats-backend</code></td>
+    </tr>
+    <tr>
+        <td><strong>Update App</strong></td>
+        <td>Upload files > <code>npm install</code> > <code>npm run build</code> > <code>pm2 restart ats-backend</code></td>
+    </tr>
+</table>
+
+</body>
+</html>
