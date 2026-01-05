@@ -10,8 +10,7 @@ import {
   useTheme,
   Avatar,
   Rating,
-  alpha,
-  TextField
+  alpha
 } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -449,68 +448,16 @@ const HomePage = () => {
                 </Button>
               </Stack>
 
-              <Box sx={{ mt: 6 }}>
-                <Typography variant="subtitle2" sx={{ mb: 2, opacity: 0.8, textTransform: 'uppercase', letterSpacing: 1 }}>
-                  Stay Updated
-                </Typography>
-                <Paper 
-                  component="form" 
-                  sx={{ 
-                    p: '4px', 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    width: '100%', 
-                    maxWidth: 420,
-                    bgcolor: 'rgba(255,255,255,0.15)',
-                    border: '1px solid rgba(255,255,255,0.3)',
-                    borderRadius: '50px',
-                    boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)'
-                  }}
-                  onSubmit={(e) => e.preventDefault()}
-                >
-                  <TextField
-                    placeholder="Enter your email address"
-                    variant="standard"
-                    InputProps={{
-                      disableUnderline: true,
-                      sx: { 
-                        ml: 3, 
-                        flex: 1, 
-                        color: 'white', 
-                        fontWeight: 500,
-                        '::placeholder': { color: 'rgba(255,255,255,0.8)' } 
-                      }
-                    }}
-                    sx={{ flex: 1 }}
-                  />
-                  <Button 
-                    sx={{ 
-                      color: 'white', 
-                      bgcolor: 'primary.main',
-                      fontWeight: 'bold',
-                      borderRadius: '50px',
-                      px: 3,
-                      py: 1,
-                      mr: 0.5,
-                      boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
-                      '&:hover': {
-                        bgcolor: 'primary.light',
-                      }
-                    }}
-                  >
-                    Subscribe
-                  </Button>
-                </Paper>
-              </Box>
+
             </Grid>
 
             <Grid item xs={12} md={6}>
               <Grid container spacing={4}>
                 {[
                   { label: 'Refunds Secured', value: 1, suffix: 'M+', prefix: '$' },
-                  { label: 'Happy Clients', value: 1000, suffix: '+' },
-                  { label: 'Years Experience', value: 10, suffix: '+' },
-                  { label: 'Audit Success', value: 97, suffix: '%' },
+                  { label: 'Happy Clients', value: 2000, suffix: '+' },
+                  { label: 'Years Experience', value: 8, suffix: '+' },
+                  { label: 'Audit Success', value: 95, suffix: '%' },
                 ].map((stat, index) => (
                   <Grid item xs={6} key={index}>
                     <Box sx={{ 

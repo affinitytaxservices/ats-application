@@ -41,6 +41,7 @@ const Footer = () => {
         { name: 'Our Team', path: '/team' },
         { name: 'Careers', path: '/careers' },
         { name: 'Contact Us', path: '/contact' },
+        { name: 'Under Construction', path: '/under-construction' },
       ]
     },
     {

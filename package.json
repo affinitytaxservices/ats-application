@@ -32,7 +32,7 @@
     "recharts": "^2.15.3"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "cross-env NODE_OPTIONS=--max-old-space-size=4096 react-scripts start",
     "build": "cross-env CI=false react-scripts build",
     "build:prod": "cross-env CI=false GENERATE_SOURCEMAP=false react-scripts build",
     "build:centos": "cross-env NODE_OPTIONS=--max-old-space-size=4096 CI=false GENERATE_SOURCEMAP=false react-scripts build",

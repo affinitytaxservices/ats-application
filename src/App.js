@@ -40,6 +40,7 @@ import WhatsAppAdmin from './components/admin/WhatsAppAdmin';
 import WhatsAppWidget from './components/common/WhatsAppWidget';
 import NotFound from './components/common/NotFound';
 import ScrollToTop from './components/common/ScrollToTop';
+import UnderConstructionPage from './components/maintenance/UnderConstructionPage';
 
 
 
@@ -92,7 +93,21 @@ const DashboardRoute = () => {
   }
 };
 
+const MAINTENANCE_MODE = true;
+
 function App() {
+  if (MAINTENANCE_MODE) {
+    return (
+      <div className="app">
+        <GlobalBackground />
+        <ScrollToTop />
+        <Routes>
+          <Route path="*" element={<UnderConstructionPage />} />
+        </Routes>
+      </div>
+    );
+  }
+
   return (
     <div className="app">
       <GlobalBackground />
@@ -187,7 +202,8 @@ function App() {
             />
             
             {/* Catch all route for 404 */}
-            <Route path="*" element={<NotFound />} />
+            <Route path="/under-construction" element={<UnderConstructionPage />} />
+        <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
       <WhatsAppWidget />
