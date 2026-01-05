@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <defs>
+    <!-- Brand-consistent gradients -->
+    <linearGradient id="primaryGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366F1" />
+      <stop offset="50%" stop-color="#4F46E5" />
+      <stop offset="100%" stop-color="#1E3A8A" />
+    </linearGradient>
+    
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10B981" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+    
+    <!-- Professional shadow -->
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="rgba(99, 102, 241, 0.2)" />
+    </filter>
+  </defs>
+  
+  <!-- Background with rounded corners -->
+  <rect width="32" height="32" rx="6" fill="url(#primaryGrad)" filter="url(#shadow)" />
+  
+  <!-- Shield shape optimized for favicon -->
+  <path 
+    d="M16 6 L24 9 V18 C24 21 20 24 16 25 C12 24 8 21 8 18 V9 Z" 
+    fill="rgba(255, 255, 255, 0.15)" 
+    stroke="rgba(255, 255, 255, 0.3)" 
+    stroke-width="0.5"
+  />
+  
+  <!-- Simplified ATS monogram for small size -->
+  <g transform="translate(12, 12)" stroke="#FFFFFF" stroke-width="1.5" fill="none" stroke-linecap="round">
+    <!-- A -->
+    <path d="M-3 4 L0 -2 L3 4 M-1.5 1 H1.5" />
+    <!-- T (simplified as vertical line with top) -->
+    <path d="M6 -2 L6 4 M4 -2 H8" />
+    <!-- S (simplified curve) -->
+    <path d="M-6 -2 C-4 -2 -4 0 -6 0 C-8 0 -8 2 -6 2" />
+  </g>
+  
+  <!-- Professional accent dot -->
+  <circle cx="16" cy="24" r="2" fill="url(#accentGrad)" />
+  
+  <!-- Checkmark in accent -->
+  <path 
+    d="M14.5 24 L15.5 25 L17.5 23" 
+    stroke="#FFFFFF" 
+    stroke-width="1" 
+    fill="none" 
+    stroke-linecap="round" 
+    stroke-linejoin="round"
+  />
+</svg>

@@ -1,0 +1,155 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 120" width="800" height="120">
+  <defs>
+    <!-- Enhanced Gradients -->
+    <linearGradient id="primaryGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366F1" />
+      <stop offset="50%" stop-color="#4F46E5" />
+      <stop offset="100%" stop-color="#1E3A8A" />
+    </linearGradient>
+    
+    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10B981" />
+      <stop offset="50%" stop-color="#059669" />
+      <stop offset="100%" stop-color="#047857" />
+    </linearGradient>
+    
+    <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#1F2937" />
+      <stop offset="100%" stop-color="#374151" />
+    </linearGradient>
+    
+    <!-- Professional Shadow Filter -->
+    <filter id="professionalShadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="rgba(99, 102, 241, 0.15)" />
+    </filter>
+    
+    <!-- Subtle Glow Effect -->
+    <filter id="subtleGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="1" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Logo Symbol Container -->
+  <g transform="translate(10, 10)">
+    <!-- Modern Shield Base -->
+    <path 
+      d="M50 10 L90 25 V65 C90 80 70 90 50 95 C30 90 10 80 10 65 V25 Z" 
+      fill="url(#primaryGradient)" 
+      filter="url(#professionalShadow)"
+      opacity="0.95"
+    />
+    
+    <!-- Inner Shield Accent -->
+    <path 
+      d="M50 20 L80 30 V65 C80 75 65 82.5 50 87.5 C35 82.5 20 75 20 65 V30 Z" 
+      fill="rgba(255, 255, 255, 0.1)" 
+      stroke="rgba(255, 255, 255, 0.2)" 
+      stroke-width="1"
+    />
+    
+    <!-- Stylized ATS Monogram -->
+    <g transform="translate(30, 40)" filter="url(#subtleGlow)">
+      <!-- A -->
+      <path 
+        d="M10 25 L15 15 L20 25 M12.5 20 H17.5" 
+        stroke="#FFFFFF" 
+        stroke-width="2.5" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"
+        fill="none"
+      />
+      
+      <!-- T -->
+      <path 
+        d="M27 15 L27 25 M23 15 H31" 
+        stroke="#FFFFFF" 
+        stroke-width="2.5" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"
+        fill="none"
+      />
+      
+      <!-- S -->
+      <path 
+        d="M38 15 C43 15 43 20 38 20 C33 20 33 25 38 25" 
+        stroke="#FFFFFF" 
+        stroke-width="2.5" 
+        stroke-linecap="round" 
+        stroke-linejoin="round"
+        fill="none"
+      />
+    </g>
+    
+    <!-- Professional Accent Element -->
+    <circle 
+      cx="50" 
+      cy="80" 
+      r="5" 
+      fill="url(#accentGradient)" 
+      filter="url(#subtleGlow)"
+    />
+    
+    <!-- Checkmark in Accent -->
+    <path 
+      d="M47 80 L49.5 82.5 L53 78" 
+      stroke="#FFFFFF" 
+      stroke-width="1.5" 
+      fill="none" 
+      stroke-linecap="round" 
+      stroke-linejoin="round"
+    />
+  </g>
+  
+  <!-- Company Name with Enhanced Typography -->
+  <g transform="translate(120, 35)">
+    <!-- Main Company Name -->
+    <text 
+      font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif" 
+      font-weight="700" 
+      font-size="48" 
+      fill="url(#textGradient)"
+      letter-spacing="-0.5"
+    >
+      <tspan x="0" y="0">Affinity</tspan>
+    </text>
+    
+    <!-- Tagline -->
+    <text 
+      font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif" 
+      font-weight="500" 
+      font-size="18" 
+      fill="url(#accentGradient)"
+      letter-spacing="3"
+    >
+      <tspan x="0" y="30">TAX SERVICES</tspan>
+    </text>
+    
+    <!-- Professional Underline -->
+    <rect 
+      x="0" 
+      y="40" 
+      width="140" 
+      height="2" 
+      fill="url(#accentGradient)" 
+      opacity="0.6"
+      rx="1"
+    />
+  </g>
+  
+  <!-- Tagline Extension -->
+  <g transform="translate(450, 60)">
+    <text 
+      font-family="Inter, -apple-system, BlinkMacSystemFont, sans-serif" 
+      font-weight="400" 
+      font-size="14" 
+      fill="#6B7280"
+      letter-spacing="1"
+    >
+      <tspan x="0" y="0">Professional • Reliable • Trusted</tspan>
+    </text>
+  </g>
+</svg>

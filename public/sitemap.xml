@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+
+  <!-- Homepage -->
+  <url>
+    <loc>https://affinitytaxservices.com/</loc>
+    <lastmod>2025-12-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://affinitytaxservices.com/og-home.jpg</image:loc>
+      <image:title>Affinity Tax Services - Expert Tax Preparation & Planning</image:title>
+      <image:caption>Professional tax preparation and planning services for individuals and businesses</image:caption>
+    </image:image>
+  </url>
+
+  <!-- About Us -->
+  <url>
+    <loc>https://affinitytaxservices.com/about</loc>
+    <lastmod>2025-12-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://affinitytaxservices.com/og-about.jpg</image:loc>
+      <image:title>About Affinity Tax Services - Trusted Tax Professionals Since 2010</image:title>
+      <image:caption>Learn about our team of certified tax professionals and our commitment to excellence</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Individual Tax Services -->
+  <url>
+    <loc>https://affinitytaxservices.com/individual-tax</loc>
+    <lastmod>2025-12-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://affinitytaxservices.com/og-individual-tax.jpg</image:loc>
+      <image:title>Individual Tax Preparation Services - Expert Personal Tax Filing</image:title>
+      <image:caption>Professional individual tax preparation with maximum refund guarantee</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Business Tax Services -->
+  <url>
+    <loc>https://affinitytaxservices.com/business-tax</loc>
+    <lastmod>2025-12-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://affinitytaxservices.com/og-business-tax.jpg</image:loc>
+      <image:title>Business Tax Services - Expert Corporate Tax Preparation</image:title>
+      <image:caption>Comprehensive business tax services for corporations, partnerships, and LLCs</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Tax Planning Services -->
+  <url>
+    <loc>https://affinitytaxservices.com/tax-planning</loc>
+    <lastmod>2025-12-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://affinitytaxservices.com/og-tax-planning.jpg</image:loc>
+      <image:title>Tax Planning Services - Strategic Tax Strategy & Financial Planning</image:title>
+      <image:caption>Strategic tax planning to minimize liability and maximize savings</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Contact Page -->
+  <url>
+    <loc>https://affinitytaxservices.com/contacts</loc>
+    <lastmod>2025-12-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Tax Information -->
+  <url>
+    <loc>https://affinitytaxservices.com/tax-information</loc>
+    <lastmod>2025-12-16</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Privacy Policy -->
+  <url>
+    <loc>https://affinitytaxservices.com/privacy-policy</loc>
+    <lastmod>2025-12-16</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <!-- Terms of Service -->
+  <url>
+    <loc>https://affinitytaxservices.com/terms-of-service</loc>
+    <lastmod>2025-12-16</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+</urlset>

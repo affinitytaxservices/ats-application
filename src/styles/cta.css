@@ -1,0 +1,45 @@
+.MuiButton-root.cta-link {
+  --cta-bg: #1E3A8A;
+  --cta-bg-hover: #1F46A6;
+  --cta-bg-active: #162F6E;
+  --cta-text: #FFFFFF;
+  --cta-focus-ring: #93C5FD;
+  color: var(--cta-text);
+  background-color: var(--cta-bg);
+  transition: background-color 160ms ease, color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+  box-shadow: 0 8px 20px -6px rgba(30, 58, 138, 0.35);
+  text-decoration: none;
+  font-weight: 800;
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: clamp(1rem, 1.2vw + 0.8rem, 1.25rem);
+}
+
+.MuiButton-root.cta-link:hover {
+  background-color: var(--cta-bg-hover);
+  box-shadow: 0 12px 24px -6px rgba(30, 58, 138, 0.45);
+  transform: translateY(-3px);
+}
+
+.MuiButton-root.cta-link:active {
+  background-color: var(--cta-bg-active);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px -6px rgba(30, 58, 138, 0.4);
+}
+
+.MuiButton-root.cta-link:focus {
+  outline: 2px solid var(--cta-focus-ring);
+  outline-offset: 3px;
+}
+
+.MuiButton-root.cta-link:focus-visible {
+  outline: 3px solid var(--cta-focus-ring);
+  outline-offset: 3px;
+}
+
+.MuiButton-root.cta-link .MuiButton-endIcon {
+  color: var(--cta-text);
+}
