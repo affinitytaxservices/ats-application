@@ -93,7 +93,7 @@ const DashboardRoute = () => {
   }
 };
 
-const MAINTENANCE_MODE = true;
+const MAINTENANCE_MODE = false;
 
 function App() {
   if (MAINTENANCE_MODE) {
