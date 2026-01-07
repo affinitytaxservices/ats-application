@@ -236,3 +236,85 @@ npm ci
 npm run build:prod
 ```
 Then upload everything except `node_modules`, including `build/`, and still run `npm ci` on the server for backend dependencies.
+
+## 🧩 GitHub Integration
+
+This project supports GitHub-based version control, CI, and collaboration.
+
+- Initialize local repository:
+  ```bash
+  git init
+  git checkout -b main
+  ```
+- Set remote (HTTPS or SSH). SSH is recommended:
+  ```bash
+  # HTTPS
+  git remote add origin https://github.com/affinitytaxservices/ats-application.git
+
+  # SSH (recommended)
+  git remote add origin git@github.com:affinitytaxservices/ats-application.git
+  ```
+- Branching strategy:
+  - main: production-ready code
+  - development: integration branch for ongoing work
+  - feature/*: short-lived branches per feature or fix
+  ```bash
+  git checkout -b development
+  git push -u origin main
+  git push -u origin development
+  ```
+- CI/CD: GitHub Actions workflow runs tests and build on push/PR:
+  - See `.github/workflows/ci.yml`
+
+### 🔐 Secure Authentication
+- Prefer SSH: set up an SSH key with GitHub (`~/.ssh/id_rsa.pub` added to GitHub).
+- HTTPS is also secure; use a Personal Access Token when prompted.
+
+### 🔄 Sync Workflow
+- Configure helpful Git settings:
+  ```bash
+  git config pull.rebase true
+  git config rebase.autoStash true
+  git config fetch.prune true
+  git config push.default current
+  ```
+- Recommended routine:
+  - Pull before push: `git pull --rebase`
+  - Stage and commit often with meaningful messages:
+    ```bash
+    git add -A
+    git commit -m "feat(dashboard): add KPIs widget"
+    git push
+    ```
+
+### 🤝 Collaboration Procedures
+- Open PRs from `feature/*` into `development`.
+- Use code reviews; merge via squash or rebase for tidy history.
+- Resolve conflicts:
+  ```bash
+  git fetch origin
+  git checkout feature/branch
+  git rebase origin/development   # or: git merge origin/development
+  # edit conflicted files, then:
+  git add .
+  git rebase --continue           # or: git commit
+  ```
+
+### ↩️ Rollback & Recovery
+- Revert a bad commit:
+  ```bash
+  git revert <commit-sha>
+  ```
+- Reset a local branch (use with caution):
+  ```bash
+  git reset --hard <commit-sha>
+  ```
+
+### ✅ CI Details
+- On push/PR to `main`, `development`, or `feature/*`:
+  - Installs dependencies (`npm ci`)
+  - Runs tests (`npm run test:ci`)
+  - Builds the app (`npm run build`)
+
+### 📦 Ignored Files
+- Unnecessary files are excluded via `.gitignore` (e.g., `node_modules/`, `.env*`, `build/`, `coverage/`, `.vercel/`).
