@@ -1,3 +1,4 @@
+USE affinity2_whatsapptables;
 CREATE TABLE IF NOT EXISTS whatsapp_conversations (
   id INT AUTO_INCREMENT PRIMARY KEY,
   phone_number VARCHAR(20) NOT NULL,

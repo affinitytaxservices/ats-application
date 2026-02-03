@@ -1,10 +1,6 @@
-import React, { useState } from 'react';
-import { Container, Typography, Card, CardContent, Box, Button, TextField, Grid, Chip, Divider } from '@mui/material';
+import React from 'react';
+import { Container, Typography, Card, CardContent, Box, Button } from '@mui/material';
 import LaunchIcon from '@mui/icons-material/Launch';
-import SearchIcon from '@mui/icons-material/Search';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import PendingIcon from '@mui/icons-material/Pending';
-import ErrorIcon from '@mui/icons-material/Error';
 import SEOHelmet from '../common/SEOHelmet';
 import { seoConfig } from '../../config/seo.config';
 
@@ -68,54 +64,13 @@ const stateRefundLinks = {
 };
 
 const RefundStatus = () => {
-  const [demoSsn, setDemoSsn] = useState('');
-  const [demoAmount, setDemoAmount] = useState('');
-  const [demoStatus, setDemoStatus] = useState(null);
-
-  const handleDemoCheck = () => {
-    // Simple mock logic for demonstration
-    if (!demoSsn || !demoAmount) return;
-    
-    // Randomly select a status for demo purposes
-    const statuses = ['approved', 'pending', 'rejected'];
-    const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
-    setDemoStatus(randomStatus);
-  };
-
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'approved': return '#059669'; // Emerald 600
-      case 'pending': return '#B45309'; // Amber 700 - Darker for accessibility
-      case 'rejected': return '#DC2626'; // Red 600
-      default: return '#64748B';
-    }
-  };
-
-  const getStatusIcon = (status) => {
-    switch (status) {
-      case 'approved': return <CheckCircleIcon sx={{ fontSize: 40, color: '#059669' }} />;
-      case 'pending': return <PendingIcon sx={{ fontSize: 40, color: '#B45309' }} />;
-      case 'rejected': return <ErrorIcon sx={{ fontSize: 40, color: '#DC2626' }} />;
-      default: return null;
-    }
-  };
-
-  const getStatusText = (status) => {
-    switch (status) {
-      case 'approved': return 'Refund Approved';
-      case 'pending': return 'Processing Pending';
-      case 'rejected': return 'Refund Rejected';
-      default: return '';
-    }
-  };
-
   return (
-            <Box sx={{
-              // Background handled globally
-              minHeight: '100vh',
-              paddingTop: 2,
-              paddingBottom: 4
-            }}>
+    <Box sx={{
+      // Background handled globally
+      minHeight: '100vh',
+      paddingTop: 2,
+      paddingBottom: 4
+    }}>
       <SEOHelmet {...seoConfig.pages.refundStatus} />
       <Container maxWidth="lg" sx={{ py: 8 }}>
         <Typography variant="h3" gutterBottom sx={{ 
@@ -137,101 +92,6 @@ const RefundStatus = () => {
         }}>
           Tax Refund Center
         </Typography>
-
-        {/* Demo Status Check Section */}
-        <Box mb={8}>
-          <Card elevation={0} sx={{
-            background: '#FFFFFF',
-            border: '1px solid #CCFBF1',
-            borderRadius: 2,
-            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
-          }}>
-            <CardContent sx={{ p: 4 }}>
-              <Typography variant="h5" gutterBottom sx={{ color: '#0F766E', fontWeight: 600 }}>
-                Check Your Status
-              </Typography>
-              <Typography variant="body2" color="text.secondary" mb={3}>
-                Enter your details below to check the status of your refund (Demo).
-              </Typography>
-              
-              <Grid container spacing={2} alignItems="center">
-                <Grid item xs={12} md={4}>
-                  <TextField 
-                    fullWidth 
-                    label="Social Security Number" 
-                    placeholder="XXX-XX-XXXX"
-                    variant="outlined" 
-                    size="small"
-                    value={demoSsn}
-                    onChange={(e) => setDemoSsn(e.target.value)}
-                  />
-                </Grid>
-                <Grid item xs={12} md={4}>
-                  <TextField 
-                    fullWidth 
-                    label="Refund Amount ($)" 
-                    placeholder="e.g. 1500"
-                    variant="outlined" 
-                    size="small"
-                    type="number"
-                    value={demoAmount}
-                    onChange={(e) => setDemoAmount(e.target.value)}
-                  />
-                </Grid>
-                <Grid item xs={12} md={4}>
-                  <Button 
-                    variant="contained" 
-                    fullWidth 
-                    startIcon={<SearchIcon />}
-                    onClick={handleDemoCheck}
-                    sx={{
-                      backgroundColor: '#0D9488',
-                      height: '40px',
-                      '&:hover': { backgroundColor: '#0F766E' }
-                    }}
-                  >
-                    Check Status
-                  </Button>
-                </Grid>
-              </Grid>
-
-              {/* Status Display Area */}
-              {demoStatus && (
-                <Box mt={4} p={3} sx={{ 
-                  background: '#F8FAFC', 
-                  borderRadius: 2, 
-                  border: `1px solid ${getStatusColor(demoStatus)}` 
-                }}>
-                  <Box display="flex" alignItems="center" mb={2}>
-                    {getStatusIcon(demoStatus)}
-                    <Typography variant="h5" sx={{ ml: 2, color: getStatusColor(demoStatus), fontWeight: 'bold' }}>
-                      {getStatusText(demoStatus)}
-                    </Typography>
-                  </Box>
-                  <Typography variant="body1" color="text.secondary">
-                    {demoStatus === 'approved' && "Your refund has been approved and is scheduled for deposit."}
-                    {demoStatus === 'pending' && "Your return has been received and is currently being processed."}
-                    {demoStatus === 'rejected' && "There was an issue with your return. Please contact support."}
-                  </Typography>
-                </Box>
-              )}
-              
-              {/* Legend for Status Colors */}
-              <Box mt={4} pt={2} borderTop="1px solid #E2E8F0">
-                <Typography variant="caption" display="block" mb={1} color="text.secondary">
-                  Status Indicators Key:
-                </Typography>
-                <Box display="flex" gap={1}>
-                  <Chip label="Approved" sx={{ bgcolor: '#ECFDF5', color: '#065F46', border: '1px solid #059669' }} size="small" />
-                  <Chip label="Pending" sx={{ bgcolor: '#FFFBEB', color: '#92400E', border: '1px solid #B45309' }} size="small" />
-                  <Chip label="Rejected" sx={{ bgcolor: '#FEF2F2', color: '#991B1B', border: '1px solid #DC2626' }} size="small" />
-                </Box>
-              </Box>
-            </CardContent>
-          </Card>
-        </Box>
-        
-        <Divider sx={{ mb: 6 }} />
 
         {/* Federal Links Section */}
         <Typography variant="h5" gutterBottom sx={{ 

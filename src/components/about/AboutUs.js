@@ -1,29 +1,53 @@
 import React from 'react';
 import SEOHelmet from '../common/SEOHelmet';
 import { seoConfig } from '../../config/seo.config';
-import { Box, Container, Typography, Grid, Card, CardContent, Avatar, Fade, Divider } from '@mui/material';
+import { Box, Container, Typography, Grid, Card, CardContent, useTheme } from '@mui/material';
 import {
   Business as BusinessIcon,
   School as SchoolIcon,
   Security as SecurityIcon,
   TrendingUp as TrendingUpIcon,
-  People as PeopleIcon,
-  CheckCircle as CheckCircleIcon,
+  People as PeopleIcon
 } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
+import { motion } from 'framer-motion';
+
+// Animation Variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: 'spring',
+      stiffness: 100,
+      damping: 10
+    }
+  }
+};
 
 // Styled components
-const StyledCard = styled(Card)(() => ({
+const StyledCard = styled(motion(Card))(({ theme }) => ({
   height: '100%',
-  background: '#FFFFFF', // Solid white background
-  backdropFilter: 'none',
-  border: 'none', // Clean borderless look
-  transition: 'all 0.3s ease',
-  '&:hover': 
-  {
-    transform: 'translateY(-5px)',
-    boxShadow: '0 8px 25px rgba(80, 134, 219, 0.15)',
-    background: '#FFFFFF',
+  background: theme.palette.background.paper,
+  borderRadius: theme.shape.borderRadius * 2,
+  border: `1px solid ${theme.palette.divider}`,
+  boxShadow: 'none',
+  overflow: 'hidden',
+  position: 'relative',
+  '&:hover': {
+    borderColor: theme.palette.secondary.light,
+    boxShadow: theme.shadows[4],
   }
 }));
 
@@ -31,14 +55,19 @@ const IconWrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  width: 64,
-  height: 64,
-  borderRadius: '50%',
-  background: 'linear-gradient(135deg, #1E3A8A 0%, #10B981 100%)',
-  marginBottom: theme.spacing(2),
+  width: 72,
+  height: 72,
+  borderRadius: '24px',
+  background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
+  marginBottom: theme.spacing(3),
+  boxShadow: '0 8px 16px rgba(37, 99, 235, 0.2)',
+  transition: 'transform 0.3s ease',
   '& svg': {
     color: '#ffffff',
-    fontSize: 32,
+    fontSize: 36,
+  },
+  '&:hover': {
+    transform: 'scale(1.05) rotate(5deg)',
   }
 }));
 
@@ -62,32 +91,12 @@ const values = [
     title: 'Expertise',
     description: 'Our team stays current with the latest tax laws and regulations to provide accurate, effective strategies.',
     icon: <SchoolIcon />,
-  },
-];
-
-const teamMembers = [
-  {
-    name: 'Krishna EA',
-    role: 'Managing Partner',
-    experience: '8+ years in tax preparation and business consulting',
-    specialties: ['Business Tax Strategy', 'Tax Planning', 'IRS Representation'],
-  },
-  {
-    name: 'Arjun EA',
-    role: 'Senior Tax Consultant',
-    experience: '4+ years in individual and corporate taxation',
-    specialties: ['Business Tax Returns', 'Individual Tax Returns', 'Tax-Exempt Organizations', 'Estate & Trust Returns'],
-  },
-  {
-    name: 'Achyut EA',
-    role: 'Tax Planning Specialist',
-    experience: '4+ years in strategic tax planning',      
-    specialties: ['Individual Tax Returns', 'Tax-Exempt Organizations', 'Estate & Trust Returns'],
-  },
+  }
 ];
 
 const AboutUs = () => {
   const { about: seo } = seoConfig.pages;
+  const theme = useTheme();
 
   return (
     <>
@@ -99,184 +108,154 @@ const AboutUs = () => {
         image={seo.ogImage}
         structuredData={seo.structuredData}
       />
-    <Box sx={{ 
-      minHeight: '100vh', 
-    }}>
-
-      <Container maxWidth="lg" sx={{ py: 8, position: 'relative', zIndex: 1 }}>
-        {/* Header Section */}
-        <Fade in timeout={1000}>
-          <Box textAlign="center" mb={8}>
+      <Box sx={{ 
+        minHeight: '100vh',
+        bgcolor: 'background.default',
+        overflow: 'hidden',
+        pt: { xs: 4, md: 8 },
+        pb: { xs: 8, md: 12 }
+      }}>
+        <Container maxWidth="lg">
+          {/* Header Section */}
+          <Box 
+            component={motion.div}
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            textAlign="center" 
+            mb={{ xs: 8, md: 12 }}
+          >
             <Typography
-              variant="h2"
+              variant="h1"
               component="h1"
               gutterBottom
               sx={{
-                fontWeight: 'bold',
-                color: '#1E293B', // Dark Slate
+                fontSize: { xs: '2.5rem', md: '3.5rem' },
+                fontWeight: 800,
+                color: 'text.primary',
                 mb: 3,
+                letterSpacing: '-0.02em',
               }}
             >
-              About <Box component="span" sx={{ color: '#2563EB' }}>Affinity Tax Services</Box>
+              About <Box component="span" sx={{ 
+                background: `linear-gradient(135deg, ${theme.palette.secondary.main} 0%, ${theme.palette.secondary.light} 100%)`,
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}>Affinity Tax Services</Box>
             </Typography>
             <Typography
               variant="h5"
               sx={{
-                color: '#475569', // Slate 600
+                color: 'text.secondary',
                 maxWidth: '800px',
                 mx: 'auto',
                 lineHeight: 1.6,
+                fontWeight: 400,
               }}
             >
               Your trusted partner in navigating the complexities of the U.S. tax system with integrity, expertise, and commitment to your financial success.
             </Typography>
           </Box>
-        </Fade>
 
-        {/* Mission & Vision Section */}
-        <Fade in timeout={1200}>
-          <Grid container spacing={4} mb={8}>
-            <Grid item xs={12} md={6}>
-              <StyledCard>
-                <CardContent sx={{ p: 4 }}>
-                  <Box display="flex" alignItems="center" mb={3}>
-                    <IconWrapper>
-                      <BusinessIcon />
-                    </IconWrapper>
-                    <Typography variant="h4" component="h2" sx={{ ml: 2, fontWeight: 'bold', color: '#1E3A8A' }}>
-                      Our Mission
-                    </Typography>
-                  </Box>
-                  <Typography variant="body1" sx={{ fontSize: '1.1rem', lineHeight: 1.7, color: '#475569' }}>
-                    To deliver personalized, accurate, and timely tax solutions that empower individuals and businesses to thrive financially. We are committed to building long-lasting relationships with our clients, ensuring they feel supported and informed every step of the way.
-                  </Typography>
-                </CardContent>
-              </StyledCard>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <StyledCard>
-                <CardContent sx={{ p: 4 }}>
-                  <Box display="flex" alignItems="center" mb={3}>
-                    <IconWrapper>
-                      <TrendingUpIcon />
-                    </IconWrapper>
-                    <Typography variant="h4" component="h2" sx={{ ml: 2, fontWeight: 'bold', color: '#1E3A8A' }}>
-                      Our Vision
-                    </Typography>
-                  </Box>
-                  <Typography variant="body1" sx={{ fontSize: '1.1rem', lineHeight: 1.7, color: '#475569' }}>
-                    To be the leading tax consultancy recognized for our integrity, expertise, and commitment to our clients' financial success. We strive to set the standard in the industry by continuously improving our services and adopting the latest technologies.
-                  </Typography>
-                </CardContent>
-              </StyledCard>
-            </Grid>
+          {/* Mission & Vision Section */}
+          <Grid container spacing={4} mb={{ xs: 8, md: 12 }}>
+            {[
+              { 
+                title: 'Our Mission', 
+                icon: <BusinessIcon />, 
+                text: 'To deliver personalized, accurate, and timely tax solutions that empower individuals and businesses to thrive financially. We are committed to building long-lasting relationships with our clients, ensuring they feel supported and informed every step of the way.' 
+              },
+              { 
+                title: 'Our Vision', 
+                icon: <TrendingUpIcon />, 
+                text: 'To be the leading tax consultancy recognized for our integrity, expertise, and commitment to our clients\' financial success. We strive to set the standard in the industry by continuously improving our services and adopting the latest technologies.' 
+              }
+            ].map((item, index) => (
+              <Grid item xs={12} md={6} key={index}>
+                <motion.div
+                  initial={{ opacity: 0, x: index === 0 ? -50 : 50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                >
+                  <StyledCard sx={{ height: '100%', p: 2 }}>
+                    <CardContent sx={{ p: 4 }}>
+                      <Box display="flex" alignItems="center" mb={3}>
+                        <IconWrapper sx={{ width: 64, height: 64, mb: 0, mr: 3 }}>
+                          {item.icon}
+                        </IconWrapper>
+                        <Typography variant="h4" component="h2" sx={{ fontWeight: 700, color: 'primary.main' }}>
+                          {item.title}
+                        </Typography>
+                      </Box>
+                      <Typography variant="body1" sx={{ fontSize: '1.1rem', lineHeight: 1.8, color: 'text.secondary' }}>
+                        {item.text}
+                      </Typography>
+                    </CardContent>
+                  </StyledCard>
+                </motion.div>
+              </Grid>
+            ))}
           </Grid>
-        </Fade>
 
-        {/* Values Section */}
-        <Fade in timeout={1400}>
+          {/* Values Section */}
           <Box mb={8}>
-            <Typography
-              variant="h3"
-              component="h2"
-              textAlign="center"
-              gutterBottom
-              sx={{
-                fontWeight: 'bold',
-                color: '#1E3A8A',
-                mb: 6,
-                textShadow: 'none',
-              }}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
             >
-              Our Core Values
-            </Typography>
-            <Grid container spacing={4}>
-              {values.map((value, index) => (
-                <Grid item xs={12} sm={6} md={3} key={index}>
-                  <StyledCard>
-                    <CardContent sx={{ p: 3, textAlign: 'center' }}>
-                      <IconWrapper sx={{ mx: 'auto' }}>
-                        {value.icon}
-                      </IconWrapper>
-                      <Typography variant="h5" component="h3" gutterBottom sx={{ fontWeight: 'bold', color: '#1E3A8A' }}>
-                        {value.title}
-                      </Typography>
-                      <Typography variant="body2" sx={{ color: '#475569', lineHeight: 1.6 }}>
-                        {value.description}
-                      </Typography>
-                    </CardContent>
-                  </StyledCard>
-                </Grid>
-              ))}
-            </Grid>
-          </Box>
-        </Fade>
-
-        {/* Team Section */}
-        <Fade in timeout={1600}>
-          <Box>
-            <Typography
-              variant="h3"
-              component="h2"
-              textAlign="center"
-              gutterBottom
-              sx={{
-                fontWeight: 'bold',
-                color: '#1E3A8A',
-                mb: 6,
-                textShadow: 'none',
-              }}
+              <Typography
+                variant="h3"
+                component="h2"
+                textAlign="center"
+                gutterBottom
+                sx={{
+                  fontWeight: 800,
+                  color: 'primary.main',
+                  mb: 6,
+                  letterSpacing: '-0.01em',
+                }}
+              >
+                Our Core Values
+              </Typography>
+            </motion.div>
+            
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
             >
-              Meet Our Expert Team
-            </Typography>
-            <Grid container spacing={4}>
-              {teamMembers.map((member, index) => (
-                <Grid item xs={12} md={4} key={index}>
-                  <StyledCard>
-                    <CardContent sx={{ p: 4, textAlign: 'center' }}>
-                      <Avatar
-                        sx={{
-                          width: 100,
-                          height: 100,
-                          mx: 'auto',
-                          mb: 3,
-                          background: 'linear-gradient(135deg, #1E3A8A 0%, #10B981 100%)',
-                          fontSize: '2rem',
-                          fontWeight: 'bold',
-                        }}
+              <Grid container spacing={4}>
+                {values.map((value, index) => (
+                  <Grid item xs={12} sm={6} md={3} key={index}>
+                    <motion.div variants={itemVariants} style={{ height: '100%' }}>
+                      <StyledCard 
+                        whileHover={{ y: -8 }}
+                        transition={{ type: "spring", stiffness: 300 }}
                       >
-                        {member.name.split(' ').map(n => n[0]).join('')}
-                      </Avatar>
-                      <Typography variant="h5" component="h3" gutterBottom sx={{ fontWeight: 'bold', color: '#1E3A8A' }}>
-                        {member.name}
-                      </Typography>
-                      <Typography variant="h6" sx={{ color: '#10B981', mb: 2, fontWeight: 'medium' }}>
-                        {member.role}
-                      </Typography>
-                      <Typography variant="body2" sx={{ color: '#475569', mb: 3, lineHeight: 1.6 }}>
-                        {member.experience}
-                      </Typography>
-                      <Divider sx={{ mb: 2 }} />
-                      <Typography variant="subtitle2" sx={{ color: '#1E3A8A', fontWeight: 'bold', mb: 1 }}>
-                        Specialties:
-                      </Typography>
-                      {member.specialties.map((specialty, idx) => (
-                        <Box key={idx} display="flex" alignItems="center" justifyContent="center" mb={0.5}>
-                          <CheckCircleIcon sx={{ color: '#10B981', fontSize: 16, mr: 1 }} />
-                          <Typography variant="body2" sx={{ color: '#475569' }}>
-                            {specialty}
+                        <CardContent sx={{ p: 4, textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100%' }}>
+                          <IconWrapper>
+                            {value.icon}
+                          </IconWrapper>
+                          <Typography variant="h5" component="h3" gutterBottom sx={{ fontWeight: 700, color: 'primary.main', mb: 2 }}>
+                            {value.title}
                           </Typography>
-                        </Box>
-                      ))}
-                    </CardContent>
-                  </StyledCard>
-                </Grid>
-              ))}
-            </Grid>
+                          <Typography variant="body2" sx={{ color: 'text.secondary', lineHeight: 1.6 }}>
+                            {value.description}
+                          </Typography>
+                        </CardContent>
+                      </StyledCard>
+                    </motion.div>
+                  </Grid>
+                ))}
+              </Grid>
+            </motion.div>
           </Box>
-        </Fade>
-      </Container>
-    </Box>
+        </Container>
+      </Box>
     </>
   );
 };

@@ -1,25 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+/* Global Styles & Reset */
+:root {
+  /* Colors - Matching src/styles/designTokens.js */
+  --color-primary: #0F172A;
+  --color-secondary: #2563EB;
+  --color-background: #F8FAFC;
+  --color-text: #1E293B;
+  --color-text-secondary: #64748B;
+}
+
 body {
   margin: 0;
-  font-family: "Inter", "Roboto", "Helvetica", "Arial", sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #F0F9FF; /* Light Sky Blue to match global theme */
-  color: #1E293B; /* Slate 800 */
+  background-color: var(--color-background);
+  color: var(--color-text);
+  line-height: 1.5;
+}
+
+/* Layout & Alignment */
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  padding-top: 80px; /* Matches layout.headerHeight.desktop */
+}
+
+@media (max-width: 600px) {
+  .main-content {
+    padding-top: 64px; /* Matches layout.headerHeight.mobile */
+  }
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
 
-/* Global focus reset as requested */
-*:focus {
-  outline: none;
-}
-
-/* Accessibility: Visible focus indicators for keyboard navigation */
+/* Accessibility */
 *:focus-visible {
-  outline: 2px solid #3B82F6; /* Blue 500 */
+  outline: 2px solid var(--color-secondary);
   outline-offset: 2px;
 }
 
@@ -30,7 +58,7 @@ code {
 }
 
 ::-webkit-scrollbar-track {
-  background: #F1F5F9;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -42,9 +70,9 @@ code {
   background: #94A3B8;
 }
 
-/* Animation Utilities */
+/* Animations */
 .fade-in {
-  animation: fadeIn 0.5s ease-in-out;
+  animation: fadeIn 0.4s ease-out;
 }
 
 @keyframes fadeIn {
@@ -52,20 +80,9 @@ code {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Glassmorphism Utilities */
-.glass {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
+/* Utilities */
 a {
   text-decoration: none;
   color: inherit;
   transition: color 0.2s ease;
-}
-
-a:hover {
-  color: #3B82F6;
 }

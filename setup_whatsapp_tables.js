@@ -12,9 +12,9 @@ async function setupWhatsAppTables() {
     // Read database configuration from environment
     const connection = await mysql.createConnection({
       host: process.env.DB_HOST || 'localhost',
-      user: process.env.DB_USER || 'ats_user',
-      password: process.env.DB_PASSWORD || 'C$y0&4Xy3ff7eg&tT3W%',
-      database: process.env.DB_NAME || 'ats_DB',
+      user: process.env.DB_USER || 'affinity2_live',
+      password: process.env.DB_PASSWORD || 'Renegade4-Cobbler7-Turbine1-Sizable6-Buddy2',
+      database: process.env.DB_NAME || 'affinity2_whatsapptables',   
       multipleStatements: true // Allow multiple SQL statements
     });
 

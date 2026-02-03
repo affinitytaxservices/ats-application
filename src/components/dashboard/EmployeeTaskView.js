@@ -28,7 +28,9 @@ import {
   Tab,
   Accordion,
   AccordionSummary,
-  AccordionDetails
+  AccordionDetails,
+  useTheme,
+  alpha
 } from '@mui/material';
 import {
   Assignment,
@@ -49,6 +51,7 @@ import {
 import { useTaskManagement } from '../../contexts/TaskManagementContext';
 
 const EmployeeTaskView = () => {
+  const theme = useTheme();
   const {
     updateTaskStatus,
     submitTaskForReview,
@@ -166,19 +169,25 @@ const EmployeeTaskView = () => {
 
     return (
       <Card 
+        elevation={0}
         sx={{ 
           mb: 2, 
-          border: isOverdue ? '2px solid #f44336' : isUrgent ? '2px solid #ff9800' : '1px solid #e0e0e0',
-          '&:hover': { boxShadow: 3 }
+          border: '1px solid',
+          borderColor: isOverdue ? 'error.main' : isUrgent ? 'warning.main' : 'divider',
+          transition: 'transform 0.2s, box-shadow 0.2s',
+          '&:hover': { 
+            transform: 'translateY(-2px)',
+            boxShadow: theme.shadows[2]
+          }
         }}
       >
         <CardContent>
           <Box display="flex" justifyContent="space-between" alignItems="flex-start" mb={2}>
             <Box flex={1}>
-              <Typography variant="h6" gutterBottom>
+              <Typography variant="h6" gutterBottom fontWeight="600">
                 {task.title}
-                {isOverdue && <Chip label="OVERDUE" color="error" size="small" sx={{ ml: 1 }} />}
-                {isUrgent && <Chip label="URGENT" color="warning" size="small" sx={{ ml: 1 }} />}
+                {isOverdue && <Chip label="OVERDUE" color="error" size="small" sx={{ ml: 1, fontWeight: 700 }} />}
+                {isUrgent && <Chip label="URGENT" color="warning" size="small" sx={{ ml: 1, fontWeight: 700 }} />}
               </Typography>
               <Typography variant="body2" color="text.secondary" paragraph>
                 {task.description}
@@ -190,11 +199,13 @@ const EmployeeTaskView = () => {
                 color={getPriorityColor(task.priority)} 
                 size="small" 
                 icon={<Flag />}
+                sx={{ borderRadius: 1, fontWeight: 600 }}
               />
               <Chip 
                 label={task.status.replace('_', ' ')} 
                 color={getStatusColor(task.status)} 
                 size="small"
+                sx={{ borderRadius: 1, fontWeight: 600 }}
               />
             </Box>
           </Box>
@@ -206,12 +217,12 @@ const EmployeeTaskView = () => {
                 <Typography variant="body2">
                   Due: {formatDate(task.deadline)}
                   {isOverdue && (
-                    <Typography component="span" color="error" sx={{ ml: 1 }}>
+                    <Typography component="span" color="error" sx={{ ml: 1, fontWeight: 600 }}>
                       ({Math.abs(daysUntilDeadline)} days overdue)
                     </Typography>
                   )}
                   {isUrgent && (
-                    <Typography component="span" color="warning.main" sx={{ ml: 1 }}>
+                    <Typography component="span" color="warning.main" sx={{ ml: 1, fontWeight: 600 }}>
                       ({daysUntilDeadline} days left)
                     </Typography>
                   )}
@@ -232,12 +243,16 @@ const EmployeeTaskView = () => {
             <Box mb={2}>
               <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
                 <Typography variant="body2">Progress</Typography>
-                <Typography variant="body2">{task.progress}%</Typography>
+                <Typography variant="body2" fontWeight="600">{task.progress}%</Typography>
               </Box>
               <LinearProgress 
                 variant="determinate" 
                 value={task.progress} 
-                sx={{ height: 8, borderRadius: 4 }}
+                sx={{ 
+                  height: 8, 
+                  borderRadius: 4,
+                  bgcolor: alpha(theme.palette.primary.main, 0.1)
+                }}
               />
             </Box>
           )}
@@ -249,6 +264,7 @@ const EmployeeTaskView = () => {
                 startIcon={<PlayArrow />}
                 onClick={() => handleStartTask(task.id)}
                 size="small"
+                sx={{ borderRadius: 2 }}
               >
                 Start Task
               </Button>
@@ -261,6 +277,7 @@ const EmployeeTaskView = () => {
                   startIcon={<Pause />}
                   onClick={() => handlePauseTask(task.id)}
                   size="small"
+                  sx={{ borderRadius: 2 }}
                 >
                   Pause
                 </Button>
@@ -269,6 +286,7 @@ const EmployeeTaskView = () => {
                   startIcon={<CheckCircle />}
                   onClick={() => handleCompleteTask(task.id)}
                   size="small"
+                  sx={{ borderRadius: 2 }}
                 >
                   Complete
                 </Button>
@@ -284,6 +302,7 @@ const EmployeeTaskView = () => {
                   setSubmitDialogOpen(true);
                 }}
                 size="small"
+                sx={{ borderRadius: 2 }}
               >
                 Submit for Review
               </Button>
@@ -297,6 +316,7 @@ const EmployeeTaskView = () => {
                 setCommentDialogOpen(true);
               }}
               size="small"
+              sx={{ borderRadius: 2 }}
             >
               Add Comment
             </Button>
@@ -306,13 +326,14 @@ const EmployeeTaskView = () => {
               startIcon={<Visibility />}
               onClick={() => setSelectedTask(task)}
               size="small"
+              sx={{ borderRadius: 2 }}
             >
               View Details
             </Button>
           </Box>
 
           {task.comments && task.comments.length > 0 && (
-            <Accordion sx={{ mt: 2 }}>
+            <Accordion sx={{ mt: 2, '&:before': { display: 'none' }, boxShadow: 'none', border: '1px solid', borderColor: 'divider', borderRadius: '8px !important' }}>
               <AccordionSummary expandIcon={<ExpandMore />}>
                 <Typography variant="body2">
                   Comments ({task.comments.length})
@@ -321,7 +342,7 @@ const EmployeeTaskView = () => {
               <AccordionDetails>
                 <List dense>
                   {task.comments.slice(-3).map((comment, index) => (
-                    <ListItem key={index} divider>
+                    <ListItem key={index} divider={index < task.comments.length - 1}>
                       <ListItemText
                         primary={comment.text}
                         secondary={`${comment.author} - ${formatDate(comment.timestamp)}`}
@@ -338,13 +359,13 @@ const EmployeeTaskView = () => {
   };
 
   return (
-    <Box sx={{ p: 3 }}>
+    <Box>
       {/* Header */}
       <Box mb={3}>
-        <Typography variant="h4" gutterBottom>
+        <Typography variant="h5" gutterBottom fontWeight="700">
           My Tasks
         </Typography>
-        <Typography variant="body1" color="text.secondary">
+        <Typography variant="body2" color="text.secondary">
           Welcome back, {currentUser?.name}! Here are your assigned tasks.
         </Typography>
       </Box>
@@ -352,41 +373,49 @@ const EmployeeTaskView = () => {
       {/* Statistics Cards */}
       <Grid container spacing={3} mb={3}>
         <Grid item xs={12} sm={6} md={3}>
-          <Paper sx={{ p: 2, textAlign: 'center' }}>
-            <Badge badgeContent={tasksByStatus.pending.length} color="default">
-              <Assignment color="action" sx={{ fontSize: 40 }} />
-            </Badge>
-            <Typography variant="h6" mt={1}>Pending</Typography>
-          </Paper>
+          <Card elevation={0} sx={{ border: '1px solid', borderColor: 'divider', height: '100%' }}>
+            <CardContent sx={{ textAlign: 'center' }}>
+              <Badge badgeContent={tasksByStatus.pending.length} color="default">
+                <Assignment color="action" sx={{ fontSize: 40 }} />
+              </Badge>
+              <Typography variant="h6" mt={1} fontWeight="600">Pending</Typography>
+            </CardContent>
+          </Card>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <Paper sx={{ p: 2, textAlign: 'center' }}>
-            <Badge badgeContent={tasksByStatus.in_progress.length} color="primary">
-              <TrendingUp color="primary" sx={{ fontSize: 40 }} />
-            </Badge>
-            <Typography variant="h6" mt={1}>In Progress</Typography>
-          </Paper>
+          <Card elevation={0} sx={{ border: '1px solid', borderColor: 'divider', height: '100%' }}>
+            <CardContent sx={{ textAlign: 'center' }}>
+              <Badge badgeContent={tasksByStatus.in_progress.length} color="primary">
+                <TrendingUp color="primary" sx={{ fontSize: 40 }} />
+              </Badge>
+              <Typography variant="h6" mt={1} fontWeight="600">In Progress</Typography>
+            </CardContent>
+          </Card>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <Paper sx={{ p: 2, textAlign: 'center' }}>
-            <Badge badgeContent={tasksByStatus.completed.length} color="success">
-              <CheckCircle color="success" sx={{ fontSize: 40 }} />
-            </Badge>
-            <Typography variant="h6" mt={1}>Completed</Typography>
-          </Paper>
+          <Card elevation={0} sx={{ border: '1px solid', borderColor: 'divider', height: '100%' }}>
+            <CardContent sx={{ textAlign: 'center' }}>
+              <Badge badgeContent={tasksByStatus.completed.length} color="success">
+                <CheckCircle color="success" sx={{ fontSize: 40 }} />
+              </Badge>
+              <Typography variant="h6" mt={1} fontWeight="600">Completed</Typography>
+            </CardContent>
+          </Card>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <Paper sx={{ p: 2, textAlign: 'center' }}>
-            <Badge badgeContent={tasksByStatus.submitted.length} color="info">
-              <Upload color="info" sx={{ fontSize: 40 }} />
-            </Badge>
-            <Typography variant="h6" mt={1}>Submitted</Typography>
-          </Paper>
+          <Card elevation={0} sx={{ border: '1px solid', borderColor: 'divider', height: '100%' }}>
+            <CardContent sx={{ textAlign: 'center' }}>
+              <Badge badgeContent={tasksByStatus.submitted.length} color="info">
+                <Upload color="info" sx={{ fontSize: 40 }} />
+              </Badge>
+              <Typography variant="h6" mt={1} fontWeight="600">Submitted</Typography>
+            </CardContent>
+          </Card>
         </Grid>
       </Grid>
 
       {/* Filters */}
-      <Paper sx={{ p: 2, mb: 3 }}>
+      <Card elevation={0} sx={{ p: 2, mb: 3, border: '1px solid', borderColor: 'divider' }}>
         <Grid container spacing={2} alignItems="center">
           <Grid item xs={12} sm={4}>
             <TextField
@@ -441,15 +470,16 @@ const EmployeeTaskView = () => {
                 setFilterPriority('all');
                 setSearchTerm('');
               }}
+              sx={{ borderRadius: 2 }}
             >
               Clear
             </Button>
           </Grid>
         </Grid>
-      </Paper>
+      </Card>
 
       {/* Task Tabs */}
-      <Paper sx={{ mb: 3 }}>
+      <Paper elevation={0} sx={{ mb: 3, borderBottom: 1, borderColor: 'divider', bgcolor: 'transparent' }}>
         <Tabs 
           value={tabValue} 
           onChange={(e, newValue) => setTabValue(newValue)}
@@ -470,7 +500,7 @@ const EmployeeTaskView = () => {
         {tabValue === 3 && tasksByStatus.completed.map(task => <TaskCard key={task.id} task={task} />)}
 
         {filteredTasks.length === 0 && (
-          <Paper sx={{ p: 4, textAlign: 'center' }}>
+          <Paper elevation={0} sx={{ p: 4, textAlign: 'center', border: '1px solid', borderColor: 'divider', bgcolor: alpha(theme.palette.action.hover, 0.5) }}>
             <Assignment sx={{ fontSize: 60, color: 'text.secondary', mb: 2 }} />
             <Typography variant="h6" color="text.secondary">
               No tasks found
@@ -485,8 +515,14 @@ const EmployeeTaskView = () => {
       </Box>
 
       {/* Submit Task Dialog */}
-      <Dialog open={submitDialogOpen} onClose={() => setSubmitDialogOpen(false)} maxWidth="sm" fullWidth>
-        <DialogTitle>Submit Task for Review</DialogTitle>
+      <Dialog 
+        open={submitDialogOpen} 
+        onClose={() => setSubmitDialogOpen(false)} 
+        maxWidth="sm" 
+        fullWidth
+        PaperProps={{ sx: { borderRadius: 2 } }}
+      >
+        <DialogTitle sx={{ fontWeight: 600 }}>Submit Task for Review</DialogTitle>
         <DialogContent>
           <Typography variant="body2" color="text.secondary" paragraph>
             Please provide any additional notes or comments about your completed work.
@@ -502,15 +538,21 @@ const EmployeeTaskView = () => {
             sx={{ mt: 2 }}
           />
         </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setSubmitDialogOpen(false)}>Cancel</Button>
-          <Button onClick={handleSubmitTask} variant="contained">Submit</Button>
+        <DialogActions sx={{ p: 3 }}>
+          <Button onClick={() => setSubmitDialogOpen(false)} sx={{ borderRadius: 2 }}>Cancel</Button>
+          <Button onClick={handleSubmitTask} variant="contained" sx={{ borderRadius: 2 }}>Submit</Button>
         </DialogActions>
       </Dialog>
 
       {/* Add Comment Dialog */}
-      <Dialog open={commentDialogOpen} onClose={() => setCommentDialogOpen(false)} maxWidth="sm" fullWidth>
-        <DialogTitle>Add Comment</DialogTitle>
+      <Dialog 
+        open={commentDialogOpen} 
+        onClose={() => setCommentDialogOpen(false)} 
+        maxWidth="sm" 
+        fullWidth
+        PaperProps={{ sx: { borderRadius: 2 } }}
+      >
+        <DialogTitle sx={{ fontWeight: 600 }}>Add Comment</DialogTitle>
         <DialogContent>
           <TextField
             fullWidth
@@ -523,9 +565,9 @@ const EmployeeTaskView = () => {
             sx={{ mt: 2 }}
           />
         </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setCommentDialogOpen(false)}>Cancel</Button>
-          <Button onClick={handleAddComment} variant="contained" disabled={!newComment.trim()}>
+        <DialogActions sx={{ p: 3 }}>
+          <Button onClick={() => setCommentDialogOpen(false)} sx={{ borderRadius: 2 }}>Cancel</Button>
+          <Button onClick={handleAddComment} variant="contained" disabled={!newComment.trim()} sx={{ borderRadius: 2 }}>
             Add Comment
           </Button>
         </DialogActions>
@@ -537,7 +579,7 @@ const EmployeeTaskView = () => {
         autoHideDuration={4000}
         onClose={() => setSnackbar({ ...snackbar, open: false })}
       >
-        <Alert severity={snackbar.severity} onClose={() => setSnackbar({ ...snackbar, open: false })}>
+        <Alert severity={snackbar.severity} onClose={() => setSnackbar({ ...snackbar, open: false })} sx={{ borderRadius: 2 }}>
           {snackbar.message}
         </Alert>
       </Snackbar>

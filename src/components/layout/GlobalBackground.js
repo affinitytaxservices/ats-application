@@ -1,7 +1,9 @@
 import React from 'react';
-import { Box } from '@mui/material';
+import { Box, useTheme } from '@mui/material';
 
 const GlobalBackground = () => {
+  const theme = useTheme();
+
   return (
     <Box
       sx={{
@@ -11,29 +13,32 @@ const GlobalBackground = () => {
         right: 0,
         bottom: 0,
         zIndex: -1,
-        background: '#F0F9FF', // Light Sky Blue background
+        backgroundColor: 'background.default', // Use theme background
         overflow: 'hidden',
-        pointerEvents: 'none', // Ensure clicks pass through
+        pointerEvents: 'none',
       }}
     >
-      {/* Decorative background elements */}
+      {/* Subtle decorative elements for professional look */}
       <Box sx={{
         position: 'absolute',
         top: -100,
         right: -100,
-        width: 400,
-        height: 400,
+        width: 600,
+        height: 600,
         borderRadius: '50%',
-        background: 'linear-gradient(135deg, rgba(37, 99, 235, 0.1) 0%, rgba(16, 185, 129, 0.1) 100%)',
+        background: `radial-gradient(circle, ${theme.palette.primary.light} 0%, transparent 70%)`,
+        opacity: 0.03,
       }} />
+      
       <Box sx={{
         position: 'absolute',
         bottom: -50,
         left: -50,
-        width: 300,
-        height: 300,
+        width: 500,
+        height: 500,
         borderRadius: '50%',
-        background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(37, 99, 235, 0.1) 100%)',
+        background: `radial-gradient(circle, ${theme.palette.secondary.main} 0%, transparent 70%)`,
+        opacity: 0.03,
       }} />
     </Box>
   );

@@ -24,7 +24,6 @@ import {
   Alert,
   Snackbar,
   Fade,
-  Zoom,
   MenuItem,
   Menu,
   TableContainer,
@@ -38,8 +37,10 @@ import {
   FormControl,
   InputLabel,
   Select,
-  InputAdornment
+  InputAdornment,
+  alpha
 } from '@mui/material';
+import { motion } from 'framer-motion';
 import {
   People,
   Assignment,
@@ -72,6 +73,29 @@ import {
 import { adminAPI, userAPI, taskAPI, apiUtils } from '../../services/api';
 import { trackError } from '../../services/errorTracking';
 import { PieChart, Pie, Cell, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, Legend, ResponsiveContainer } from 'recharts';
+
+// Animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      type: "spring",
+      stiffness: 100
+    }
+  }
+};
 
 function NewAdminDashboard() {
   const theme = useTheme();
@@ -618,406 +642,372 @@ function NewAdminDashboard() {
   
   return (
     <Container maxWidth="lg" sx={{ px: { xs: 2, sm: 3, md: 4 }, py: 4 }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
-        <Fade in={true} timeout={800}>
-          <Typography 
-            variant="h4" 
-            sx={{ 
-              fontSize: { xs: '1.8rem', sm: '2.125rem' }, 
-              fontWeight: 'bold',
-              fontFamily: 'Montserrat, sans-serif',
-              background: `linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              letterSpacing: '0.5px'
-            }}
-          >
-            Admin Dashboard
-          </Typography>
-        </Fade>
-        
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-          <Button
-            variant="outlined"
-            startIcon={<WhatsApp />}
-            onClick={() => setShowWhatsAppSection(!showWhatsAppSection)}
-            sx={{ 
-              borderRadius: 8,
-              borderColor: '#25D366',
-              color: '#25D366',
-              '&:hover': {
-                borderColor: '#128C7E',
-                backgroundColor: 'rgba(37, 211, 102, 0.08)'
-              }
-            }}
-          >
-            {showWhatsAppSection ? 'Hide WhatsApp' : 'Show WhatsApp'}
-          </Button>
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={containerVariants}
+      >
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
+          <Fade in={true} timeout={800}>
+            <Typography 
+              variant="h4" 
+              sx={{ 
+                fontSize: { xs: '1.8rem', sm: '2.125rem' }, 
+                fontWeight: 'bold',
+                fontFamily: 'Plus Jakarta Sans, sans-serif',
+                background: `linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                letterSpacing: '0.5px'
+              }}
+            >
+              Admin Dashboard
+            </Typography>
+          </Fade>
           
-          <Tooltip title="Refresh Dashboard">
-            <IconButton onClick={handleRefresh} color="primary">
-              <Refresh sx={{ animation: refreshing ? 'spin 1s linear infinite' : 'none', '@keyframes spin': { '0%': { transform: 'rotate(0deg)' }, '100%': { transform: 'rotate(360deg)' } } }} />
-            </IconButton>
-          </Tooltip>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Button
+              variant="outlined"
+              startIcon={<WhatsApp />}
+              onClick={() => setShowWhatsAppSection(!showWhatsAppSection)}
+              sx={{ 
+                borderRadius: 8,
+                borderColor: '#25D366',
+                color: '#25D366',
+                '&:hover': {
+                  borderColor: '#128C7E',
+                  backgroundColor: 'rgba(37, 211, 102, 0.08)'
+                }
+              }}
+            >
+              {showWhatsAppSection ? 'Hide WhatsApp' : 'Show WhatsApp'}
+            </Button>
+            
+            <Tooltip title="Refresh Dashboard">
+              <IconButton onClick={handleRefresh} color="primary">
+                <Refresh sx={{ animation: refreshing ? 'spin 1s linear infinite' : 'none', '@keyframes spin': { '0%': { transform: 'rotate(0deg)' }, '100%': { transform: 'rotate(360deg)' } } }} />
+              </IconButton>
+            </Tooltip>
+          </Box>
         </Box>
-      </Box>
-        <Fade in={true} timeout={800}>
-          <Typography 
-            variant="h4" 
-            sx={{ 
-              fontSize: { xs: '1.8rem', sm: '2.125rem' }, 
-              fontWeight: 'bold',
-              fontFamily: 'Montserrat, sans-serif',
-              background: `linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              letterSpacing: '0.5px'
-            }}
-          >
-            Admin Dashboard
-          </Typography>
-        </Fade>
-        
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-          <Button
-            variant="outlined"
-            startIcon={<WhatsApp />}
-            onClick={() => setShowWhatsAppSection(!showWhatsAppSection)}
-            sx={{ 
-              borderRadius: 8,
-              borderColor: '#25D366',
-              color: '#25D366',
-              '&:hover': {
-                borderColor: '#128C7E',
-                backgroundColor: 'rgba(37, 211, 102, 0.08)'
-              }
-            }}
-          >
-            {showWhatsAppSection ? 'Hide WhatsApp' : 'Show WhatsApp'}
-          </Button>
-          
-          <Tooltip title="Refresh Dashboard">
-            <IconButton onClick={handleRefresh} color="primary">
-            <Refresh sx={{ animation: refreshing ? 'spin 1s linear infinite' : 'none', '@keyframes spin': { '0%': { transform: 'rotate(0deg)' }, '100%': { transform: 'rotate(360deg)' } } }} />
-          </IconButton>
-        </Tooltip>
-      </Box>
       
-      {/* Stats Cards */}
-      <Grid container spacing={isMobile ? 2 : 3} sx={{ mb: 4 }}>
-        <Grid item xs={12} sm={6} md={4}>
-          <Zoom in={true} timeout={500}>
-            <Paper
-              elevation={0}
-              sx={{
-                p: 3,
-                borderRadius: 2,
-                boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.15)',
-                backdropFilter: 'blur(8px)',
-                WebkitBackdropFilter: 'blur(8px)',
-                border: '1px solid rgba(255, 255, 255, 0.18)',
-                display: 'flex',
-                flexDirection: 'column',
-                height: '100%',
-                position: 'relative',
-                overflow: 'hidden',
-                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                '&:hover': {
-                  transform: 'translateY(-5px)',
-                  boxShadow: '0 12px 40px 0 rgba(31, 38, 135, 0.25)',
-                },
-                '&::after': {
-                  content: '""',
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '100%',
-                  height: '4px',
-                  background: theme.palette.primary.main
-                }
-              }}
-            >
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                <Avatar sx={{ bgcolor: 'primary.lighter', color: 'primary.main', mr: 2 }}>
-                  <People />
-                </Avatar>
-                <Typography variant="h6" sx={{ fontWeight: 'medium' }}>
-                  Total Users
+        {/* Stats Cards */}
+        <Grid container spacing={isMobile ? 2 : 3} sx={{ mb: 4 }}>
+          <Grid item xs={12} sm={6} md={4}>
+            <motion.div variants={itemVariants}>
+              <Paper
+                elevation={0}
+                sx={{
+                  p: 3,
+                  borderRadius: 2,
+                  boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.15)',
+                  backdropFilter: 'blur(8px)',
+                  WebkitBackdropFilter: 'blur(8px)',
+                  border: '1px solid rgba(255, 255, 255, 0.18)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  height: '100%',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                  '&:hover': {
+                    transform: 'translateY(-5px)',
+                    boxShadow: '0 12px 40px 0 rgba(31, 38, 135, 0.25)',
+                  },
+                  '&::after': {
+                    content: '""',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '4px',
+                    background: theme.palette.primary.main
+                  }
+                }}
+              >
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                  <Avatar sx={{ bgcolor: alpha(theme.palette.primary.main, 0.1), color: theme.palette.primary.main, mr: 2 }}>
+                    <People />
+                  </Avatar>
+                  <Typography variant="h6" sx={{ fontWeight: 'medium' }}>
+                    Total Users
+                  </Typography>
+                </Box>
+                <Typography variant="h3" sx={{ fontWeight: 'bold', mb: 1 }}>
+                  {adminStats?.totalUsers || 0}
                 </Typography>
-              </Box>
-              <Typography variant="h3" sx={{ fontWeight: 'bold', mb: 1 }}>
-                {adminStats?.totalUsers || 0}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                {adminStats?.activeClients || 0} active clients
-              </Typography>
-            </Paper>
-          </Zoom>
-        </Grid>
-        
-        <Grid item xs={12} sm={6} md={4}>
-          <Zoom in={true} timeout={700}>
-            <Paper
-              elevation={0}
-              sx={{
-                p: 3,
-                borderRadius: 2,
-                boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.15)',
-                backdropFilter: 'blur(8px)',
-                WebkitBackdropFilter: 'blur(8px)',
-                border: '1px solid rgba(255, 255, 255, 0.18)',
-                display: 'flex',
-                flexDirection: 'column',
-                height: '100%',
-                position: 'relative',
-                overflow: 'hidden',
-                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                '&:hover': {
-                  transform: 'translateY(-5px)',
-                  boxShadow: '0 12px 40px 0 rgba(31, 38, 135, 0.25)',
-                },
-                '&::after': {
-                  content: '""',
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '100%',
-                  height: '4px',
-                  background: theme.palette.warning.main
-                }
-              }}
-            >
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                <Avatar sx={{ bgcolor: 'warning.lighter', color: 'warning.main', mr: 2 }}>
-                  <Assignment />
-                </Avatar>
-                <Typography variant="h6" sx={{ fontWeight: 'medium' }}>
-                  Tasks
-                </Typography>
-              </Box>
-              <Typography variant="h3" sx={{ fontWeight: 'bold', mb: 1 }}>
-                {(adminStats?.pendingTasks || 0) + (adminStats?.completedTasks || 0)}
-              </Typography>
-              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <Typography variant="body2" color="text.secondary">
-                  {adminStats?.pendingTasks || 0} pending
+                  {adminStats?.activeClients || 0} active clients
                 </Typography>
-                <Typography variant="body2" color="success.main">
-                  {adminStats?.completedTasks || 0} completed
+              </Paper>
+            </motion.div>
+          </Grid>
+          
+          <Grid item xs={12} sm={6} md={4}>
+            <motion.div variants={itemVariants}>
+              <Paper
+                elevation={0}
+                sx={{
+                  p: 3,
+                  borderRadius: 2,
+                  boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.15)',
+                  backdropFilter: 'blur(8px)',
+                  WebkitBackdropFilter: 'blur(8px)',
+                  border: '1px solid rgba(255, 255, 255, 0.18)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  height: '100%',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                  '&:hover': {
+                    transform: 'translateY(-5px)',
+                    boxShadow: '0 12px 40px 0 rgba(31, 38, 135, 0.25)',
+                  },
+                  '&::after': {
+                    content: '""',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '4px',
+                    background: theme.palette.warning.main
+                  }
+                }}
+              >
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                  <Avatar sx={{ bgcolor: alpha(theme.palette.warning.main, 0.1), color: theme.palette.warning.main, mr: 2 }}>
+                    <Assignment />
+                  </Avatar>
+                  <Typography variant="h6" sx={{ fontWeight: 'medium' }}>
+                    Tasks
+                  </Typography>
+                </Box>
+                <Typography variant="h3" sx={{ fontWeight: 'bold', mb: 1 }}>
+                  {(adminStats?.pendingTasks || 0) + (adminStats?.completedTasks || 0)}
                 </Typography>
-              </Box>
-            </Paper>
-          </Zoom>
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <Typography variant="body2" color="text.secondary">
+                    {adminStats?.pendingTasks || 0} pending
+                  </Typography>
+                  <Typography variant="body2" color="success.main">
+                    {adminStats?.completedTasks || 0} completed
+                  </Typography>
+                </Box>
+              </Paper>
+            </motion.div>
+          </Grid>
+          
+          <Grid item xs={12} sm={6} md={4}>
+            <motion.div variants={itemVariants}>
+              <Paper
+                elevation={0}
+                sx={{
+                  p: 3,
+                  borderRadius: 2,
+                  boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.15)',
+                  backdropFilter: 'blur(8px)',
+                  WebkitBackdropFilter: 'blur(8px)',
+                  border: '1px solid rgba(255, 255, 255, 0.18)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  height: '100%',
+                  position: 'relative',
+                  overflow: 'hidden',
+                  transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                  '&:hover': {
+                    transform: 'translateY(-5px)',
+                    boxShadow: '0 12px 40px 0 rgba(31, 38, 135, 0.25)',
+                  },
+                  '&::after': {
+                    content: '""',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '4px',
+                    background: theme.palette.success.main
+                  }
+                }}
+              >
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                  <Avatar sx={{ bgcolor: alpha(theme.palette.success.main, 0.1), color: theme.palette.success.main, mr: 2 }}>
+                    <AttachMoney />
+                  </Avatar>
+                  <Typography variant="h6" sx={{ fontWeight: 'medium' }}>
+                    Revenue
+                  </Typography>
+                </Box>
+                <Typography variant="h3" sx={{ fontWeight: 'bold', mb: 1 }}>
+                  {formatCurrency(adminStats?.revenue || 0)}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {revenueData.length > 0 ? 
+                    `${revenueData[revenueData.length - 1].growth > 0 ? '+' : ''}${revenueData[revenueData.length - 1].growth}% from last month` : 
+                    'No growth data available'}
+                </Typography>
+              </Paper>
+            </motion.div>
+          </Grid>
         </Grid>
-        
-        <Grid item xs={12} sm={6} md={4}>
-          <Zoom in={true} timeout={900}>
-            <Paper
-              elevation={0}
-              sx={{
-                p: 3,
-                borderRadius: 2,
-                boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.15)',
-                backdropFilter: 'blur(8px)',
-                WebkitBackdropFilter: 'blur(8px)',
-                border: '1px solid rgba(255, 255, 255, 0.18)',
-                display: 'flex',
-                flexDirection: 'column',
-                height: '100%',
-                position: 'relative',
-                overflow: 'hidden',
-                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                '&:hover': {
-                  transform: 'translateY(-5px)',
-                  boxShadow: '0 12px 40px 0 rgba(31, 38, 135, 0.25)',
-                },
-                '&::after': {
-                  content: '""',
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '100%',
-                  height: '4px',
-                  background: theme.palette.success.main
-                }
-              }}
-            >
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                <Avatar sx={{ bgcolor: 'success.lighter', color: 'success.main', mr: 2 }}>
-                  <AttachMoney />
-                </Avatar>
-                <Typography variant="h6" sx={{ fontWeight: 'medium' }}>
-                  Revenue
-                </Typography>
-              </Box>
-              <Typography variant="h3" sx={{ fontWeight: 'bold', mb: 1 }}>
-                {formatCurrency(adminStats?.revenue || 0)}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                {revenueData.length > 0 ? 
-                  `${revenueData[revenueData.length - 1].growth > 0 ? '+' : ''}${revenueData[revenueData.length - 1].growth}% from last month` : 
-                  'No growth data available'}
-              </Typography>
-            </Paper>
-          </Zoom>
-        </Grid>
-      </Grid>
       
       {/* WhatsApp Business Section */}
       {showWhatsAppSection && (
         <Grid container spacing={3} sx={{ mt: 2 }}>
           <Grid item xs={12}>
-            <Paper
-              elevation={0}
-              sx={{
-                p: { xs: 2, sm: 3 },
-                borderRadius: 2,
-                boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.15)',
-                backdropFilter: 'blur(8px)',
-                WebkitBackdropFilter: 'blur(8px)',
-                border: '1px solid rgba(255, 255, 255, 0.18)',
-                overflow: 'hidden',
-                position: 'relative',
-                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                '&:hover': {
-                  transform: 'translateY(-5px)',
-                  boxShadow: '0 12px 40px 0 rgba(31, 38, 135, 0.25)',
-                },
-                '&::after': {
-                  content: '""',
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '100%',
-                  height: '4px',
-                  background: `linear-gradient(90deg, #25D366 0%, #128C7E 100%)`
-                }
-              }}
-            >
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <WhatsApp sx={{ color: '#25D366', mr: 1 }} />
-                  <Typography 
-                    variant="h6" 
-                    sx={{ 
-                      fontWeight: 'bold',
-                      fontFamily: 'Montserrat, sans-serif',
+            <motion.div variants={itemVariants}>
+              <Paper
+                elevation={0}
+                sx={{
+                  p: { xs: 2, sm: 3 },
+                  borderRadius: 2,
+                  boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.15)',
+                  backdropFilter: 'blur(8px)',
+                  WebkitBackdropFilter: 'blur(8px)',
+                  border: '1px solid rgba(255, 255, 255, 0.18)',
+                  overflow: 'hidden',
+                  position: 'relative',
+                  transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                  '&:hover': {
+                    transform: 'translateY(-5px)',
+                    boxShadow: '0 12px 40px 0 rgba(31, 38, 135, 0.25)',
+                  },
+                  '&::after': {
+                    content: '""',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '4px',
+                    background: `linear-gradient(90deg, #25D366 0%, #128C7E 100%)`
+                  }
+                }}
+              >
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <WhatsApp sx={{ color: '#25D366', mr: 1 }} />
+                    <Typography 
+                      variant="h6" 
+                      sx={{ 
+                        fontWeight: 'bold',
+                        fontFamily: 'Plus Jakarta Sans, sans-serif',
+                        background: 'linear-gradient(90deg, #25D366 0%, #128C7E 100%)',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                        letterSpacing: '0.5px'
+                      }}
+                    >
+                      WhatsApp Business
+                    </Typography>
+                  </Box>
+                  <Button
+                    variant="outlined"
+                    size="small"
+                    onClick={() => setShowWhatsAppSection(false)}
+                    sx={{ borderRadius: 8 }}
+                  >
+                    Hide
+                  </Button>
+                </Box>
+                
+                <Grid container spacing={3}>
+                  {/* WhatsApp Conversations */}
+                  <Grid item xs={12} md={4}>
+                    <Paper elevation={1} sx={{ p: 2, borderRadius: 2 }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                        <Message sx={{ color: 'primary.main', mr: 1 }} />
+                        <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
+                          Conversations ({whatsappConversations.length})
+                        </Typography>
+                      </Box>
+                      {whatsappConversations.slice(0, 5).map((conv) => (
+                        <Box key={conv.phone_number} sx={{ mb: 1, p: 1, bgcolor: 'grey.50', borderRadius: 1 }}>
+                          <Typography variant="body2" sx={{ fontWeight: 'medium' }}>
+                            {conv.phone_number}
+                          </Typography>
+                          <Typography variant="caption" color="text.secondary">
+                            {conv.state} • {new Date(conv.updated_at).toLocaleDateString()}
+                          </Typography>
+                        </Box>
+                      ))}
+                    </Paper>
+                  </Grid>
+                  
+                  {/* WhatsApp Appointments */}
+                  <Grid item xs={12} md={4}>
+                    <Paper elevation={1} sx={{ p: 2, borderRadius: 2 }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                        <Schedule sx={{ color: 'success.main', mr: 1 }} />
+                        <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
+                          Appointments ({whatsappAppointments.length})
+                        </Typography>
+                      </Box>
+                      {whatsappAppointments.slice(0, 5).map((appt) => (
+                        <Box key={appt.id} sx={{ mb: 1, p: 1, bgcolor: 'grey.50', borderRadius: 1 }}>
+                          <Typography variant="body2" sx={{ fontWeight: 'medium' }}>
+                            {appt.phone_number}
+                          </Typography>
+                          <Typography variant="caption" color="text.secondary">
+                            {new Date(appt.appointment_date).toLocaleDateString()} at {appt.appointment_time}
+                          </Typography>
+                          <Chip 
+                            label={appt.status} 
+                            size="small" 
+                            sx={{ ml: 1 }}
+                            color={appt.status === 'scheduled' ? 'primary' : 'success'}
+                          />
+                        </Box>
+                      ))}
+                    </Paper>
+                  </Grid>
+                  
+                  {/* WhatsApp Support Tickets */}
+                  <Grid item xs={12} md={4}>
+                    <Paper elevation={1} sx={{ p: 2, borderRadius: 2 }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                        <Support sx={{ color: 'warning.main', mr: 1 }} />
+                        <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
+                          Support Tickets ({whatsappSupportTickets.length})
+                        </Typography>
+                      </Box>
+                      {whatsappSupportTickets.slice(0, 5).map((ticket) => (
+                        <Box key={ticket.id} sx={{ mb: 1, p: 1, bgcolor: 'grey.50', borderRadius: 1 }}>
+                          <Typography variant="body2" sx={{ fontWeight: 'medium' }}>
+                            {ticket.phone_number}
+                          </Typography>
+                          <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
+                            {ticket.message.substring(0, 50)}...
+                          </Typography>
+                          <Chip 
+                            label={ticket.status} 
+                            size="small" 
+                            sx={{ mt: 0.5 }}
+                            color={ticket.status === 'open' ? 'warning' : 'info'}
+                          />
+                        </Box>
+                      ))}
+                    </Paper>
+                  </Grid>
+                </Grid>
+                
+                <Box sx={{ mt: 3, textAlign: 'center' }}>
+                  <Button
+                    variant="contained"
+                    startIcon={<WhatsApp />}
+                    onClick={() => window.open('/admin/whatsapp', '_blank')}
+                    sx={{
                       background: 'linear-gradient(90deg, #25D366 0%, #128C7E 100%)',
-                      WebkitBackgroundClip: 'text',
-                      WebkitTextFillColor: 'transparent',
-                      letterSpacing: '0.5px'
+                      borderRadius: 8,
+                      '&:hover': {
+                        background: 'linear-gradient(90deg, #128C7E 0%, #075E54 100%)',
+                      }
                     }}
                   >
-                    WhatsApp Business
-                  </Typography>
+                    Open WhatsApp Admin Panel
+                  </Button>
                 </Box>
-                <Button
-                  variant="outlined"
-                  size="small"
-                  onClick={() => setShowWhatsAppSection(false)}
-                  sx={{ borderRadius: 8 }}
-                >
-                  Hide
-                </Button>
-              </Box>
-              
-              <Grid container spacing={3}>
-                {/* WhatsApp Conversations */}
-                <Grid item xs={12} md={4}>
-                  <Paper elevation={1} sx={{ p: 2, borderRadius: 2 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                      <Message sx={{ color: 'primary.main', mr: 1 }} />
-                      <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
-                        Conversations ({whatsappConversations.length})
-                      </Typography>
-                    </Box>
-                    {whatsappConversations.slice(0, 5).map((conv) => (
-                      <Box key={conv.phone_number} sx={{ mb: 1, p: 1, bgcolor: 'grey.50', borderRadius: 1 }}>
-                        <Typography variant="body2" sx={{ fontWeight: 'medium' }}>
-                          {conv.phone_number}
-                        </Typography>
-                        <Typography variant="caption" color="text.secondary">
-                          {conv.state} • {new Date(conv.updated_at).toLocaleDateString()}
-                        </Typography>
-                      </Box>
-                    ))}
-                  </Paper>
-                </Grid>
-                
-                {/* WhatsApp Appointments */}
-                <Grid item xs={12} md={4}>
-                  <Paper elevation={1} sx={{ p: 2, borderRadius: 2 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                      <Schedule sx={{ color: 'success.main', mr: 1 }} />
-                      <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
-                        Appointments ({whatsappAppointments.length})
-                      </Typography>
-                    </Box>
-                    {whatsappAppointments.slice(0, 5).map((appt) => (
-                      <Box key={appt.id} sx={{ mb: 1, p: 1, bgcolor: 'grey.50', borderRadius: 1 }}>
-                        <Typography variant="body2" sx={{ fontWeight: 'medium' }}>
-                          {appt.phone_number}
-                        </Typography>
-                        <Typography variant="caption" color="text.secondary">
-                          {new Date(appt.appointment_date).toLocaleDateString()} at {appt.appointment_time}
-                        </Typography>
-                        <Chip 
-                          label={appt.status} 
-                          size="small" 
-                          sx={{ ml: 1 }}
-                          color={appt.status === 'scheduled' ? 'primary' : 'success'}
-                        />
-                      </Box>
-                    ))}
-                  </Paper>
-                </Grid>
-                
-                {/* WhatsApp Support Tickets */}
-                <Grid item xs={12} md={4}>
-                  <Paper elevation={1} sx={{ p: 2, borderRadius: 2 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                      <Support sx={{ color: 'warning.main', mr: 1 }} />
-                      <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}>
-                        Support Tickets ({whatsappSupportTickets.length})
-                      </Typography>
-                    </Box>
-                    {whatsappSupportTickets.slice(0, 5).map((ticket) => (
-                      <Box key={ticket.id} sx={{ mb: 1, p: 1, bgcolor: 'grey.50', borderRadius: 1 }}>
-                        <Typography variant="body2" sx={{ fontWeight: 'medium' }}>
-                          {ticket.phone_number}
-                        </Typography>
-                        <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
-                          {ticket.message.substring(0, 50)}...
-                        </Typography>
-                        <Chip 
-                          label={ticket.status} 
-                          size="small" 
-                          sx={{ mt: 0.5 }}
-                          color={ticket.status === 'open' ? 'warning' : 'info'}
-                        />
-                      </Box>
-                    ))}
-                  </Paper>
-                </Grid>
-              </Grid>
-              
-              <Box sx={{ mt: 3, textAlign: 'center' }}>
-                <Button
-                  variant="contained"
-                  startIcon={<WhatsApp />}
-                  onClick={() => window.open('/admin/whatsapp', '_blank')}
-                  sx={{
-                    background: 'linear-gradient(90deg, #25D366 0%, #128C7E 100%)',
-                    borderRadius: 8,
-                    '&:hover': {
-                      background: 'linear-gradient(90deg, #128C7E 0%, #075E54 100%)',
-                    }
-                  }}
-                >
-                  Open WhatsApp Admin Panel
-                </Button>
-              </Box>
-            </Paper>
+              </Paper>
+            </motion.div>
           </Grid>
         </Grid>
       )}
@@ -1025,7 +1015,7 @@ function NewAdminDashboard() {
       <Grid container spacing={isMobile ? 2 : 3}>
         {/* Task Management Section */}
         <Grid item xs={12} lg={8}>
-          <Zoom in={true} timeout={1100}>
+          <motion.div variants={itemVariants}>
             <Paper
               elevation={0}
               sx={{
@@ -1061,7 +1051,7 @@ function NewAdminDashboard() {
                     variant="h6" 
                     sx={{ 
                       fontWeight: 'bold',
-                      fontFamily: 'Montserrat, sans-serif',
+                      fontFamily: 'Plus Jakarta Sans, sans-serif',
                       background: `linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
                       WebkitBackgroundClip: 'text',
                       WebkitTextFillColor: 'transparent',
@@ -1102,32 +1092,32 @@ function NewAdminDashboard() {
                       <TableHead>
                         <TableRow>
                           <TableCell sx={{ 
-                            fontFamily: 'Montserrat, sans-serif', 
+                            fontFamily: 'Plus Jakarta Sans, sans-serif', 
                             fontWeight: 600,
                             color: theme.palette.text.primary
                           }}>Title</TableCell>
                           <TableCell sx={{ 
-                            fontFamily: 'Montserrat, sans-serif', 
+                            fontFamily: 'Plus Jakarta Sans, sans-serif', 
                             fontWeight: 600,
                             color: theme.palette.text.primary
                           }}>Assignee</TableCell>
                           <TableCell sx={{ 
-                            fontFamily: 'Montserrat, sans-serif', 
+                            fontFamily: 'Plus Jakarta Sans, sans-serif', 
                             fontWeight: 600,
                             color: theme.palette.text.primary
                           }}>Priority</TableCell>
                           <TableCell sx={{ 
-                            fontFamily: 'Montserrat, sans-serif', 
+                            fontFamily: 'Plus Jakarta Sans, sans-serif', 
                             fontWeight: 600,
                             color: theme.palette.text.primary
                           }}>Status</TableCell>
                           <TableCell sx={{ 
-                            fontFamily: 'Montserrat, sans-serif', 
+                            fontFamily: 'Plus Jakarta Sans, sans-serif', 
                             fontWeight: 600,
                             color: theme.palette.text.primary
                           }}>Due Date</TableCell>
                           <TableCell align="right" sx={{ 
-                            fontFamily: 'Montserrat, sans-serif', 
+                            fontFamily: 'Plus Jakarta Sans, sans-serif', 
                             fontWeight: 600,
                             color: theme.palette.text.primary
                           }}>Actions</TableCell>
@@ -1216,6 +1206,7 @@ function NewAdminDashboard() {
                                 <IconButton
                                   size="small"
                                   onClick={(e) => handleTaskActionsClick(e, task)}
+                                  aria-label={`Actions for task ${task.title}`}
                                 >
                                   <MoreVert />
                                 </IconButton>
@@ -1251,10 +1242,10 @@ function NewAdminDashboard() {
                 </Box>
               )}
             </Paper>
-          </Zoom>
+          </motion.div>
           
           {/* User Management Section */}
-          <Zoom in={true} timeout={1300}>
+          <motion.div variants={itemVariants}>
             <Paper
               elevation={0}
               sx={{
@@ -1289,7 +1280,7 @@ function NewAdminDashboard() {
                     variant="h6" 
                     sx={{ 
                       fontWeight: 'bold',
-                      fontFamily: 'Montserrat, sans-serif',
+                      fontFamily: 'Plus Jakarta Sans, sans-serif',
                       background: `linear-gradient(90deg, ${theme.palette.secondary.main} 0%, ${theme.palette.primary.main} 100%)`,
                       WebkitBackgroundClip: 'text',
                       WebkitTextFillColor: 'transparent',
@@ -1330,32 +1321,32 @@ function NewAdminDashboard() {
                       <TableHead>
                         <TableRow>
                           <TableCell sx={{ 
-                            fontFamily: 'Montserrat, sans-serif', 
+                            fontFamily: 'Plus Jakarta Sans, sans-serif', 
                             fontWeight: 600,
                             color: theme.palette.text.primary
                           }}>Name</TableCell>
                           <TableCell sx={{ 
-                            fontFamily: 'Montserrat, sans-serif', 
+                            fontFamily: 'Plus Jakarta Sans, sans-serif', 
                             fontWeight: 600,
                             color: theme.palette.text.primary
                           }}>Email</TableCell>
                           <TableCell sx={{ 
-                            fontFamily: 'Montserrat, sans-serif', 
+                            fontFamily: 'Plus Jakarta Sans, sans-serif', 
                             fontWeight: 600,
                             color: theme.palette.text.primary
                           }}>Role</TableCell>
                           <TableCell sx={{ 
-                            fontFamily: 'Montserrat, sans-serif', 
+                            fontFamily: 'Plus Jakarta Sans, sans-serif', 
                             fontWeight: 600,
                             color: theme.palette.text.primary
                           }}>Status</TableCell>
                           <TableCell sx={{ 
-                            fontFamily: 'Montserrat, sans-serif', 
+                            fontFamily: 'Plus Jakarta Sans, sans-serif', 
                             fontWeight: 600,
                             color: theme.palette.text.primary
                           }}>Last Login</TableCell>
                           <TableCell align="right" sx={{ 
-                            fontFamily: 'Montserrat, sans-serif', 
+                            fontFamily: 'Plus Jakarta Sans, sans-serif', 
                             fontWeight: 600,
                             color: theme.palette.text.primary
                           }}>Actions</TableCell>
@@ -1442,6 +1433,7 @@ function NewAdminDashboard() {
                                 <IconButton
                                   size="small"
                                   onClick={(e) => handleUserActionsClick(e, user)}
+                                  aria-label={`Actions for user ${user.firstName} ${user.lastName}`}
                                 >
                                   <MoreVert />
                                 </IconButton>
@@ -1477,12 +1469,12 @@ function NewAdminDashboard() {
                 </Box>
               )}
             </Paper>
-          </Zoom>
+          </motion.div>
         </Grid>
         
         <Grid item xs={12} lg={4}>
           {/* System Alerts Section */}
-          <Zoom in={true} timeout={1100}>
+          <motion.div variants={itemVariants}>
             <Paper
               elevation={0}
               sx={{
@@ -1517,7 +1509,7 @@ function NewAdminDashboard() {
                   variant="h6" 
                   sx={{ 
                     fontWeight: 'bold',
-                    fontFamily: 'Montserrat, sans-serif',
+                    fontFamily: 'Plus Jakarta Sans, sans-serif',
                     background: `linear-gradient(90deg, ${theme.palette.error.main} 0%, ${theme.palette.warning.main} 100%)`,
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
@@ -1587,7 +1579,7 @@ function NewAdminDashboard() {
                               variant="subtitle1"
                               sx={{
                                 fontWeight: 'medium',
-                                fontFamily: 'Montserrat, sans-serif',
+                                fontFamily: 'Plus Jakarta Sans, sans-serif',
                                 color:
                                   alert.type === 'error'
                                     ? 'error.dark'
@@ -1638,10 +1630,10 @@ function NewAdminDashboard() {
                 </Box>
               )}
             </Paper>
-          </Zoom>
+          </motion.div>
           
           {/* Analytics Charts */}
-          <Zoom in={true} timeout={1300}>
+          <motion.div variants={itemVariants}>
             <Paper
               elevation={0}
               sx={{
@@ -1676,7 +1668,7 @@ function NewAdminDashboard() {
                   variant="h6" 
                   sx={{ 
                     fontWeight: 'bold',
-                    fontFamily: 'Montserrat, sans-serif',
+                    fontFamily: 'Plus Jakarta Sans, sans-serif',
                     background: `linear-gradient(90deg, ${theme.palette.info.main} 0%, ${theme.palette.primary.main} 100%)`,
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
@@ -1740,9 +1732,9 @@ function NewAdminDashboard() {
                 </Box>
               )}
             </Paper>
-          </Zoom>
+          </motion.div>
           
-          <Zoom in={true} timeout={1500}>
+          <motion.div variants={itemVariants}>
             <Paper
               elevation={0}
               sx={{
@@ -1776,7 +1768,7 @@ function NewAdminDashboard() {
                   variant="h6" 
                   sx={{ 
                     fontWeight: 'bold',
-                    fontFamily: 'Montserrat, sans-serif',
+                    fontFamily: 'Plus Jakarta Sans, sans-serif',
                     background: `linear-gradient(90deg, ${theme.palette.success.main} 0%, ${theme.palette.secondary.main} 100%)`,
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
@@ -1876,9 +1868,10 @@ function NewAdminDashboard() {
                 </Box>
               )}
             </Paper>
-          </Zoom>
+          </motion.div>
         </Grid>
       </Grid>
+      </motion.div>
       
       {/* Task Assignment Dialog */}
       <Dialog 
@@ -2247,6 +2240,7 @@ function NewAdminDashboard() {
                     <IconButton
                       onClick={() => setShowPassword(!showPassword)}
                       edge="end"
+                      aria-label={showPassword ? 'Hide password' : 'Show password'}
                       sx={{
                         color: theme.palette.primary.main,
                         '&:hover': {
@@ -2276,6 +2270,7 @@ function NewAdminDashboard() {
                     <IconButton
                       onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                       edge="end"
+                      aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
                     >
                       {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
