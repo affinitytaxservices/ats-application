@@ -41,6 +41,7 @@ import WhatsAppWidget from './components/common/WhatsAppWidget';
 import NotFound from './components/common/NotFound';
 import ScrollToTop from './components/common/ScrollToTop';
 import UnderConstructionPage from './components/maintenance/UnderConstructionPage';
+import StyleGuide from './components/common/StyleGuide';
 
 
 
@@ -203,7 +204,8 @@ function App() {
             
             {/* Catch all route for 404 */}
             <Route path="/under-construction" element={<UnderConstructionPage />} />
-        <Route path="*" element={<NotFound />} />
+            <Route path="/style-guide" element={<StyleGuide />} />
+            <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
       <WhatsAppWidget />

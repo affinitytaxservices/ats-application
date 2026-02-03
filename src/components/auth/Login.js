@@ -14,6 +14,7 @@ import {
   Link,
   Container,
   Grid,
+  useTheme
 } from '@mui/material';
 import {
   Email,
@@ -30,6 +31,8 @@ import { seoConfig } from '../../config/seo.config';
 function Login() {
   const navigate = useNavigate();
   const { login } = useAuth();
+  const theme = useTheme();
+  
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -45,12 +48,8 @@ function Login() {
       ...prev,
       [name]: value
     }));
-    // Clear errors when user starts typing
     if (errors[name]) {
-      setErrors(prev => ({
-        ...prev,
-        [name]: ''
-      }));
+      setErrors(prev => ({ ...prev, [name]: '' }));
     }
     if (generalError) {
       setGeneralError('');
@@ -59,19 +58,16 @@ function Login() {
 
   const validateForm = () => {
     const newErrors = {};
-    
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required';
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = 'Please enter a valid email address';
     }
-    
     if (!formData.password) {
       newErrors.password = 'Password is required';
     } else if (formData.password.length < 6) {
       newErrors.password = 'Password must be at least 6 characters';
     }
-    
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -79,13 +75,9 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setGeneralError('');
-    
-    if (!validateForm()) {
-      return;
-    }
+    if (!validateForm()) return;
 
     setIsSubmitting(true);
-
     try {
       const success = await login(formData.email, formData.password);
       if (success) {
@@ -108,7 +100,7 @@ function Login() {
     <Box
       sx={{
         minHeight: '100vh',
-        background: 'linear-gradient(135deg, #0F172A 0%, #1E3A8A 60%, #10B981 100%)',
+        bgcolor: 'background.default',
         display: 'flex',
         alignItems: 'center',
         py: { xs: 4, md: 8 },
@@ -117,63 +109,64 @@ function Login() {
       <SEOHelmet {...seoConfig.pages.login} />
       <Container maxWidth="lg">
         <Grid container spacing={4} alignItems="stretch">
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={6} sx={{ display: { xs: 'none', md: 'block' } }}>
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, ease: 'easeOut' }}
+              style={{ height: '100%' }}
             >
               <Paper
                 elevation={0}
                 sx={{
                   height: '100%',
-                  p: { xs: 4, md: 6 },
-                  borderRadius: 3,
-                  background: 'rgba(255,255,255,0.06)',
-                  backdropFilter: 'blur(8px)',
-                  border: '1px solid rgba(255,255,255,0.15)',
+                  p: 6,
+                  borderRadius: 2,
+                  bgcolor: 'primary.main',
+                  color: 'primary.contrastText',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  position: 'relative',
+                  overflow: 'hidden',
                 }}
               >
-                <Typography
-                  variant="h3"
-                  sx={{
-                    fontWeight: 800,
-                    color: '#FFFFFF',
-                    mb: 2,
-                    letterSpacing: 0.5,
-                  }}
-                >
-                  Affinity Tax Services
+                {/* Decorative circle */}
+                <Box sx={{
+                  position: 'absolute',
+                  top: -50,
+                  right: -50,
+                  width: 200,
+                  height: 200,
+                  borderRadius: '50%',
+                  bgcolor: 'rgba(16, 185, 129, 0.1)',
+                }} />
+
+                <Typography variant="h3" fontWeight="800" gutterBottom color="inherit">
+                  Welcome Back
                 </Typography>
-                <Typography
-                  variant="h6"
-                  sx={{ color: 'rgba(255,255,255,0.8)', mb: 4 }}
-                >
-                  Secure access to your personalized tax dashboard
+                <Typography variant="h6" sx={{ color: 'inherit', mb: 4, fontWeight: 400, opacity: 0.9 }}>
+                  Secure access to your professional tax portal.
                 </Typography>
-                <Stack spacing={2}>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                    <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: '#10B981' }} />
-                    <Typography sx={{ color: '#E5E7EB', fontWeight: 500 }}>
-                      Encrypted authentication and role-based access
-                    </Typography>
-                  </Box>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                    <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: '#3B82F6' }} />
-                    <Typography sx={{ color: '#E5E7EB', fontWeight: 500 }}>
-                      Real-time status and notifications
-                    </Typography>
-                  </Box>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                    <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: '#F59E0B' }} />
-                    <Typography sx={{ color: '#E5E7EB', fontWeight: 500 }}>
-                      Seamless document management
-                    </Typography>
-                  </Box>
+                
+                <Stack spacing={3}>
+                  {[
+                    "Encrypted authentication",
+                    "Real-time status tracking",
+                    "Secure document management"
+                  ].map((text, i) => (
+                    <Box key={i} sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                      <Box sx={{ width: 6, height: 6, borderRadius: '50%', bgcolor: 'success.main' }} />
+                      <Typography variant="body1" fontWeight="500" color="inherit">
+                        {text}
+                      </Typography>
+                    </Box>
+                  ))}
                 </Stack>
               </Paper>
             </motion.div>
           </Grid>
+          
           <Grid item xs={12} md={6}>
             <motion.div
               initial={{ opacity: 0, x: 20 }}
@@ -184,38 +177,22 @@ function Login() {
                 elevation={0}
                 sx={{
                   p: { xs: 4, md: 6 },
-                  borderRadius: 3,
-                  background: '#FFFFFF',
-                  border: '1px solid #E5E7EB',
+                  borderRadius: 2,
+                  bgcolor: 'background.paper',
+                  border: `1px solid ${theme.palette.divider}`,
                 }}
               >
                 <Box sx={{ mb: 4 }}>
-                  <Typography
-                    variant="h4"
-                    sx={{
-                      fontWeight: 700,
-                      color: '#0F172A',
-                      mb: 1,
-                    }}
-                  >
+                  <Typography variant="h4" fontWeight="700" color="text.primary" gutterBottom>
                     Sign In
                   </Typography>
-                  <Typography
-                    variant="body1"
-                    sx={{ color: '#6B7280' }}
-                  >
+                  <Typography variant="body1" color="text.secondary">
                     Enter your credentials to access your account
                   </Typography>
                 </Box>
 
                 {generalError && (
-                  <Alert
-                    severity="error"
-                    sx={{
-                      mb: 3,
-                      borderRadius: 2,
-                    }}
-                  >
+                  <Alert severity="error" sx={{ mb: 3 }}>
                     {generalError}
                   </Alert>
                 )}
@@ -234,39 +211,11 @@ function Login() {
                       InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">
-                            <Email sx={{ color: '#9CA3AF', fontSize: '1.25rem' }} />
+                            <Email color="action" />
                           </InputAdornment>
                         ),
                       }}
-                      sx={{
-                    '& .MuiOutlinedInput-root': {
-                      borderRadius: 2,
-                      backgroundColor: '#F9FAFB',
-                      outline: 'none',
-                      '&:focus-within': { outline: 'none' },
-                      '&.Mui-focused': { outline: 'none' },
-                      '& fieldset': {
-                        borderColor: '#E5E7EB',
-                      },
-                      '&:hover fieldset': {
-                        borderColor: '#CBD5E1',
-                      },
-                      '&.Mui-focused fieldset': {
-                        borderColor: '#E5E7EB',
-                        borderWidth: 1,
-                      },
-                    },
-                    '& .MuiOutlinedInput-input': {
-                      '&:focus': { outline: 'none' },
-                    },
-                    '& .MuiInputLabel-root': {
-                      color: '#6B7280',
-                      '&.Mui-focused': {
-                        color: '#3B82F6',
-                      },
-                    },
-                  }}
-                />
+                    />
 
                     <TextField
                       fullWidth
@@ -280,7 +229,7 @@ function Login() {
                       InputProps={{
                         startAdornment: (
                           <InputAdornment position="start">
-                            <Lock sx={{ color: '#9CA3AF', fontSize: '1.25rem' }} />
+                            <Lock color="action" />
                           </InputAdornment>
                         ),
                         endAdornment: (
@@ -288,56 +237,22 @@ function Login() {
                             <IconButton
                               onClick={togglePasswordVisibility}
                               edge="end"
-                              sx={{ color: '#9CA3AF' }}
                             >
                               {showPassword ? <VisibilityOff /> : <Visibility />}
                             </IconButton>
                           </InputAdornment>
                         ),
                       }}
-                      sx={{
-                    '& .MuiOutlinedInput-root': {
-                      borderRadius: 2,
-                      backgroundColor: '#F9FAFB',
-                      outline: 'none',
-                      '&:focus-within': { outline: 'none' },
-                      '&.Mui-focused': { outline: 'none' },
-                      '& fieldset': {
-                        borderColor: '#E5E7EB',
-                      },
-                      '&:hover fieldset': {
-                        borderColor: '#CBD5E1',
-                      },
-                      '&.Mui-focused fieldset': {
-                        borderColor: '#E5E7EB',
-                        borderWidth: 1,
-                      },
-                    },
-                    '& .MuiOutlinedInput-input': {
-                      '&:focus': { outline: 'none' },
-                    },
-                    '& .MuiInputLabel-root': {
-                      color: '#6B7280',
-                      '&.Mui-focused': {
-                        color: '#3B82F6',
-                      },
-                    },
-                  }}
-                />
+                    />
 
                     <Box sx={{ textAlign: 'right' }}>
                       <Link
                         component={RouterLink}
                         to="/forgot-password"
-                        sx={{
-                          color: '#3B82F6',
-                          textDecoration: 'none',
-                          fontSize: '0.9rem',
-                          fontWeight: 600,
-                          '&:hover': {
-                            textDecoration: 'underline',
-                          },
-                        }}
+                        variant="body2"
+                        color="primary"
+                        fontWeight="600"
+                        underline="hover"
                       >
                         Forgot your password?
                       </Link>
@@ -347,24 +262,10 @@ function Login() {
                       type="submit"
                       fullWidth
                       variant="contained"
+                      size="large"
                       disabled={isSubmitting}
-                      startIcon={isSubmitting ? <CircularProgress size={18} /> : <LoginIcon />}
-                      sx={{
-                        py: 1.25,
-                        borderRadius: 2,
-                        background: 'linear-gradient(90deg, #1E3A8A 0%, #10B981 100%)',
-                        color: '#FFFFFF',
-                        fontWeight: 700,
-                        textTransform: 'none',
-                        boxShadow: '0 6px 12px rgba(16,185,129,0.25)',
-                        '&:hover': {
-                          boxShadow: '0 10px 20px rgba(16,185,129,0.35)',
-                        },
-                        '&:disabled': {
-                          backgroundColor: '#9CA3AF',
-                          color: '#FFFFFF',
-                        },
-                      }}
+                      startIcon={isSubmitting ? <CircularProgress size={20} color="inherit" /> : <LoginIcon />}
+                      sx={{ py: 1.5 }}
                     >
                       {isSubmitting ? 'Signing In...' : 'Sign In'}
                     </Button>
@@ -372,20 +273,16 @@ function Login() {
                 </Box>
 
                 <Box sx={{ textAlign: 'center', mt: 4 }}>
-                  <Typography variant="body2" sx={{ color: '#6B7280', mb: 1 }}>
+                  <Typography variant="body2" color="text.secondary" sx={{ display: 'inline', mr: 1 }}>
                     Don't have an account?
                   </Typography>
                   <Link
                     component={RouterLink}
                     to="/register"
-                    sx={{
-                      color: '#3B82F6',
-                      textDecoration: 'none',
-                      fontWeight: 700,
-                      '&:hover': {
-                        textDecoration: 'underline',
-                      },
-                    }}
+                    variant="body2"
+                    color="primary"
+                    fontWeight="700"
+                    underline="hover"
                   >
                     Create an account
                   </Link>
