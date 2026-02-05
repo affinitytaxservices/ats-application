@@ -2,6 +2,7 @@ const express = require('express');
 const pool = require('../db');
 const authMiddleware = require('../middleware/authMiddleware');
 const requireVerified = require('../middleware/requireVerified');
+const os = require('os');
 
 const router = express.Router();
 
@@ -47,6 +48,35 @@ router.get('/dashboard/stats', authMiddleware, requireVerified, requireAdmin, as
       });
     }
     return res.status(500).json({ error: 'Failed to fetch dashboard stats' });
+  }
+});
+
+// GET /api/admin/server-stats
+router.get('/server-stats', authMiddleware, requireVerified, requireAdmin, async (req, res) => {
+  try {
+    const cpus = os.cpus();
+    const totalMem = os.totalmem();
+    const freeMem = os.freemem();
+    const uptime = os.uptime();
+    const loadAvg = os.loadavg();
+    
+    return res.json({
+      data: {
+        cpus: cpus.length,
+        model: cpus[0].model,
+        totalMem,
+        freeMem,
+        usedMem: totalMem - freeMem,
+        uptime,
+        loadAvg,
+        platform: os.platform(),
+        release: os.release(),
+        hostname: os.hostname()
+      }
+    });
+  } catch (err) {
+    console.error('Server stats error:', err);
+    return res.status(500).json({ error: 'Failed to fetch server stats' });
   }
 });
 

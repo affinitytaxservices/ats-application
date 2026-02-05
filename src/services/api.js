@@ -646,6 +646,15 @@ export const adminAPI = {
     }
   },
 
+  getServerStats: async () => {
+    try {
+      const response = await api.get('/admin/server-stats');
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error;
+    }
+  },
+
   getSystemHealth: async () => {
     try {
       const response = await api.get('/admin/system-health');

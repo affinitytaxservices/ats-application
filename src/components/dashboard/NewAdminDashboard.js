@@ -67,8 +67,10 @@ import {
   WhatsApp,
   Message,
   Schedule,
-  Support
-
+  Support,
+  Memory,
+  Speed,
+  Dns
 } from '@mui/icons-material';
 import { adminAPI, userAPI, taskAPI, apiUtils } from '../../services/api';
 import { trackError } from '../../services/errorTracking';
@@ -106,6 +108,7 @@ function NewAdminDashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [adminStats, setAdminStats] = useState(null);
+  const [serverStats, setServerStats] = useState(null);
   const [users, setUsers] = useState([]);
   const [tasks, setTasks] = useState([]);
   const [systemAlerts, setSystemAlerts] = useState([]);
@@ -185,11 +188,12 @@ function NewAdminDashboard() {
         // WhatsApp data
         adminAPI.getWhatsAppConversations(1, 10),
         adminAPI.getWhatsAppAppointments(1, 10),
-        adminAPI.getWhatsAppSupportTickets(1, 10)
+        adminAPI.getWhatsAppSupportTickets(1, 10),
+        adminAPI.getServerStats()
       ]);
       
       // Process results with individual error handling
-      const [statsResult, usersResult, tasksResult, alertsResult, revenueResult, taskAnalyticsResult, userActivityResult, whatsappConvResult, whatsappApptResult, whatsappTicketResult] = results;
+      const [statsResult, usersResult, tasksResult, alertsResult, revenueResult, taskAnalyticsResult, userActivityResult, whatsappConvResult, whatsappApptResult, whatsappTicketResult, serverStatsResult] = results;
       
       if (statsResult.status === 'fulfilled') {
         setAdminStats(statsResult.value.data || {
@@ -269,6 +273,12 @@ function NewAdminDashboard() {
         setWhatsAppSupportTickets(whatsappTicketResult.value.data || []);
       } else {
         console.warn('Failed to fetch WhatsApp support tickets:', whatsappTicketResult.reason);
+      }
+
+      if (serverStatsResult.status === 'fulfilled') {
+        setServerStats(serverStatsResult.value.data || null);
+      } else {
+        console.warn('Failed to fetch server stats:', serverStatsResult.reason);
       }
       
       // Check if any requests failed
@@ -851,6 +861,106 @@ function NewAdminDashboard() {
           </Grid>
         </Grid>
       
+      {/* Server Health Section */}
+      {serverStats && (
+        <Grid container spacing={3} sx={{ mb: 4 }}>
+          <Grid item xs={12}>
+            <motion.div variants={itemVariants}>
+              <Paper
+                elevation={0}
+                sx={{
+                  p: 3,
+                  borderRadius: 2,
+                  boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.15)',
+                  backdropFilter: 'blur(8px)',
+                  WebkitBackdropFilter: 'blur(8px)',
+                  border: '1px solid rgba(255, 255, 255, 0.18)',
+                  background: 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 100%)'
+                }}
+              >
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
+                  <Dns sx={{ color: 'primary.main', mr: 1 }} />
+                  <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                    Server Status
+                  </Typography>
+                  <Chip 
+                    label="Online" 
+                    size="small" 
+                    color="success" 
+                    sx={{ ml: 2, height: 24 }} 
+                  />
+                  <Typography variant="caption" sx={{ ml: 'auto', color: 'text.secondary' }}>
+                    {serverStats.hostname} ({serverStats.platform} {serverStats.release})
+                  </Typography>
+                </Box>
+                
+                <Grid container spacing={3}>
+                  <Grid item xs={12} sm={6} md={3}>
+                    <Box sx={{ p: 2, bgcolor: 'background.paper', borderRadius: 2, border: '1px solid', borderColor: 'divider' }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                        <Speed color="primary" fontSize="small" sx={{ mr: 1 }} />
+                        <Typography variant="subtitle2" color="text.secondary">CPU Load</Typography>
+                      </Box>
+                      <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
+                        {serverStats.loadAvg?.[0]?.toFixed(2) || '0.00'}
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary">
+                        1 min average ({serverStats.cpus} Cores)
+                      </Typography>
+                    </Box>
+                  </Grid>
+                  
+                  <Grid item xs={12} sm={6} md={3}>
+                    <Box sx={{ p: 2, bgcolor: 'background.paper', borderRadius: 2, border: '1px solid', borderColor: 'divider' }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                        <Memory color="secondary" fontSize="small" sx={{ mr: 1 }} />
+                        <Typography variant="subtitle2" color="text.secondary">Memory Usage</Typography>
+                      </Box>
+                      <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
+                        {((serverStats.usedMem / serverStats.totalMem) * 100).toFixed(1)}%
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary">
+                        {(serverStats.usedMem / 1024 / 1024 / 1024).toFixed(1)}GB / {(serverStats.totalMem / 1024 / 1024 / 1024).toFixed(1)}GB
+                      </Typography>
+                    </Box>
+                  </Grid>
+                  
+                  <Grid item xs={12} sm={6} md={3}>
+                    <Box sx={{ p: 2, bgcolor: 'background.paper', borderRadius: 2, border: '1px solid', borderColor: 'divider' }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                        <AccessTime color="warning" fontSize="small" sx={{ mr: 1 }} />
+                        <Typography variant="subtitle2" color="text.secondary">Uptime</Typography>
+                      </Box>
+                      <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
+                        {(serverStats.uptime / 3600).toFixed(1)}h
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary">
+                        System Uptime
+                      </Typography>
+                    </Box>
+                  </Grid>
+                  
+                  <Grid item xs={12} sm={6} md={3}>
+                    <Box sx={{ p: 2, bgcolor: 'background.paper', borderRadius: 2, border: '1px solid', borderColor: 'divider' }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                        <Dns color="info" fontSize="small" sx={{ mr: 1 }} />
+                        <Typography variant="subtitle2" color="text.secondary">Platform</Typography>
+                      </Box>
+                      <Typography variant="h6" sx={{ fontWeight: 'bold', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        {serverStats.platform}
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary">
+                        {serverStats.model?.split(' ')[0] || 'Unknown'} CPU
+                      </Typography>
+                    </Box>
+                  </Grid>
+                </Grid>
+              </Paper>
+            </motion.div>
+          </Grid>
+        </Grid>
+      )}
+
       {/* WhatsApp Business Section */}
       {showWhatsAppSection && (
         <Grid container spacing={3} sx={{ mt: 2 }}>
