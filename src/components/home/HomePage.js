@@ -164,19 +164,36 @@ const HomePage = () => {
       <Box 
         sx={{ 
           position: 'relative',
-          pt: { xs: 16, md: 24 },
-          pb: { xs: 12, md: 24 },
+          pt: { xs: 2, md: 4 },
+          pb: { xs: 2, md: 6 },
           bgcolor: 'background.default',
           overflow: 'hidden'
         }}
       >
+        {/* Grid Pattern Background */}
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            zIndex: 0,
+            opacity: 0.4,
+            backgroundImage: `linear-gradient(${alpha(theme.palette.divider, 0.4)} 1px, transparent 1px), linear-gradient(90deg, ${alpha(theme.palette.divider, 0.4)} 1px, transparent 1px)`,
+            backgroundSize: '40px 40px',
+            maskImage: 'linear-gradient(to bottom, black 40%, transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(to bottom, black 40%, transparent 100%)',
+          }}
+        />
+
         {/* Animated Background */}
         <AnimatedBlob color={alpha(theme.palette.secondary.main, 0.2)} top="-10%" right="-10%" delay={0} />
         <AnimatedBlob color={alpha(theme.palette.primary.main, 0.15)} bottom="-10%" left="-10%" delay={5} />
         <AnimatedBlob color={alpha(theme.palette.success.main, 0.1)} top="40%" left="30%" size="30vw" delay={2} />
 
         <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
-          <Grid container spacing={{ xs: 8, md: 6 }} alignItems="center">
+          <Grid container spacing={{ xs: 4, md: 6 }} alignItems="center">
             <Grid item xs={12} md={6}>
               <motion.div
                 initial="hidden"
@@ -207,14 +224,14 @@ const HomePage = () => {
                 </Box>
                 
                 {/* Main Headline */}
-                <Typography 
+                  <Typography 
                   component={motion.h1}
                   variants={itemVariants}
                   variant="h1" 
                   color="text.primary"
                   sx={{ 
                     mb: 3,
-                    fontSize: { xs: '3rem', sm: '4rem', md: '5rem' },
+                    fontSize: { xs: '2.5rem', sm: '3.5rem', md: '5rem' },
                     fontWeight: 900,
                     letterSpacing: '-0.03em',
                     lineHeight: 1.1
@@ -373,6 +390,7 @@ const HomePage = () => {
                     }}
                   >
                     <Paper
+                      className="tax-form-simulation"
                       elevation={0}
                       sx={{
                         width: '100%',
@@ -443,7 +461,7 @@ const HomePage = () => {
                                         {i + 1}
                                      </Box>
                                      <Typography variant="body2" sx={{ flex: 1, color: '#334155', fontWeight: 600 }}>{item.label}</Typography>
-                                     <Box sx={{ width: 140, py: 1, px: 2, bgcolor: '#f1f5f9', borderRadius: 1, textAlign: 'right', border: '1px solid transparent', '&:hover': { borderColor: '#cbd5e1', bgcolor: 'white' } }}>
+                                     <Box className="tax-value-box" sx={{ width: 140, py: 1, px: 2, bgcolor: '#f1f5f9', borderRadius: 1, textAlign: 'right', border: '1px solid transparent', '&:hover': { borderColor: '#cbd5e1', bgcolor: 'white' } }}>
                                         <Typography variant="body2" fontFamily="monospace" fontWeight="700" color="primary.main">{item.value}</Typography>
                                      </Box>
                                  </Stack>
@@ -457,6 +475,7 @@ const HomePage = () => {
                             transition={{ delay: 1, type: "spring", stiffness: 200 }}
                         >
                             <Box 
+                                className="hero-stamp"
                                 sx={{ 
                                     position: 'absolute', 
                                     bottom: 100, 

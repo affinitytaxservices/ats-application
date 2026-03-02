@@ -1,9 +1,88 @@
 /* Enhanced Mobile & Accessibility Styles */
 
-/* ===== TESTIMONIAL SECTION MOBILE OPTIMIZATIONS ===== */
+/* ===== MOBILE & TABLET OPTIMIZATIONS (<= 768px) ===== */
+@media (max-width: 768px) {
+  /* --- General Layout & Typography --- */
+  .container {
+    padding: 12px !important;
+  }
+  
+  .MuiContainer-root {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+  
+  .MuiDialog-paper {
+    margin: 16px !important;
+    width: calc(100% - 32px) !important;
+    max-height: calc(100% - 64px) !important;
+  }
+  
+  /* [New] Reset AppBar padding to ensure alignment with page content.
+     Since AppBar contains a Container (with 16px padding), adding padding here causes misalignment. */
+  .MuiAppBar-root {
+    padding: 0 !important;
+  }
+  
+  /* Typography scaling */
+  h1 { font-size: clamp(1.75rem, 6vw, 2.5rem) !important; }
+  h2 { font-size: clamp(1.5rem, 5vw, 2rem) !important; }
+  h3 { font-size: clamp(1.25rem, 4vw, 1.75rem) !important; }
+  h4 { font-size: clamp(1.125rem, 3.5vw, 1.5rem) !important; }
+  h5 { font-size: clamp(1rem, 3vw, 1.25rem) !important; }
+  h6 { font-size: clamp(0.875rem, 2.5vw, 1.125rem) !important; }
 
-/* Testimonial cards mobile improvements */
-@media (max-width: 599px) {
+  /* Grid Overflow Prevention - Revised for safety */
+  .MuiGrid-container {
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+  
+  .MuiGrid-item {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    padding-top: 16px !important;
+    padding-bottom: 16px !important;
+  }
+
+  /* --- Home Page Specific Fixes --- */
+   
+   /* [New] Ensure the tax form simulation fits on small screens by removing fixed height */
+   .tax-form-simulation {
+     padding: 16px !important;
+     height: auto !important;
+     min-height: auto !important;
+   }
+ 
+   .tax-form-simulation .MuiStack-root {
+     overflow: hidden;
+   }
+   
+   /* [New] Fix fixed-width elements in tax form simulation.
+      Original width was 140px, which causes overflow on <360px screens. */
+   .tax-value-box {
+     width: 100px !important;
+     min-width: 100px !important;
+     padding-left: 8px !important;
+     padding-right: 8px !important;
+   }
+   
+   /* [New] Hero Stamp adjustments for mobile visibility.
+      Moves the stamp to be visible but not obstructive. */
+   .hero-stamp {
+     right: 10px !important;
+     bottom: 10px !important;
+     transform: scale(0.8);
+     transform-origin: bottom right;
+     padding: 8px 16px !important;
+   }
+   
+   .hero-stamp-wrapper {
+     z-index: 10;
+   }
+
+  /* --- Testimonial Section --- */
   .testimonial-card {
     margin: 8px 0 !important;
     border-radius: 16px !important;
@@ -36,7 +115,7 @@
     font-size: 1.2rem !important;
   }
   
-  /* Success story modal mobile improvements */
+  /* --- Success Story Modal --- */
   .success-story-modal .MuiDialog-paper {
     border-radius: 16px !important;
     margin: 16px !important;
@@ -84,7 +163,7 @@
   }
 }
 
-/* ===== EXISTING MOBILE STYLES ===== */
+/* ===== EXISTING UTILITY STYLES ===== */
 
 /* High contrast mode support */
 @media (prefers-contrast: high) {
@@ -153,7 +232,7 @@
   border: 0;
 }
 
-/* ===== RESPONSIVE DESIGN ===== */
+/* ===== RESPONSIVE DESIGN UTILS ===== */
 
 /* Base mobile optimizations */
 html {
@@ -221,40 +300,10 @@ select {
   }
 }
 
-/* ===== RESPONSIVE BREAKPOINTS ===== */
+/* ===== RESPONSIVE BREAKPOINTS (Desktop & Tablet Landscape) ===== */
 
-/* Extra small devices (phones, 0-599px) */
-@media (max-width: 599px) {
-  .container {
-    padding: 12px !important;
-  }
-  
-  .MuiContainer-root {
-    padding-left: 16px !important;
-    padding-right: 16px !important;
-  }
-  
-  .MuiDialog-paper {
-    margin: 16px !important;
-    width: calc(100% - 32px) !important;
-    max-height: calc(100% - 64px) !important;
-  }
-  
-  .MuiAppBar-root {
-    padding: 0 8px !important;
-  }
-  
-  /* Typography scaling */
-  h1 { font-size: clamp(1.75rem, 6vw, 2.5rem) !important; }
-  h2 { font-size: clamp(1.5rem, 5vw, 2rem) !important; }
-  h3 { font-size: clamp(1.25rem, 4vw, 1.75rem) !important; }
-  h4 { font-size: clamp(1.125rem, 3.5vw, 1.5rem) !important; }
-  h5 { font-size: clamp(1rem, 3vw, 1.25rem) !important; }
-  h6 { font-size: clamp(0.875rem, 2.5vw, 1.125rem) !important; }
-}
-
-/* Small devices (tablets, 600-959px) */
-@media (min-width: 600px) and (max-width: 959px) {
+/* Medium devices (small laptops/tablets landscape, 769-959px) */
+@media (min-width: 769px) and (max-width: 959px) {
   .container {
     padding: 20px !important;
   }
