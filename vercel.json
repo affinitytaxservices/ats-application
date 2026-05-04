@@ -1,1 +1,21 @@
-{"rewrites":[{"source":"/(.*)","destination":"/index.html"}]}
+{
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "affinitytaxservices.com"
+        }
+      ],
+      "destination": "https://www.affinitytaxservices.com/$1",
+      "permanent": true
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
