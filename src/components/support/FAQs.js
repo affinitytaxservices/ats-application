@@ -114,7 +114,7 @@ function FAQs() {
         description={seo.description}
         keywords={seo.keywords}
         canonical={seo.canonical}
-        image={seo.ogImage}
+        image={seo.image}
         structuredData={seo.structuredData}
       />
       <Box sx={{ 

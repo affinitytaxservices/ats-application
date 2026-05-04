@@ -1,21 +1,25 @@
 # Robots.txt for Affinity Tax Services
-# https://affinitytaxservices.com
+# https://www.affinitytaxservices.com
 
 User-agent: *
 Allow: /
 
 # Sitemap location
-Sitemap: https://affinitytaxservices.com/sitemap.xml
+Sitemap: https://www.affinitytaxservices.com/sitemap.xml
 
 # Allow crawling of all pages
 Allow: /about
+Allow: /team
+Allow: /careers
+Allow: /services
 Allow: /individual-tax
 Allow: /business-tax
 Allow: /tax-planning
 Allow: /tax-information
-Allow: /contacts
+Allow: /contact
 Allow: /privacy-policy
-Allow: /terms-of-service
+Allow: /terms-and-conditions
+Allow: /faqs
 
 # Block admin and internal pages
 Disallow: /admin

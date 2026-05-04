@@ -10,6 +10,7 @@ import {
   ArrowForward as ArrowForwardIcon
 } from '@mui/icons-material';
 import { Link as RouterLink } from 'react-router-dom';
+import { seoConfig } from '../../config/seo.config';
 
 // Styled components
 const StyledCard = styled(Card)(() => ({
@@ -68,13 +69,16 @@ const openings = [
 ];
 
 const Careers = () => {
+  const { careers: seo } = seoConfig.pages;
   return (
     <>
       <SEOHelmet
-        title="Careers | Affinity Tax Services"
-        description="Join the Affinity Tax Services team. Explore career opportunities and grow with a leading tax preparation firm."
-        keywords="tax careers, accounting jobs, tax preparer jobs, CPA careers, finance jobs"
-        canonical="https://affinitytaxservices.com/careers"
+        title={seo.title}
+        description={seo.description}
+        keywords={seo.keywords}
+        canonical={seo.canonical}
+        image={seo.image}
+        structuredData={seo.structuredData}
       />
       <Box sx={{ 
         minHeight: '100vh', 

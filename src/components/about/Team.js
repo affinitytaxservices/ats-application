@@ -5,6 +5,7 @@ import {
   CheckCircle as CheckCircleIcon,
 } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
+import { seoConfig } from '../../config/seo.config';
 
 // Styled components
 const StyledCard = styled(Card)(() => ({
@@ -44,6 +45,7 @@ const teamMembers = [
 
 const Team = () => {
   const [selectedMember, setSelectedMember] = useState(teamMembers[0].name);
+  const { team: seo } = seoConfig.pages;
 
   const handleMemberChange = (event) => {
     setSelectedMember(event.target.value);
@@ -52,10 +54,12 @@ const Team = () => {
   return (
     <>
       <SEOHelmet
-        title="Our Team | Affinity Tax Services"
-        description="Meet the expert team at Affinity Tax Services. Our experienced professionals are dedicated to your financial success."
-        keywords="tax professionals, tax team, CPA, tax consultants"
-        canonical="https://affinitytaxservices.com/team"
+        title={seo.title}
+        description={seo.description}
+        keywords={seo.keywords}
+        canonical={seo.canonical}
+        image={seo.image}
+        structuredData={seo.structuredData}
       />
       <Box 
         className="team-page-background"

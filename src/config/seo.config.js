@@ -4,7 +4,7 @@
 export const seoConfig = {
   // Site-wide configuration
   siteName: 'Affinity Tax Services',
-  siteUrl: 'https://affinitytaxservices.com',
+  siteUrl: 'https://www.affinitytaxservices.com',
   siteDescription: 'Expert tax preparation, planning, and consultation services for individuals and businesses. Trusted tax professionals since 2010.',
   siteKeywords: 'tax preparation, tax planning, tax consultation, tax services, tax advisor, tax professional, IRS help, tax filing',
   
@@ -25,15 +25,8 @@ export const seoConfig = {
   // Business Information
   businessInfo: {
     name: 'Affinity Tax Services',
-    telephone: '+1-555-TAX-HELP',
+    telephone: '+91-834-115-4481',
     email: 'info@affinitytaxservices.com',
-    address: {
-      street: '123 Tax Street, Suite 456',
-      city: 'Financial District',
-      state: 'NY',
-      zipCode: '10001',
-      country: 'US'
-    },
     businessHours: {
       monday: '09:00-17:00',
       tuesday: '09:00-17:00',
@@ -52,36 +45,30 @@ export const seoConfig = {
       description: 'Maximize your refund with Affinity Tax Services. Certified CPAs providing expert personal and business tax preparation, strategic planning, and IRS audit support.',
       keywords: 'AffinityTaxServices, Affinity Tax, tax preparation, tax planning, CPA, IRS audit support, business tax services, individual tax return, tax consultant, maximize refund, electronic filing',
       canonical: '/',
-      ogImage: '/og-home.jpg',
+      image: '/images/tax-hero.svg',
       structuredData: {
         '@context': 'https://schema.org',
         '@type': 'ProfessionalService',
         'name': 'Affinity Tax Services',
         'alternateName': 'AffinityTaxServices',
-        'description': 'Expert tax preparation and planning services for individuals and businesses',
-        'url': 'https://affinitytaxservices.com',
+        'description': 'Maximize your refund with Affinity Tax Services. Certified CPAs providing expert personal and business tax preparation, strategic planning, and IRS audit support.',
+        'url': 'https://www.affinitytaxservices.com',
+        'logo': 'https://www.affinitytaxservices.com/logo.svg',
         'sameAs': [
           'https://facebook.com/affinitytaxservices',
           'https://twitter.com/affinitytax',
           'https://linkedin.com/company/affinity-tax-services',
           'https://instagram.com/affinitytaxservices'
         ],
-        'telephone': '+1-555-TAX-HELP',
-        'address': {
-          '@type': 'PostalAddress',
-          'streetAddress': '123 Tax Street, Suite 456',
-          'addressLocality': 'Financial District',
-          'addressRegion': 'NY',
-          'postalCode': '10001',
-          'addressCountry': 'US'
-        },
-        'aggregateRating': {
-          '@type': 'AggregateRating',
-          'ratingValue': '4.9',
-          'reviewCount': '150'
-        },
         'areaServed': 'United States',
-        'serviceType': ['Tax Preparation', 'Tax Planning', 'Tax Consultation', 'IRS Audit Support']
+        'serviceType': ['Tax Preparation', 'Tax Planning', 'Tax Consultation', 'IRS Audit Support'],
+        'contactPoint': [
+          {
+            '@type': 'ContactPoint',
+            'contactType': 'customer service',
+            'email': 'info@affinitytaxservices.com'
+          }
+        ]
       }
     },
     
@@ -90,13 +77,13 @@ export const seoConfig = {
       description: 'Meet our team of certified tax professionals dedicated to your financial success. Over 10 years of experience in tax preparation and strategic planning.',
       keywords: 'about affinity tax services, certified public accountants, tax advisors, tax company history, experienced tax professionals, financial success',
       canonical: '/about',
-      ogImage: '/og-about.jpg',
+      image: '/logo-square.svg',
       structuredData: {
         '@context': 'https://schema.org',
         '@type': 'AboutPage',
         'name': 'About Affinity Tax Services',
         'description': 'Trusted tax professionals providing expert services since 2010',
-        'url': 'https://affinitytaxservices.com/about'
+        'url': 'https://www.affinitytaxservices.com/about'
       }
     },
 
@@ -105,7 +92,7 @@ export const seoConfig = {
       description: 'Explore our comprehensive tax services including individual tax preparation, business tax solutions, and strategic tax planning.',
       keywords: 'tax services, individual tax, business tax, tax planning, accounting services, tax preparation',
       canonical: '/services',
-      ogImage: '/og-services.jpg',
+      image: '/images/tax-features.svg',
       structuredData: {
         '@context': 'https://schema.org',
         '@type': 'Service',
@@ -123,7 +110,7 @@ export const seoConfig = {
       description: 'Professional individual tax preparation services with maximum refund guarantee. IRS-compliant personal tax filing by certified CPAs and tax advisors.',
       keywords: 'individual tax preparation, personal tax filing, IRS tax preparation, individual tax services, personal tax help, tax refund guarantee',
       canonical: '/individual-tax',
-      ogImage: '/og-individual-tax.jpg',
+      image: '/images/tax-preparation.jpg',
       structuredData: {
         '@context': 'https://schema.org',
         '@type': 'Service',
@@ -134,13 +121,7 @@ export const seoConfig = {
           'name': 'Affinity Tax Services'
         },
         'areaServed': 'United States',
-        'serviceType': 'Individual Tax Preparation',
-        'offers': {
-          '@type': 'Offer',
-          'price': '150',
-          'priceCurrency': 'USD',
-          'priceRange': '$150-$500'
-        }
+        'serviceType': 'Individual Tax Preparation'
       }
     },
     
@@ -149,7 +130,7 @@ export const seoConfig = {
       description: 'Professional business tax preparation services for corporations, partnerships, LLCs, and small businesses. IRS-compliant corporate tax filing with certified CPAs.',
       keywords: 'business tax services, corporate tax preparation, business tax filing, LLC tax services, partnership tax, corporate tax returns',
       canonical: '/business-tax',
-      ogImage: '/og-business-tax.jpg',
+      image: '/images/tax-planning.jpg',
       structuredData: {
         '@context': 'https://schema.org',
         '@type': 'Service',
@@ -160,13 +141,7 @@ export const seoConfig = {
           'name': 'Affinity Tax Services'
         },
         'areaServed': 'United States',
-        'serviceType': 'Business Tax Preparation',
-        'offers': {
-          '@type': 'Offer',
-          'price': '500',
-          'priceCurrency': 'USD',
-          'priceRange': '$500-$2000'
-        }
+        'serviceType': 'Business Tax Preparation'
       }
     },
     
@@ -175,7 +150,7 @@ export const seoConfig = {
       description: 'Expert tax planning services to minimize liability and maximize savings. Strategic tax strategies for individuals and businesses including retirement and estate planning.',
       keywords: 'tax planning services, strategic tax planning, tax strategy, tax minimization, tax savings, retirement tax planning, estate tax planning',
       canonical: '/tax-planning',
-      ogImage: '/og-tax-planning.jpg',
+      image: '/images/tax-planning.jpg',
       structuredData: {
         '@context': 'https://schema.org',
         '@type': 'Service',
@@ -186,13 +161,7 @@ export const seoConfig = {
           'name': 'Affinity Tax Services'
         },
         'areaServed': 'United States',
-        'serviceType': 'Tax Planning and Strategy',
-        'offers': {
-          '@type': 'Offer',
-          'price': '500',
-          'priceCurrency': 'USD',
-          'priceRange': '$500-$2000'
-        }
+        'serviceType': 'Tax Planning and Strategy'
       }
     },
     
@@ -201,7 +170,7 @@ export const seoConfig = {
       description: 'Access essential tax guides, important dates, and educational resources. Stay informed about individual and business tax requirements.',
       keywords: 'tax information, tax resources, tax guides, tax deadlines, tax education, IRS forms, tax help center',
       canonical: '/tax-information',
-      ogImage: '/og-tax-planning.jpg', // Fallback
+      image: '/images/digital-filing.jpg',
       structuredData: {
         '@context': 'https://schema.org',
         '@type': 'WebPage',
@@ -215,26 +184,17 @@ export const seoConfig = {
       description: 'Contact Affinity Tax Services for professional tax preparation, planning, and consultation. Multiple ways to reach us - phone, email, or visit our office.',
       keywords: 'contact tax services, tax consultation, tax help, contact tax preparer, tax office, tax services contact',
       canonical: '/contact',
-      ogImage: '/og-contact.jpg',
+      image: '/logo-horizontal.svg',
       structuredData: {
         '@context': 'https://schema.org',
         '@type': 'ContactPage',
         'name': 'Contact Affinity Tax Services',
         'description': 'Contact information for Affinity Tax Services',
-        'url': 'https://affinitytaxservices.com/contact',
+        'url': 'https://www.affinitytaxservices.com/contact',
         'mainEntity': {
           '@type': 'ProfessionalService',
           'name': 'Affinity Tax Services',
-          'telephone': '+1-123-456-7890',
-          'email': 'info@affinitytaxservices.com',
-          'address': {
-            '@type': 'PostalAddress',
-            'streetAddress': '123 Tax Street, Suite 456',
-            'addressLocality': 'Financial District',
-            'addressRegion': 'NY',
-            'postalCode': '10001',
-            'addressCountry': 'US'
-          }
+          'email': 'info@affinitytaxservices.com'
         }
       }
     },
@@ -244,7 +204,7 @@ export const seoConfig = {
       description: 'Read our Privacy Policy to understand how Affinity Tax Services collects, uses, and protects your personal information.',
       keywords: 'privacy policy, data protection, personal information, tax data security, client confidentiality',
       canonical: '/privacy-policy',
-      ogImage: '/og-home.jpg', // Fallback to home OG image
+      image: '/logo.svg',
       structuredData: {
         '@context': 'https://schema.org',
         '@type': 'WebPage',
@@ -257,8 +217,8 @@ export const seoConfig = {
       title: 'Terms & Conditions | Affinity Tax Services',
       description: 'Review the Terms and Conditions for using Affinity Tax Services website and services.',
       keywords: 'terms and conditions, terms of service, user agreement, legal disclaimer',
-      canonical: '/terms-of-service',
-      ogImage: '/og-home.jpg', // Fallback to home OG image
+      canonical: '/terms-and-conditions',
+      image: '/logo.svg',
       structuredData: {
         '@context': 'https://schema.org',
         '@type': 'WebPage',
@@ -272,7 +232,7 @@ export const seoConfig = {
       description: 'Find answers to common questions about tax preparation, filing deadlines, documents needed, and our services.',
       keywords: 'tax faqs, tax questions, tax preparation help, filing questions, refund status help, tax documents needed',
       canonical: '/faqs',
-      ogImage: '/og-home.jpg',
+      image: '/images/tax-features.svg',
       structuredData: {
         '@context': 'https://schema.org',
         '@type': 'FAQPage',
@@ -310,7 +270,7 @@ export const seoConfig = {
       description: 'Track your federal and state tax refund status. Direct links to IRS and state revenue department refund tools.',
       keywords: 'tax refund status, where is my refund, IRS refund, state tax refund, check refund status, tax return status',
       canonical: '/refund-status',
-      ogImage: '/og-home.jpg',
+      image: '/images/digital-filing.jpg',
       structuredData: {
         '@context': 'https://schema.org',
         '@type': 'WebPage',
@@ -324,7 +284,8 @@ export const seoConfig = {
       description: 'Secure client portal login for Affinity Tax Services. Access your tax documents and status updates.',
       keywords: 'client login, tax portal, affinity tax login, secure tax documents',
       canonical: '/login',
-      ogImage: '/og-home.jpg',
+      image: '/logo.svg',
+      robots: 'noindex, nofollow',
       structuredData: {
         '@context': 'https://schema.org',
         '@type': 'WebPage',
@@ -338,7 +299,8 @@ export const seoConfig = {
       description: 'Register for an Affinity Tax Services account to manage your tax documents and appointments.',
       keywords: 'register, create account, tax portal registration',
       canonical: '/register',
-      ogImage: '/og-home.jpg',
+      image: '/logo.svg',
+      robots: 'noindex, nofollow',
       structuredData: {
         '@context': 'https://schema.org',
         '@type': 'WebPage',
@@ -352,12 +314,41 @@ export const seoConfig = {
       description: 'Reset your Affinity Tax Services account password.',
       keywords: 'reset password, forgot password, tax portal help',
       canonical: '/forgot-password',
-      ogImage: '/og-home.jpg',
+      image: '/logo.svg',
+      robots: 'noindex, nofollow',
       structuredData: {
         '@context': 'https://schema.org',
         '@type': 'WebPage',
         'name': 'Reset Password',
         'description': 'Reset your account password'
+      }
+    },
+
+    team: {
+      title: 'Our Team | Affinity Tax Services',
+      description: 'Meet the Affinity Tax Services team of tax professionals dedicated to accurate filing, strategic planning, and responsive support.',
+      keywords: 'tax professionals, CPA team, tax advisors, affinity tax team, tax experts',
+      canonical: '/team',
+      image: '/logo-square.svg',
+      structuredData: {
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        'name': 'Our Team',
+        'description': 'Meet the Affinity Tax Services team'
+      }
+    },
+
+    careers: {
+      title: 'Careers | Affinity Tax Services',
+      description: 'Explore careers at Affinity Tax Services. Join a team focused on client success, professional growth, and modern tax workflows.',
+      keywords: 'tax careers, accounting jobs, cpa jobs, tax preparer jobs, affinity tax careers',
+      canonical: '/careers',
+      image: '/logo-square.svg',
+      structuredData: {
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        'name': 'Careers',
+        'description': 'Career opportunities at Affinity Tax Services'
       }
     },
 
@@ -393,8 +384,8 @@ export const seoConfig = {
       businessName: 'Affinity Tax Services',
       category: 'Tax Preparation Service',
       address: 'need to add address',
-      phone: '8341154481 ',
-      website: 'https://affinitytaxservices.com',
+      phone: '8341154481',
+      website: 'https://www.affinitytaxservices.com',
       hours: 'Mon-Fri: 9AM-5PM, Sat: 10AM-2PM',
       services: ['Tax Preparation', 'Tax Planning', 'Tax Consultation', 'IRS Representation']
     },

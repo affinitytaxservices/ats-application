@@ -188,7 +188,7 @@ const TaxPlanning = () => {
         description={seo.description}
         keywords={seo.keywords}
         canonical={seo.canonical}
-        image={seo.ogImage}
+        image={seo.image}
         structuredData={seo.structuredData}
       />
       <Box sx={{ minHeight: '100vh', background: 'linear-gradient(135deg, #1E3A8A 0%, #10B981 100%)' }}>

@@ -18,13 +18,13 @@ function setTag(selector, attributes) {
 }
 
 function setCanonical(href) {
-  let link = document.head.querySelector('link[rel="canonical"][data-seo-helmet="true"]');
+  let link = document.head.querySelector('link[rel="canonical"]');
   if (!link) {
     link = document.createElement('link');
     link.setAttribute('rel', 'canonical');
-    link.setAttribute('data-seo-helmet', 'true');
     document.head.appendChild(link);
   }
+  link.setAttribute('data-seo-helmet', 'true');
   link.setAttribute('href', href);
   return link;
 }
@@ -32,10 +32,13 @@ function setCanonical(href) {
 function setStructuredData(json) {
   let script = document.head.querySelector('script[type="application/ld+json"][data-seo-helmet="true"]');
   if (!script) {
-    script = document.createElement('script');
-    script.setAttribute('type', 'application/ld+json');
+    script = document.head.querySelector('script[type="application/ld+json"]');
+    if (!script) {
+      script = document.createElement('script');
+      script.setAttribute('type', 'application/ld+json');
+      document.head.appendChild(script);
+    }
     script.setAttribute('data-seo-helmet', 'true');
-    document.head.appendChild(script);
   }
   script.textContent = JSON.stringify(json);
   return script;
@@ -48,9 +51,17 @@ export default function SEOHelmet({
   canonical,
   image,
   structuredData,
+  robots,
 }) {
   useEffect(() => {
-    const addedNodes = [];
+    const origin = window.location.origin;
+    const canonicalHref = canonical
+      ? (canonical.startsWith('http') ? canonical : `${origin}${canonical}`)
+      : window.location.href;
+    const imageHref = image
+      ? (image.startsWith('http') ? image : `${origin}${image.startsWith('/') ? image : `/${image}`}`)
+      : null;
+    const robotsValue = robots || 'index, follow';
 
     if (title) {
       document.title = title;
@@ -69,27 +80,24 @@ export default function SEOHelmet({
       setTag('meta[name="keywords"]', { tagName: 'meta', name: 'keywords', content: keywords });
     }
 
-    if (image) {
-      setTag('meta[property="og:image"]', { tagName: 'meta', property: 'og:image', content: image });
-      setTag('meta[name="twitter:image"]', { tagName: 'meta', name: 'twitter:image', content: image });
+    if (imageHref) {
+      setTag('meta[property="og:image"]', { tagName: 'meta', property: 'og:image', content: imageHref });
+      setTag('meta[name="twitter:image"]', { tagName: 'meta', name: 'twitter:image', content: imageHref });
       setTag('meta[name="twitter:card"]', { tagName: 'meta', name: 'twitter:card', content: 'summary_large_image' });
     }
 
-    if (canonical) {
-      const href = canonical.startsWith('http') ? canonical : `${window.location.origin}${canonical}`;
-      addedNodes.push(setCanonical(href));
-    }
+    setCanonical(canonicalHref);
+    setTag('meta[property="og:url"]', { tagName: 'meta', property: 'og:url', content: canonicalHref });
 
     if (structuredData) {
-      addedNodes.push(setStructuredData(structuredData));
+      setStructuredData(structuredData);
     }
 
-    return () => {
-      addedNodes.forEach((node) => {
-        if (node && node.parentNode) node.parentNode.removeChild(node);
-      });
-    };
-  }, [title, description, keywords, canonical, image, structuredData]);
+    setTag('meta[name="robots"]', { tagName: 'meta', name: 'robots', content: robotsValue });
+    setTag('meta[name="googlebot"]', { tagName: 'meta', name: 'googlebot', content: robotsValue });
+
+    return undefined;
+  }, [title, description, keywords, canonical, image, structuredData, robots]);
 
   return null;
 }
