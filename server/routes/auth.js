@@ -25,6 +25,8 @@ router.post('/login', async (req, res) => {
   if (!email?.trim() || !password?.trim()) {
     return res.status(400).json({ error: 'Email and password are required' });
   }
+  const normalizedEmail = email.trim().toLowerCase();
+  const normalizedPassword = password.trim();
 
   try {
     // Dev shortcut login without DB
@@ -37,7 +39,7 @@ router.post('/login', async (req, res) => {
         { email: 'manager@demo.test', password: 'Manager123!', role: 'manager', firstName: 'Demo', lastName: 'Manager' },
         { email: 'employee@demo.test', password: 'Employee123!', role: 'employee', firstName: 'Demo', lastName: 'Employee' }
       ];
-      const matched = devUsers.find(u => u.email === email && u.password === password);
+      const matched = devUsers.find(u => u.email.toLowerCase() === normalizedEmail && u.password === normalizedPassword);
       if (matched) {
         const user = { id: 1, email: matched.email, firstName: matched.firstName, lastName: matched.lastName, role: matched.role, phone: null, isVerified: 1 };
         const payload = { id: user.id, email: user.email, role: user.role, verified: true };
@@ -48,7 +50,7 @@ router.post('/login', async (req, res) => {
 
     const [rows] = await pool.query(
       'SELECT id, email, password, firstName, lastName, role, phone, isVerified FROM users WHERE email = ? LIMIT 1',
-      [email]
+      [normalizedEmail]
     );
 
     const user = rows[0];

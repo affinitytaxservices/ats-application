@@ -42,6 +42,7 @@ import NotFound from './components/common/NotFound';
 import ScrollToTop from './components/common/ScrollToTop';
 import UnderConstructionPage from './components/maintenance/UnderConstructionPage';
 import StyleGuide from './components/common/StyleGuide';
+import InvoiceBuilder from './components/invoices/InvoiceBuilder';
 
 
 
@@ -168,6 +169,14 @@ function App() {
                   <WhatsAppAdmin />
                 </ProtectedRoute>
               } 
+            />
+            <Route
+              path="/admin/invoices/new"
+              element={
+                <ProtectedRoute requiredRole="admin">
+                  <InvoiceBuilder />
+                </ProtectedRoute>
+              }
             />
             <Route 
               path="/client-dashboard" 
